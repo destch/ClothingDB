@@ -1,6 +1,5 @@
 Models
-    Double check that categories and subcategories shouldnt be many to many like colors and styles
-
+    implement ahves and wants with separate tabels linking users and itesm
     Item
 
         Dimensions
@@ -13,3 +12,11 @@ Models
 
         collaboration indicator
         subbrands
+        Add a brand description/other things you would want on a brand page
+
+    Material:
+        materials pages with descriptions/regions
+
+    sourcing page:
+    country of manufacturer
+    ethical indicators,etc

@@ -3,13 +3,14 @@ from app import db, admin
 from app.models import * 
 
 
-admin.add_view(ModelView(Items, db.session))
+admin.add_view(ModelView(Item, db.session))
 admin.add_view(ModelView(ItemMetadata, db.session))
-admin.add_view(ModelView(Categories, db.session))
-admin.add_view(ModelView(Subcategories, db.session))
-admin.add_view(ModelView(Brands, db.session))
-admin.add_view(ModelView(Colors, db.session))
-admin.add_view(ModelView(ItemEdits, db.session))
-admin.add_view(ModelView(Styles, db.session))
-admin.add_view(ModelView(Thumbnails, db.session))
-admin.add_view(ModelView(Users, db.session))
+admin.add_view(ModelView(Category, db.session))
+admin.add_view(ModelView(Subcategory, db.session))
+admin.add_view(ModelView(Material, db.session))
+admin.add_view(ModelView(Brand, db.session))
+admin.add_view(ModelView(Color, db.session))
+admin.add_view(ModelView(ItemEdit, db.session))
+admin.add_view(ModelView(Style, db.session))
+admin.add_view(ModelView(Thumbnail, db.session))
+admin.add_view(ModelView(User, db.session))

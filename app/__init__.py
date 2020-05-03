@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_bootstrap import Bootstrap
-
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 bootstrap = Bootstrap()
@@ -16,6 +16,7 @@ def create_app():
     db.init_app(app)
     admin.init_app(app)
     bootstrap.init_app(app)
+    migrate = Migrate(app, db)
 
     from .admin import bp as admin_bp
     app.register_blueprint(admin_bp, url_prefix='/admin')

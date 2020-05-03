@@ -5,6 +5,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+
 # json
 class JsonEncodedDict(db.TypeDecorator):
     """Enables JSON storage by encoding and decoding on the fly."""
@@ -28,103 +29,143 @@ class JsonEncodedDict(db.TypeDecorator):
 mutable.MutableDict.associate_with(JsonEncodedDict)
 
 # area for defining many to one helpers
-materials = db.Table('materials',
-                     db.Column('material_id', db.Integer, db.ForeignKey('Materials.id'), primary_key=True),
-                     db.Column('item_id', db.Integer, db.ForeignKey('Items.id'), primary_key=True)
-                     )
+material_registrations = db.Table('material_registrations',
+                                  db.Column('material_id', db.Integer, db.ForeignKey('materials.id')),
+                                  db.Column('item_id', db.Integer, db.ForeignKey('items.id')))
 
-colors = db.Table('colors',
-                  db.Column('color_id', db.Integer, db.ForeignKey('Colors.id'), primary_key=True),
-                  db.Column('item_id', db.Integer, db.ForeignKey('Items.id'), primary_key=True)
-                  )
+color_registrations = db.Table('color_registrations',
+                               db.Column('color_id', db.Integer, db.ForeignKey('colors.id')),
+                               db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
+                               )
 
-styles = db.Table('styles',
-                  db.Column('style_id', db.Integer, db.ForeignKey('Styles.id'), primary_key=True),
-                  db.Column('item_id', db.Integer, db.ForeignKey('Items.id'), primary_key=True)
-                  )
+style_registrations = db.Table('style_registrations',
+                               db.Column('style_id', db.Integer, db.ForeignKey('styles.id')),
+                               db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
+                               )
+want_registrations = db.Table('want_registrations',
+                              db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                              db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
+                              )
+have_registrations = db.Table('have_registrations',
+                              db.Column('have_id', db.Integer, db.ForeignKey('users.id')),
+                              db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
+                              )
 
 
 # item
-class Items(db.Model):
+class Item(db.Model):
     __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
+    name = db.Column(db.String)
     description = db.Column(db.Text)
-    date_released = db.Column(db.Timestamp)
+    date_released = db.Column(db.DateTime())
     price = db.Column(db.Float)
-    brand_id = db.Column(db.Integer, db.ForeignKey('brand.id'))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
-                            nullable=False)
-    materials = db.relationship('Materials', secondary=materials, lazy='subquery',
-                                backref=db.backref('items', lazy=True))
-    colors = db.relationship('Colors', secondary=colors, lazy='subquery',
-                             backref=db.backref('items', lazy=True))
+    brand_id = db.Column(db.Integer, db.ForeignKey('brands.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'))
+    materials = db.relationship('Material',
+                                secondary=material_registrations,
+                                backref=db.backref('items', lazy='dynamic'),
+                                lazy='dynamic')
+    colors = db.relationship('Color',
+                             secondary=color_registrations,
+                             backref=db.backref('items', lazy='dynamic'),
+                             lazy='dynamic')
+    styles = db.relationship('Style',
+                             secondary=style_registrations,
+                             backref=db.backref('items', lazy='dynamic'),
+                             lazy='dynamic')
 
-    styles = db.relationship('Styles', secondary=styles, lazy='subquery',
-                             backref=db.backref('items', lazy=True))
-    thumbnails = db.relationship('Thumbnails', backref='item', lazy='dynamic')
+    thumbnails = db.relationship('Thumbnail', backref='items', lazy='dynamic')
     metadata_id = db.Column(db.Integer, db.ForeignKey('item_metadata.id'))
-    edits = db.relationship('ItemEdit', backref='item', lazy='dynamic')
+    edits = db.relationship('ItemEdit', backref='items', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Item %r>' % self.name
 
 
 class ItemMetadata(db.Model):
     __tablename__ = 'item_metadata'
     id = db.Column(db.Integer, primary_key=True)
-    item_id = db.relationship('Items', backref='item_metadata', lazy='dynamic')
-    date_submitted = db.Column(db.Timestamp)
-    submitter = db.Column(db.Integer, db.ForeignKey('user.id'))
-    field_edited = db.Column(db.String, required=True)
+    item_id = db.relationship('Item', backref='item_metadata', lazy='dynamic')
+    date_submitted = db.Column(db.DateTime())
+    submitter = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
-class Categories(db.Model):
+class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
-    items = db.relationsip('Items', backref='category', lazy='dynamic')
+    name = db.Column(db.String)
+    items = db.relationship('Item', backref='categories', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Category %r>' % self.name
 
-class Subcategories(db.Model):
+class Subcategory(db.Model):
     __tablename__ = 'subcategories'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
-    items = db.relationsip('Items', backref='subcategory', lazy='dynamic')
+    name = db.Column(db.String)
+    items = db.relationship('Item', backref='subcategories', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Subcategory %r>' % self.name
 
-class Brands(db.Model):
+class Brand(db.Model):
     __tablename__ = 'brands'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
-    items = db.relationsip('Items', backref='brand', lazy='dynamic')
+    name = db.Column(db.String)
+    items = db.relationship('Item', backref='brands', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Brand %r>' % self.name
 
-class Materials(db.Model):
+class Material(db.Model):
     __tablename__ = 'materials'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
+    name = db.Column(db.String)
 
+    def __repr__(self):
+        return '<Material %r>' % self.name
 
-class Colors(db.Model):
+class Color(db.Model):
     __tablename__ = 'colors'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
+    name = db.Column(db.String)
+
+    def __repr__(self):
+        return '<Color %r>' % self.name
 
 
-class ItemEdits(db.Model):
+class ItemEdit(db.Model):
     __tablename__ = 'item_edits'
-    id = db.Column(db.Integer, db.ForeignKey())
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+    data_edited = db.Column(db.String)
+    time_edited = db.Column(db.DateTime(), default=datetime.utcnow())
+    reason = db.Column(db.Text)
+    editing_user = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-class Styles(db.Model):
+
+
+class Style(db.Model):
     __tablename__ = 'styles'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, required=True)
+    name = db.Column(db.String)
 
+    def __repr__(self):
+        return '<Style %r>' % self.name
 
-class Thumbnails(db.Model):
+class Thumbnail(db.Model):
     __tablename__ = 'thumbnails'
-    id = db.Column(db.Integer, db.ForeignKey('item.id'))
-    filename = db.Column(db.String, required=True)
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+    filename = db.Column(db.String)
 
-class Users(UserMixin, db.Model):
+    def __repr__(self):
+        return '<Filename %r>' % self.filename
+
+
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
@@ -134,9 +175,15 @@ class Users(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     profile_pic_filename = db.Column(db.String)
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
-    comments = db.relationship('Comment', backref='author', lazy='dynamic')
-
+    edits = db.relationship('ItemEdit', backref='user_edits', lazy='dynamic')
+    wants = db.relationship('Item',
+                            secondary=want_registrations,
+                            backref=db.backref('user_wants', lazy='dynamic'),
+                            lazy='dynamic')
+    haves = db.relationship('Item',
+                            secondary=have_registrations,
+                            backref=db.backref('user_haves', lazy='dynamic'),
+                            lazy='dynamic')
 
     @property
     def password(self):
@@ -149,3 +196,5 @@ class Users(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def __repr__(self):
+        return '<User %r>' % self.username
