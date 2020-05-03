@@ -1,0 +1,15 @@
+Models
+    Double check that categories and subcategories shouldnt be many to many like colors and styles
+
+    Item
+
+        Dimensions
+        Sizes available
+        availability_index = wants/haves
+        season
+        collection
+
+    Brand
+
+        collaboration indicator
+        subbrands
