@@ -1,10 +1,4 @@
-{% include 'head.html' %}
-<link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' rel='stylesheet' type='text/css'>
-<!-- Script -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
-<script>
-    $(document).ready(function(){
+$(document).ready(function(){
 $(".js-example-data-ajax").select2({
   ajax: {
     url: "https://api.github.com/search/repositories",
@@ -71,7 +65,3 @@ function formatRepoSelection (repo) {
   return repo.full_name || repo.text;
 };
 });
-</script>
-
-<select class="js-example-data-ajax form-control" stye='width: 1000px;'></select>
-{% include 'foot.html' %}
