@@ -1,6 +1,22 @@
-from flask import render_template
+from flask import render_template, request
 from . import main
+from ..models import Item, ItemMetadata
+
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    items = Item.query.limit(4).all()
+    return render_template('index.html', items=items)
+
+@main.route('/new_item', methods=['GET', 'POST'])
+def new_item():
+    return render_template('new_item.html')
+
+
+@main.route('/feed', methods=['GET', 'POST'])
+def feed():
+    page = request.args.get('page', 1, type=int)
+    query = Item.query
+    pagination = query.order_by(Item.name.desc()).paginate(page, per_page=16, error_out=False)
+    items = pagination.items
+    return render_template('feed.html', items=items, pagination=pagination)

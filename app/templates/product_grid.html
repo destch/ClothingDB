@@ -1,0 +1,18 @@
+    <!-- Page Features -->
+    <div class="row">
+    {% for item in items %}
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+            <img class="card-img-top" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
+
+
+          <div class="card-body">
+            <h4 class="card-title">{{ item.brands.name }}</h4>
+            <p class="card-text" style="{font-style: oblique;}">{{ item.name }}</p>
+          </div>
+
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+    <!-- /.row -->

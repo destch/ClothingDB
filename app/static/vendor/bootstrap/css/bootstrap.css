@@ -4660,6 +4660,7 @@ input[type="button"].btn-block {
   width: 100%;
   border-top-left-radius: calc(0.25rem - 1px);
   border-top-right-radius: calc(0.25rem - 1px);
+  max-height: 20px;
 }
 
 .card-img-bottom {

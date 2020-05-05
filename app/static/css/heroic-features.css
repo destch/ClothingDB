@@ -6,3 +6,19 @@
 body {
   padding-top: 56px;
 }
+.card-img-top {
+  height: 250px;
+  margin-top: 20px
+}
+.card-body{
+  height: 115px;
+}
+.card-text{font-style: oblique;}
+
+#footer{
+    height:100px;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
