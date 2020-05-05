@@ -4,7 +4,7 @@ from app import db
 
 
 def brands():
-    url = 'app/Tools/grailed_brands.htm'
+    url = 'app/Tools/grailed_brands.html'
     page = open(url)
     soup = BeautifulSoup(page.read())
     brands = soup.find_all('a', {'class': 'designer'})
