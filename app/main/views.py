@@ -1,6 +1,6 @@
 from flask import render_template, request
 from . import main
-from ..models import Item, ItemMetadata
+from ..models import *
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -10,6 +10,8 @@ def index():
 
 @main.route('/new_item', methods=['GET', 'POST'])
 def new_item():
+    if request.method == "POST":
+        print(request.form)
     return render_template('new_item.html')
 
 

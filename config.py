@@ -3,6 +3,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     DEBUG = True
+    WTF_CSRF_ENABLED = True
     SECRET_KEY = 'secret'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'ClothingDB.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

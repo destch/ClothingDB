@@ -119,6 +119,9 @@ class Brand(db.Model):
     def __repr__(self):
         return '<Brand %r>' % self.name
 
+    def as_dict(self):
+        return {'id': self.id, 'text': self.name}
+
 class Material(db.Model):
     __tablename__ = 'materials'
     id = db.Column(db.Integer, primary_key=True)
