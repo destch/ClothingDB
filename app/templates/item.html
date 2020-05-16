@@ -1,0 +1,16 @@
+{% import "_macros.html" as macros %}
+{% include 'head.html' %}
+<br>
+<div class="container">
+    <h1>{{item.name}}</h1>
+    <div>
+        <h2>{{item.brand}}</h2>
+        <h3>{{item.categories.name}}</h3>
+        <h4>{{item.subcategories.name}}</h4>
+        <img src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
+        <h4>{{item.styles.first().name}}</h4>
+        <p>{{item.description}}</p>
+    </div>
+</div>
+
+{% include 'foot.html' %}

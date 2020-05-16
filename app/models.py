@@ -158,6 +158,9 @@ class Style(db.Model):
     def __repr__(self):
         return '<Style %r>' % self.name
 
+    def as_dict(self):
+        return {'id': self.id, 'text': self.name}
+
 class Thumbnail(db.Model):
     __tablename__ = 'thumbnails'
     id = db.Column(db.Integer, primary_key=True)

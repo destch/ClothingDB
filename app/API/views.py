@@ -17,3 +17,11 @@ def get_subcat():
     subcats = [r.as_dict() for r in res]
     formatted = {'results': subcats}
     return jsonify(formatted)
+
+@api.route('/Style', methods=['GET', 'POST'])
+def get_styles():
+    term = request.args.get('term')
+    res = Style.query.filter(Style.name.like('%{}%'.format(term))).limit(10)
+    styles = [r.as_dict() for r in res]
+    formatted = {'results': styles}
+    return jsonify(formatted)

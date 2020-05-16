@@ -21,7 +21,7 @@ $("#itemBrand").select2({
 $("#itemStyle").select2({
     minimumInputLength: 1,
     ajax: {
-        url: 'http://127.0.0.1:5000/api/Brand',
+        url: 'http://127.0.0.1:5000/api/Style',
         dataType: 'json',
         type: "GET",
         quietMillis: 50,
