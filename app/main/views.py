@@ -50,3 +50,8 @@ def feed():
 def item(id):
     item = Item.query.get(id)
     return render_template('item.html', item=item)
+
+
+@main.route('test')
+def test():
+    return render_template('item_test.html')

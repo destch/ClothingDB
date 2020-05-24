@@ -3,22 +3,59 @@
  * Copyright 2013-2019 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-heroic-features/blob/master/LICENSE)
  */
+html{
+  height: 100%;
+}
 body {
-  padding-top: 56px;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  height: 100% !important;
 }
 .card-img-top {
   height: 250px;
   margin-top: 20px
 }
-.card-body{
-  height: 115px;
-}
-.card-text{font-style: oblique;}
 
-#footer{
-    height:100px;
-}
+.card-text{font-style: oblique; color: black;}
+.card-title{color: black;}
+
+
+
+
 .wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+
+
+
+.mb-50{
+ margin-bottom: 50px;
+}
+
+.col{
+padding: 0;
+}
+
+.carousel-item {
+height: 468px;
+}
+
+.carousel-item img {
+max-height: 100%;
+max-width: 100%;
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+margin: auto;
+}
+
+.card-link{
+color: black;
+}
+
+.accordion{
+min-width: 100%;
 }
