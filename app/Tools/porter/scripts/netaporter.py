@@ -39,12 +39,12 @@ for page in pages:
     # checking the data is there
     if not len(brands) == len(names) == len(imgs):
         print("something is missing at page {}".format(page))
-        with open('../../../../log.json', 'w') as f:
+        with open('../../log.json', 'w') as f:
             json.dumps({'page': page, 'error': 'content mismatch'})
         continue
     elif len(brands) == 0:
         print("Everything is missing at page {}".format(page))
-        with open('../../../../log.json', 'w') as f:
+        with open('../../log.json', 'w') as f:
             json.dumps({'page': page, 'error': 'no content'})
         continue
 
