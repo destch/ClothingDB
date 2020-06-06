@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-from app.models import Style
+
 from app import db
+from app.models import Style
 
 
 def styles():

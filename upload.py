@@ -1,10 +1,11 @@
 import urllib.request
 import uuid
 import boto3
-from app.models import *
 import progressbar
+from app.models import *
+from app import db
 
-with open('../data/data.json', 'r') as f:
+with open('data.json', 'r') as f:
     data = json.load(f)
 
 session = boto3.Session()

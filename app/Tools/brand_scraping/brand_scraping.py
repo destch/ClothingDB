@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-from app.models import Brand
+
 from app import db
+from app.models import Brand
 
 
 def brands():
