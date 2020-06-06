@@ -22,6 +22,7 @@ def new_item():
             bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
             bucket.Object(filename).put(Body=f)
         form_inputs = request.form
+        print(form_inputs['brandInput'])
         item = Item(thumbnails=[Thumbnail(filename=filename)],
                     brand_id=form_inputs['brandInput'],
                     name=form_inputs['nameInput'],

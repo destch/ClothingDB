@@ -60,6 +60,7 @@ class Item(db.Model):
     description = db.Column(db.Text)
     date_released = db.Column(db.DateTime())
     price = db.Column(db.Float)
+    brand_name = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey('brands.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'))
