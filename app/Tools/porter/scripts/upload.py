@@ -2,6 +2,7 @@ import urllib.request
 import uuid
 import boto3
 from app.models import *
+import progressbar
 
 with open('../data/data.json', 'r') as f:
     data = json.load(f)
@@ -10,6 +11,10 @@ session = boto3.Session()
 s3 = session.resource('s3')
 bucket_name = 'cf-simple-s3-origin-db-556603787203'
 objs = []
+
+bar = progressbar.ProgressBar(maxval=len(data), widgets=[progressbar.Bar('*', '[', ']'), ' ', progressbar.Percentage()])
+bar.start()
+
 for i in range(len(data)):
     entry = data[str(i)]
     name = entry['name']
@@ -27,5 +32,9 @@ for i in range(len(data)):
             json.dumps({'entry': entry})
         break
 
+    bar.update(i + 1)
+
+print('adding to db')
 db.session.add_all(objs)
 db.session.commit()
+bar.finish()
