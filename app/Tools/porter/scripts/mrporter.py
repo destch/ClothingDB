@@ -40,7 +40,7 @@ for page in pages:
 
     #loading the json file
     try:
-        with open('../../../../data.json', 'r') as f:
+        with open('../data/data.json', 'r') as f:
             data = json.load(f)
     except:
         pass
@@ -52,7 +52,7 @@ for page in pages:
         item_id += 1
 
     #writing the json file
-    with open('../../../../data.json', 'w') as f:
+    with open('../data/data.json', 'w') as f:
         json.dump(data, f)
 
 

@@ -7,7 +7,7 @@ from app import db
 
 
 def func():
-    with open('data.json', 'r') as f:
+    with open('net_data.json', 'r') as f:
         data = json.load(f)
 
     session = boto3.Session()
@@ -32,15 +32,12 @@ def func():
                 bucket = s3.Bucket(bucket_name)
                 bucket.upload_fileobj(f, filename)
         except:
-            with open('log.json', 'w') as f:
+            with open('../../log.json', 'w') as f:
                 json.dumps({'entry': entry})
             break
 
         bar.update(i + 1)
 
-    with open('objs.txt', 'w') as f:
-        for item in objs:
-            f.write("%s\n" % item)
 
     print('adding to db')
     db.session.add_all(objs)
