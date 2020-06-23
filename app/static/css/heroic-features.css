@@ -12,8 +12,22 @@ body {
   height: 100% !important;
 }
 .card-img-top {
-  height: 250px;
-  margin-top: 20px
+	display: block;
+	width: auto;
+	max-width: 253px;
+	max-height: 264px;
+  	margin-top: 20px;
+  	margin-left: auto;
+  	margin-right: auto;
+}
+
+.product-img {
+	display: block;
+	width: auto;
+	max-width: 447px;
+	max-height: 468px;
+  	margin-left: auto;
+  	margin-right: auto;
 }
 
 .card-text{font-style: oblique; color: black;}
