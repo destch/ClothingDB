@@ -4,6 +4,7 @@ from ..models import *
 from werkzeug.utils import secure_filename
 import boto3
 import random
+from flask_login import login_user, logout_user
 
 
 @main.route('/', methods=['GET', 'POST'])
