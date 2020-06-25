@@ -26,7 +26,7 @@ def login():
                 next = url_for("main.index")
             return redirect(next)
         flash("Invalid email or password.")
-        
+    flash('Logged in')
     return render_template("auth/login.html")
 
 
