@@ -70,7 +70,7 @@
             <a class="dropdown-item" href="{{url_for('main.wantlist', id=current_user.id)}}">Wantlist</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Profile</a>
-            <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Log Out</a>
+            <a class="dropdown-item" href="{{url_for('auth.logout', id=current_user.id)}}">Log Out</a>
           </div>
           {% else %}
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
