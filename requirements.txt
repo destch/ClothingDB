@@ -13,8 +13,10 @@ click==7.1.2
 constantly==15.1.0
 cryptography==2.9.2
 cssselect==1.1.0
+dnspython==1.16.0
 docutils==0.15.2
 dominate==2.5.1
+email-validator==1.1.1
 Flask==1.1.2
 Flask-Admin==1.5.6
 Flask-Bootstrap==3.3.7.1
