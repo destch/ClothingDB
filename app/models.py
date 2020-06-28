@@ -4,7 +4,13 @@ from sqlalchemy.ext import mutable
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from . import login_manager
 
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 # json
 class JsonEncodedDict(db.TypeDecorator):
@@ -47,7 +53,7 @@ want_registrations = db.Table('want_registrations',
                               db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
                               )
 have_registrations = db.Table('have_registrations',
-                              db.Column('have_id', db.Integer, db.ForeignKey('users.id')),
+                              db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                               db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
                               )
 

@@ -11,6 +11,13 @@ body {
   padding-bottom: 100px;
   height: 100% !important;
 }
+#nav-foot{
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+}
+
 .card-img-top {
 	display: block;
 	width: auto;
@@ -72,4 +79,11 @@ color: black;
 
 .accordion{
 min-width: 100%;
+}
+.profile-header {
+    min-height: 260px;
+    margin-left: 280px;
+}
+.profile-thumbnail {
+    position: absolute;
 }

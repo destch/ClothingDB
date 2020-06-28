@@ -1,0 +1,25 @@
+    <!-- Page Features -->
+    <div class="row">
+    {% for item in wants %}
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+            <a href="{{url_for('main.item', id=item.id)}}">
+                <img intrinsicsize="920 x 1380" class="card-img-top" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
+            </a>
+
+
+          <div class="card-body">
+            <a href="brand">
+                <h4 class="card-title">{{ item.brand_name }}</h4>
+            </a>
+              <a href="{{url_for('main.item', id=item.id)}}">
+                  <p class="card-text" style="{font-style: oblique;}">{{ item.name }}</p>
+              </a>
+
+          </div>
+
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+    <!-- /.row -->

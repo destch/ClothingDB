@@ -10,8 +10,5 @@ class Config:
     FLASKY_ADMIN = 'daniel.chavez9797@gmail.com'
     PROPOGATE_EXCEPTIONS = True
 
-    @staticmethod
-    def init_app(app):
-        pass
 
 

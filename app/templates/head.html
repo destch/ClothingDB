@@ -1,7 +1,7 @@
 
 <head>
-<link rel="icon"
-      href="../static/favicon-16x16.png">
+  <link rel="icon"
+  href="../static/favicon-16x16.png">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -23,47 +23,66 @@
 
 
   <style>
-        .jumbotron {background-size: auto 100%;
-            background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%),url("https://cache.mrporter.com/content/images/cms/ycm/resource/blob/1102826/0b89e54e38b3c84a01ad07c46de63feb/image-desktop-data.jpg/w1500_q80.jpg") ;
-        }
+    .jumbotron {background-size: auto 100%;
+      background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%),url("https://cache.mrporter.com/content/images/cms/ycm/resource/blob/1102826/0b89e54e38b3c84a01ad07c46de63feb/image-desktop-data.jpg/w1500_q80.jpg") ;
+    }
   </style>
 </head>
 
 
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000000;">
-    <div class="container">
-      <a class="navbar-brand" href="{{url_for('main.index')}}" style="font-size: 25px !important;">ClothDB</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{{url_for('main.feed')}}">Explore
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{{url_for('main.new_item')}}">Submit
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000000;">
+  <div class="container">
+    <a class="navbar-brand" href="{{url_for('main.index')}}" style="font-size: 25px !important;">ClothDB</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-          <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Account
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Login</a>
-              <a class="dropdown-item" href="#">Register</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Why Register?</a>
-            </div>
-          </li>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
 
-        </ul>
-      </div>
+      <ul class="navbar-nav ml-auto">
+        <li>
+          
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
+        </form>
+
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{url_for('main.feed')}}">Explore
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{url_for('main.new_item')}}">Submit
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Account
+          </a>
+          {% if current_user.is_authenticated %}
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href={{url_for('main.collection', id=current_user.id)}}>Collection</a>
+            <a class="dropdown-item" href="{{url_for('main.wantlist', id=current_user.id)}}">Wantlist</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Profile</a>
+            <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Log Out</a>
+          </div>
+          {% else %}
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href={{url_for('auth.login')}}>Login</a>
+            <a class="dropdown-item" href="{{url_for('auth.register')}}">Register</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Why Register?</a>
+          </div>
+          {% endif %}
+        </li>
+
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
