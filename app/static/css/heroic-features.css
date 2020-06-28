@@ -80,3 +80,10 @@ color: black;
 .accordion{
 min-width: 100%;
 }
+.profile-header {
+    min-height: 260px;
+    margin-left: 280px;
+}
+.profile-thumbnail {
+    position: absolute;
+}

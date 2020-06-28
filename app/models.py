@@ -53,7 +53,7 @@ want_registrations = db.Table('want_registrations',
                               db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
                               )
 have_registrations = db.Table('have_registrations',
-                              db.Column('have_id', db.Integer, db.ForeignKey('users.id')),
+                              db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                               db.Column('item_id', db.Integer, db.ForeignKey('items.id'))
                               )
 

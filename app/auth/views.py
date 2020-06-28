@@ -24,9 +24,9 @@ def login():
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
                 next = url_for("main.index")
+            flash('Logged in')
             return redirect(next)
         flash("Invalid email or password.")
-    flash('Logged in')
     return render_template("auth/login.html")
 
 

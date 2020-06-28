@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% import "_macros.html" as macros %}
+{% include 'head.html' %}
 
-</body>
-</html>
+
+  <!-- Page Content -->
+  <div class="container">
+
+
+
+    <!-- Header -->
+    <h3>{{current_user.username}}'s Wantlist</h3>
+    <br>
+
+    {% include 'wants_grid.html' %}
+    {% if pagination %}
+      <div class="pagination">
+        {{ macros.pagination_widget(pagination, '.feed') }}
+      </div>
+    {% endif %}
+
+
+  </div>
+  <!-- /.container -->
+
