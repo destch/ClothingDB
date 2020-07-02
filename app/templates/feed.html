@@ -2,24 +2,37 @@
 {% include 'head.html' %}
 
 
-  <!-- Page Content -->
-  <div class="container">
+<!-- Page Content -->
+<div class="container" id="feed-contianer">
 
 
 
-    <!-- Header -->
-    <h3>Recently Added Items</h3>
-    <br>
+  <!-- Header -->
+  <h3>Explore</h3>
+  <br>
 
-    {% include 'product_grid.html' %}
-    {% if pagination %}
-      <div class="pagination">
-        {{ macros.pagination_widget(pagination, '.feed') }}
+  <!-- Large modal -->
+  <button type="button" class="btn btn-dark btn-md" data-toggle="modal" data-target=".bd-example-modal-lg">Apply Filters</button>
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        ...
       </div>
-    {% endif %}
-
-
+    </div>
   </div>
-  <!-- /.container -->
+
+  <br><br>
+
+  {% include 'product_grid.html' %}
+  {% if pagination %}
+  <div class="pagination">
+    {{ macros.pagination_widget(pagination, '.feed') }}
+  </div>
+  {% endif %}
+
+
+</div>
+<!-- /.container -->
 
 {% include 'foot.html' %}

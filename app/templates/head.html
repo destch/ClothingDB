@@ -43,10 +43,9 @@
 
       <ul class="navbar-nav ml-auto">
         <li>
-          
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
-        </form>
+          <form class="form-inline my-2 my-lg-0" action={{url_for('main.item_search')}} method="post" class="form" enctype="multipart/form-data" role="form">
+            <input class="form-control mr-sm-3" type="search" placeholder="Search" name="search">
+          </form>
 
         </li>
         <li class="nav-item active">

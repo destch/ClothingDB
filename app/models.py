@@ -86,6 +86,7 @@ class Item(db.Model):
     thumbnails = db.relationship('Thumbnail', backref='items', lazy='dynamic')
     metadata_id = db.Column(db.Integer, db.ForeignKey('item_metadata.id'))
     edits = db.relationship('ItemEdit', backref='items', lazy='dynamic')
+    gender = db.Column(db.String)
 
     def __repr__(self):
         return '<Item %r>' % self.name

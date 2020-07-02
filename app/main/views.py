@@ -1,10 +1,10 @@
-from flask import flash, render_template, request, make_response
+from flask import flash, render_template, request, make_response, redirect, url_for
 from . import main
 from ..models import *
 from werkzeug.utils import secure_filename
 import boto3
 import random
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from flask_login import login_user, logout_user, current_user
 
 
@@ -125,3 +125,27 @@ def remove_from_collection(id):
         pass
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
+
+
+#also consider moving this into an API route
+@main.route('/item_search', methods=['POST'])
+def item_search():
+    term = request.form['search'] 
+    return redirect(url_for('.results', term=term))
+
+
+@main.route('/results/<term>', methods=["GET", "POST"])
+def results(term):
+    if request.method == 'POST':
+        term = request.form['search']
+    multi_term = term.split()
+    if len(multi_term) > 1: 
+        search_syntax = "%" + "".join([t + "%" for t in multi_term])
+    else:
+        search_syntax = "%" + term + "%"
+    page = request.args.get('page', 1, type=int)
+    query = Item.query.filter(or_(Item.name.ilike(search_syntax),
+                            Item.brand_name.ilike(search_syntax)))
+    pagination = query.paginate(page, per_page=16, error_out=False)
+    items = pagination.items
+    return render_template('search_results.html', items=items, pagination=pagination, term = term)
