@@ -2,12 +2,12 @@ import urllib.request
 import uuid
 import boto3
 import progressbar
-from app.models import *
-from app import db
+from .....app.models import *
+from .....app import db
 
 
 def func():
-    with open('net_data.json', 'r') as f:
+    with open('../data/porter_data_shoes.json', 'r') as f:
         data = json.load(f)
 
     session = boto3.Session()

@@ -9,12 +9,13 @@ chrome_options.add_argument('--headless')
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
 chrome_options.add_argument('user-agent={0}'.format(user_agent))
 
-pages = range(1, 233)
-bar = progressbar.ProgressBar(maxval=233, \
+pages = range(1, 27)
+bar = progressbar.ProgressBar(maxval=27, \
                               widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
 bar.start()
 
-base_url = "https://www.net-a-porter.com/en-us/shop/clothing?cm_sp=topnav-_-clothing-_-allclothing&pageNumber="
+#base_url = "https://www.mrporter.com/en-us/mens/shoes?pageNumber="
+base_url = "https://www.net-a-porter.com/en-us/shop/bags?cm_sp=topnav-_-bags-_-topbar&pageNumber="
 
 log = {}
 data = {}
@@ -39,18 +40,18 @@ for page in pages:
     # checking the data is there
     if not len(brands) == len(names) == len(imgs):
         print("something is missing at page {}".format(page))
-        with open('../../log.json', 'w') as f:
+        with open('../data/log.json', 'w') as f:
             json.dumps({'page': page, 'error': 'content mismatch'})
         continue
     elif len(brands) == 0:
         print("Everything is missing at page {}".format(page))
-        with open('../../log.json', 'w') as f:
+        with open('../data/log.json', 'w') as f:
             json.dumps({'page': page, 'error': 'no content'})
         continue
 
     # loading the json file
     try:
-        with open('../data/net_data.json', 'r') as f:
+        with open('../data/net_data_bags.json', 'r') as f:
             data = json.load(f)
     except:
         pass
@@ -62,7 +63,7 @@ for page in pages:
         item_id += 1
 
     # writing the json file
-    with open('../data/net_data.json', 'w') as f:
+    with open('../data/net_data_bags.json', 'w') as f:
         json.dump(data, f)
 
     driver.quit()
