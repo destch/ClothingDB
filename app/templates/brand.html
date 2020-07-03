@@ -1,0 +1,44 @@
+{% include 'head.html' %}
+{% include '_macros.html' %}
+{% include 'messages.html' %}
+
+
+<div class="container">
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail" src={{"https://groovespotimages.s3.us-east-2.amazonaws.com/" ~ brand.profile_pic_filename}} height="256" width="256">
+    <div class="profile-header">
+
+        <h1>{{ brand.name }}</h1>
+        {% if user.location %}
+        <p>
+            {% if user.location %}
+                from <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a><br>
+            {% endif %}
+        </p>
+        {% endif %}
+
+        
+        
+        
+
+        {% if brand.description %}<p>{{ brand.description }}</p>{% endif %}
+        <p>
+            {% current_user.is_authenticated %}
+            <a class="btn btn-primary" href="{{ url_for('.index') }}">Edit Profile</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+
+
+<h3>Items by {{ brand.name }}</h3>
+{% include 'product_grid.html' %}
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.brand', name=brand.name) }}
+</div>
+{% endif %}
+
+</div>

@@ -67,6 +67,17 @@ def user(id):
     haves = user.haves.limit(4).all()
     return render_template('user.html', user=user, items=items, wants=wants, haves=haves)
 
+@main.route('brand/<int:id>')
+def brand(id):
+    brand = Brand.query.get(id)
+    page = request.args.get('page', 1, type=int)
+    #this needs to take into account the db relationship between the item table and the brand table
+    query = Item.query.filter(Item.brand_name == brand)
+    #order by date of the item
+    pagination = query.order_by(Item.name.desc()).paginate(page, per_page=16, error_out=False)
+    items = pagination.items
+    return render_template('brand.html', brand=brand, items=items, pagination=pagination)
+
 @main.route('wantlist/<int:id>')
 def wantlist(id):
     user = User.query.get(id)
