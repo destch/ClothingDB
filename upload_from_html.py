@@ -1,4 +1,4 @@
-
+import json
 import urllib.request
 from bs4 import BeautifulSoup
 import uuid
@@ -6,6 +6,7 @@ import boto3
 import progressbar
 from app.models import *
 from app import db
+
 
 
 def process_data(file):
@@ -29,9 +30,11 @@ def process_data(file):
 		except:
 			with open('log.json', 'w') as f:
 				json.dumps({'entry': counter, 'error': 'accessing text'})
+			continue
 
 		filename = str(uuid.uuid4()) + '.png'
-		objs.append(Item(name=name, brand_name=brand, category_id=4, thumbnails=[Thumbnail(filename=filename)]))
+		objs.append(Item(name=name, brand_name=brand, thumbnails=[Thumbnail(filename=filename)]))
+		
 		try:
 			url = entry.img['src']
 			# upload image to s3
@@ -40,8 +43,8 @@ def process_data(file):
 				bucket.upload_fileobj(f, filename)
 		except:
 			with open('log.json', 'w') as f:
-				json.dumps({'entry': counter, 'error': 's3'})
-				break
+				json.dumps({'entry': counter, 'error': 'image', 'brand': brand, 'name': name})
+			continue
 
 		bar.update(counter + 1)
 
