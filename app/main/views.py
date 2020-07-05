@@ -6,6 +6,7 @@ import boto3
 import random
 from sqlalchemy import desc, or_
 from flask_login import login_user, logout_user, current_user
+import uuid
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -19,22 +20,23 @@ def new_item():
         f = request.files['fileInput']
         filename = ""
         if f is not None:
-            filename = str(random.randint(1, 1000000000)) + secure_filename(f.filename)
+            filename = str(uuid.uuid4()) + '.jpg'
             s3_client = boto3.resource("s3")
             bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
             bucket.Object(filename).put(Body=f)
         form_inputs = request.form
-        print(form_inputs['brandInput'])
-        item = Item(thumbnails=[Thumbnail(filename=filename)],
+        item = Item(id=Item.query.order_by(desc(Item.id)).first().id+1,
+                    thumbnails=[Thumbnail(filename=filename)],
                     brand_id=form_inputs['brandInput'],
+                    brand_name=Brand.query.get(form_inputs['brandInput']).name,
                     name=form_inputs['nameInput'],
                     category_id=form_inputs['categoryInput'],
                     subcategory_id=form_inputs['subcatInput'],
                     description=form_inputs['description'],
                     styles=[Style.query.get(form_inputs['styleInput'])])
-
         db.session.add(item)
         db.session.commit()
+        return redirect(url_for('.item', id=item.id))
 
     #you should really return the new item's page
     return render_template('new_item.html')
@@ -44,7 +46,7 @@ def new_item():
 def feed():
     page = request.args.get('page', 1, type=int)
     query = Item.query
-    pagination = query.order_by(Item.name.desc()).paginate(page, per_page=16, error_out=False)
+    pagination = query.order_by(Item.id.desc()).paginate(page, per_page=16, error_out=False)
     items = pagination.items
     return render_template('feed.html', items=items, pagination=pagination)
 
@@ -70,9 +72,10 @@ def user(id):
 @main.route('brand/<int:id>')
 def brand(id):
     brand = Brand.query.get(id)
+    #brand = Item.query.filter(Item.id == id).first().brand_name
     page = request.args.get('page', 1, type=int)
     #this needs to take into account the db relationship between the item table and the brand table
-    query = Item.query.filter(Item.brand_name == brand)
+    query = Item.query.filter(Item.brand_id==id)
     #order by date of the item
     pagination = query.order_by(Item.name.desc()).paginate(page, per_page=16, error_out=False)
     items = pagination.items

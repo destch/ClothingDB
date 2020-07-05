@@ -9,7 +9,7 @@
 
 
           <div class="card-body">
-            <a href="brand">
+            <a href="{{url_for('main.brand', id=item.brand_id)}}">
                 <h4 class="card-title">{{ item.brand_name }}</h4>
             </a>
               <a href="{{url_for('main.item', id=item.id)}}">

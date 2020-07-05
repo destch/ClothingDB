@@ -1,6 +1,6 @@
     <!-- Page Features -->
     {% include 'head.html' %}
-
+    {% include 'messages.html' %}
 
     <meta charset="UTF-8">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' rel='stylesheet' type='text/css'>
@@ -79,7 +79,7 @@
                 <div class="form-group">
                     <label for="Brand">Search for a Brand</label><br>
                     <select class=form-control" id="itemBrand" style="width:1110px" name="brandInput">
-                        <option value="">e.g. Nike</option>
+                        <option>e.g. Nike</option>
                     </select>
                     <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="google.com">here</a> and come back.</small>
                 </div>
@@ -91,12 +91,13 @@
                 <div class="form-group">
                     <label for="Category">Category</label>
                     <select class="form-control" id="itemCat" name="categoryInput">
-                      <option>Top</option>
-                      <option>Bottom</option>
-                      <option>Outerwear</option>
-                      <option>Footwear</option>
-                      <option>Suiting</option>
-                      <option>Accessory</option>
+                      <option value=1>Tops</option>
+                      <option value=2>Bottoms</option>
+                      <option value=7>Dresses</option>
+                      <option value=3>Outerwear</option>
+                      <option value=4>Footwear</option>
+                      <option value=5>Accessories</option>
+                      <option value=6>Suiting</option>
                   </select>
               </div>
 
@@ -104,61 +105,70 @@
                 <label for="Subcategory">Subcategory</label>
                 <select class="form-control" id="itemSubCat" name="subcatInput">
                     <optgroup label="Tops">
-                        <option>T-Shirt</option>
-                        <option>Polo</option>
-                        <option>Button Up</option>
-                        <option>Knitwear</option>
-                        <option>Sweatshirt</option>
-                        <option>Hoodie</option>
-                        <option>Sleeveless</option>
+                        <option value=1>T-Shirt</option>
+                        <option value=3>Polo</option>
+                        <option value=4>Button Up</option>
+                        <option value=5>Knitwear</option>
+                        <option value=6>Sweatshirt</option>
+                        <option value=7>Hoodie</option>
+                        <option value=8>Sleeveless</option>
+                        <option value=17>Swimwear</option>
                     </optgroup>
                     <optgroup label="Bottoms">
-                        <option>Casual Pant</option>
-                        <option>Cropped Pant</option>
-                        <option>Jean</option>
-                        <option>Legging</option>
-                        <option>Overall</option>
-                        <option>Short</option>
-                        <option>Sweatpant</option>
-                        <option>Swim Short</option>
-                        <option>Swimwear</option>
+                        <option value=9>Casual Pant</option>
+                        <option value=10>Cropped Pant</option>
+                        <option value=11>Jean</option>
+                        <option value=12>Legging</option>
+                        <option value=13>Overall</option>
+                        <option value=14>Short</option>
+                        <option value=15>Sweatpant</option>
+                        <option value=47>Jumpsuit</option>
+                        <option value=48>Romper</option>
+                        <option value=16>Swim Short</option>
+                        <option value=17>Swimwear</option>
+                    </optgroup>
+                    <optgroup label="Dresses">
+                        <option value=49>Gown/Long</option>
+                        <option value=50>Maxi</option>
+                        <option value=51>Midi</option>
+                        <option value=52>Mini</option>
                     </optgroup>
                     <optgroup label="Outerwear">
-                        <option>Jacket</option>
-                        <option>Coat</option>
-                        <option>Parka</option>
-                        <option>Raincoat</option>
+                        <option value=18>Jacket</option>
+                        <option value=19>Coat</option>
+                        <option value=20>Parka</option>
+                        <option value=21>Raincoat</option>
                     </optgroup>
                     <optgroup label="Footwear">
-                        <option>Boot</option>
-                        <option>Casual Shoe</option>
-                        <option>Formal Shoe</option>
-                        <option>Sandal</option>
-                        <option>Slip-On</option>
-                        <option>Sneaker</option>
-                        <option>Athletic Shoe</option>
+                        <option value=22>Boot</option>
+                        <option value=23>Casual Shoe</option>
+                        <option value=24>Formal Shoe</option>
+                        <option value=26>Sandal</option>
+                        <option value=27>Slip-On</option>
+                        <option value=24>Sneaker</option>
+                        <option value=53>Athletic Shoe</option>
                     </optgroup>
                     <optgroup label="Accessories">
-                        <option>Bag</option>
-                        <option>Luggage</option>
-                        <option>Belt</option>
-                        <option>Glasses</option>
-                        <option>Glove</option>
-                        <option>Scarf</option>
-                        <option>Hat</option>
-                        <option>Jewelry</option>
-                        <option>Watch</option>
-                        <option>Wallet</option>
-                        <option>Sock</option>
-                        <option>Underwear</option>
-                        <option>Eyewear</option>
-                        <option>Tie</option>
+                        <option value=33>Bag</option>
+                        <option value=34>Luggage</option>
+                        <option value=35>Belt</option>
+                        <option value=36>Glasses</option>
+                        <option value=37>Glove</option>
+                        <option value=38>Scarf</option>
+                        <option value=39>Hat</option>
+                        <option value=40>Jewelry</option>
+                        <option value=41>Watch</option>
+                        <option value=42>Wallet</option>
+                        <option value=43>Sock</option>
+                        <option value=44>Underwear</option>
+                        <option value=45>Eyewear</option>
+                        <option value=46>Tie</option>
                     </optgroup>
                     <optgroup label="Suiting">
-                        <option>Blazer</option>
-                        <option>Trouser</option>
-                        <option>Suit</option>
-                        <option>Vest</option>
+                        <option value=28>Blazer</option>
+                        <option value=31>Trouser</option>
+                        <option value=30>Suit</option>
+                        <option value=32>Vest</option>
                     </optgroup>
                 </select>
             </div>
