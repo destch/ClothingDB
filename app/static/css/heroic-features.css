@@ -37,6 +37,11 @@ body {
   	margin-right: auto;
 }
 
+.card-body {
+  display:block;
+  max-height: 139px;
+}
+
 .card-text{font-style: oblique; color: black;}
 .card-title{color: black;}
 
