@@ -1,0 +1,200 @@
+    <!-- Page Features -->
+    {% include 'head.html' %}
+    {% include 'messages.html' %}
+
+    <meta charset="UTF-8">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
+    <!-- Script -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#itemBrand").select2({
+
+                minimumInputLength: 4,
+                ajax: {
+                    url: "{{url_for('API.get_brands')}}",
+                    dataType: 'json',
+                    type: "GET",
+                    quietMillis: 50,
+                    data: function (params) {
+                      return {
+            term: params.term // search term
+        };
+    },
+    results: function (data) {
+        return {
+            results: data.items
+        };
+    }
+}
+});
+            $("#itemStyle").select2({
+                minimumInputLength: 4,
+                ajax: {
+                    url: "{{url_for('API.get_styles')}}",
+                    dataType: 'json',
+                    type: "GET",
+                    quietMillis: 50,
+                    data: function (params) {
+                      return {
+            term: params.term // search term
+        };
+    },
+    results: function (data) {
+        return {
+            results: data.items
+        };
+    }
+}
+});
+
+
+        });
+    </script>
+
+
+
+    <body>
+
+
+
+        <div class="container">
+
+            <br>
+            <br>
+            <br>
+            <br>
+            
+
+            <!-- Header -->
+            <h3>Submit a New Item</h3>
+            <br>
+
+
+            <form method="POST" enctype=multipart/form-data>
+
+                <div class="form-group">
+                    <label for="Brand">Search for a Brand</label><br>
+                    <select class="form-control" id="itemBrand" style="width:1110px" name="brandInput">
+                        <option>{{brand.name}}</option>
+                    </select>
+                    <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="google.com">here</a> and come back.</small>
+                </div>
+                <div class="form-group">
+                    <label>Name of Item</label>
+                    <input name="nameInput" class="form-control" placeholder="{{item.name}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="Category">Category</label>
+                    <select class="form-control" id="itemCat" name="categoryInput">
+                      <option value=0>{{item.category_id}}</option>
+                      <option value=1>Tops</option>
+                      <option value=2>Bottoms</option>
+                      <option value=7>Dresses</option>
+                      <option value=3>Outerwear</option>
+                      <option value=4>Footwear</option>
+                      <option value=5>Accessories</option>
+                      <option value=6>Suiting</option>
+                  </select>
+                </div>
+
+              <div class="form-group">
+                <label for="Subcategory">Subcategory</label>
+                <select class="form-control" id="itemSubCat" name="subcatInput">
+                    <optgroup label="Tops">
+                        <option value=1>T-Shirt</option>
+                        <option value=3>Polo</option>
+                        <option value=4>Button Up</option>
+                        <option value=5>Knitwear</option>
+                        <option value=6>Sweatshirt</option>
+                        <option value=7>Hoodie</option>
+                        <option value=8>Sleeveless</option>
+                        <option value=17>Swimwear</option>
+                    </optgroup>
+                    <optgroup label="Bottoms">
+                        <option value=9>Casual Pant</option>
+                        <option value=10>Cropped Pant</option>
+                        <option value=11>Jean</option>
+                        <option value=12>Legging</option>
+                        <option value=13>Overall</option>
+                        <option value=14>Short</option>
+                        <option value=15>Sweatpant</option>
+                        <option value=47>Jumpsuit</option>
+                        <option value=48>Romper</option>
+                        <option value=16>Swim Short</option>
+                        <option value=17>Swimwear</option>
+                    </optgroup>
+                    <optgroup label="Dresses">
+                        <option value=49>Gown/Long</option>
+                        <option value=50>Maxi</option>
+                        <option value=51>Midi</option>
+                        <option value=52>Mini</option>
+                    </optgroup>
+                    <optgroup label="Outerwear">
+                        <option value=18>Jacket</option>
+                        <option value=19>Coat</option>
+                        <option value=20>Parka</option>
+                        <option value=21>Raincoat</option>
+                    </optgroup>
+                    <optgroup label="Footwear">
+                        <option value=22>Boot</option>
+                        <option value=23>Casual Shoe</option>
+                        <option value=24>Formal Shoe</option>
+                        <option value=26>Sandal</option>
+                        <option value=27>Slip-On</option>
+                        <option value=24>Sneaker</option>
+                        <option value=53>Athletic Shoe</option>
+                    </optgroup>
+                    <optgroup label="Accessories">
+                        <option value=33>Bag</option>
+                        <option value=34>Luggage</option>
+                        <option value=35>Belt</option>
+                        <option value=36>Glasses</option>
+                        <option value=37>Glove</option>
+                        <option value=38>Scarf</option>
+                        <option value=39>Hat</option>
+                        <option value=40>Jewelry</option>
+                        <option value=41>Watch</option>
+                        <option value=42>Wallet</option>
+                        <option value=43>Sock</option>
+                        <option value=44>Underwear</option>
+                        <option value=45>Eyewear</option>
+                        <option value=46>Tie</option>
+                    </optgroup>
+                    <optgroup label="Suiting">
+                        <option value=28>Blazer</option>
+                        <option value=31>Trouser</option>
+                        <option value=30>Suit</option>
+                        <option value=32>Vest</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+              <label for="Description">Description of Item: (Feel free to include any background information or context surrounding the item.)</label>
+              <textarea class="form-control" rows="5" id="comment" name="description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="Style">Styles that describe the Item:</label><br>
+            <select class="form-control" id="itemStyle" style="width:1110px" name="styleInput">
+                <option value="">e.g. Normcore, Prep, Streetwear</option>
+            </select>
+            <small id="styleHelp" class="form-text text-muted"> If you can't find the style in the database, consider adding it <a href="google.com">here</a>.</small>
+            </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+
+</body>
+
+
+

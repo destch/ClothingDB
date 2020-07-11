@@ -124,16 +124,20 @@
         <br>
         {% if current_user.is_authenticated %}
         {% if item in current_user.wants.all() %}
-        <button class="btn btn-danger" id="remove_from_wantlist">Remove from Wantlist</button>
+        <button class="btn btn-danger" id="remove_from_wantlist">Remove From Wantlist</button>
         {% else %}
         <button class="btn btn-primary" id="add_to_wantlist">Add to Wantlist</button>
         {% endif %}
 
         {% if item in current_user.haves.all() %}
-        <button class="btn btn-danger" id="remove_from_collection">Remove from Collection</button>
+        <button class="btn btn-danger" id="remove_from_collection">Remove From Collection</button>
         {% else %}
         <button class="btn btn-primary" id="add_to_collection">Add to Collection</button>
         {% endif %}
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
+        <button class="btn btn-secondary" id="edit">Edit</button>
         {% endif %}
 
       </div>
@@ -152,7 +156,7 @@
 
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body">
-            {{item.description}}
+            
           </div>
         </div>
       </div>
@@ -166,7 +170,7 @@
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
           <div class="card-body">
-            need to work on this one
+            
           </div>
         </div>
       </div>
@@ -188,6 +192,26 @@
       </div>
     </div>
   </div>
+  <h3>Comments:</h3>
+  <br>
+  <!--
+  <div class="media mb-4">
+    <img class="mr-3" src="https://groovespotimages.s3.us-east-2.amazonaws.com/profile-img.png" height="64px" width="64px" alt="Generic placeholder image">
+    <div class="media-body">
+      <h5 class="mt-0">Media heading</h5>
+      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+    </div>
+  </div>
+  <div class="media mb-4">
+    <img class="mr-3" src="https://groovespotimages.s3.us-east-2.amazonaws.com/profile-img.png" height="64px" width="64px" alt="Generic placeholder image">
+    <div class="media-body">
+      <h5 class="mt-0">Media heading</h5>
+      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+    </div>
+  </div>
+  -->
+  <br>
+  <br>
 </div>
 
 

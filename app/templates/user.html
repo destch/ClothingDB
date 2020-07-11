@@ -33,14 +33,17 @@
 
 
 
-<h3>Comments by {{ user.username }}</h3>
-{% include 'product_grid.html' %}
+<h3>{{ user.username }}'s Collection</h3>
+{% include 'haves_grid.html' %}
 
 <h3>{{ user.username }}'s Wantlist</h3>
 {% include 'wants_grid.html' %}
 
-<h3>{{ user.username }}'s Collection</h3>
-{% include 'haves_grid.html' %}
+<h3>Posts by {{ user.username }}</h3>
+{% include 'product_grid.html' %}
+
+<h3>Comments by {{ user.username }}</h3>
+{% include 'product_grid.html' %}
 
 
 {% if pagination %}

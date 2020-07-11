@@ -2,12 +2,12 @@ import urllib.request
 import uuid
 import boto3
 import progressbar
-from .....app.models import *
-from .....app import db
+from app.models import *
+from app import db
 
-
-def func():
-    with open('../data/porter_data_shoes.json', 'r') as f:
+#MAKE SURE TO RUN THIS IN THE FLASK SHELL
+def func(dataset):
+    with open(dataset, 'r') as f:
         data = json.load(f)
 
     session = boto3.Session()
@@ -24,7 +24,7 @@ def func():
         name = entry['name']
         brand_name = entry['brand']
         filename = str(uuid.uuid4()) + '.jpg'
-        objs.append(Item(name=name, brand_name=brand_name, thumbnails=[Thumbnail(filename=filename)]))
+        objs.append(Item(name=name, brand_name=brand_name, category_id=5,gender="Male", thumbnails=[Thumbnail(filename=filename)]))
         try:
             url = entry['img_src']
             # upload image to s3
@@ -32,7 +32,7 @@ def func():
                 bucket = s3.Bucket(bucket_name)
                 bucket.upload_fileobj(f, filename)
         except:
-            with open('../../log.json', 'w') as f:
+            with open('log.json', 'w') as f:
                 json.dumps({'entry': entry})
             break
 

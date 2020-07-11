@@ -21,7 +21,7 @@ body {
 .card-img-top {
 	display: block;
 	width: auto;
-	max-width: 253px;
+	max-width: 240px;
 	max-height: 264px;
   	margin-top: 20px;
   	margin-left: auto;
@@ -36,22 +36,11 @@ body {
     word-wrap: break-word;
 }
 
-
-
 .card-text{font-style: oblique;
  color: black;
   overflow: hidden;
   text-overflow: ellipsis;}
 .card-title{color: black;}
-
-
-
-
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
 
 
 .mb-50{
