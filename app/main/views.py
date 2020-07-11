@@ -77,7 +77,7 @@ def feed():
     subcat = None
     styles = None
 
-    query = Item.query
+    query = Item.query.filter(Item.deleted != 1)
     if brand_id:
         query = query.filter(Item.brand_id == brand_id)
         brand = Brand.query.get(brand_id).name

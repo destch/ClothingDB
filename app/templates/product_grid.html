@@ -1,7 +1,6 @@
 <!-- Page Features -->
 <div class="row">
   {% for item in items %}
-    {% if item.deleted != 1 %}
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
           <a href="{{url_for('main.item', id=item.id)}}">
@@ -25,7 +24,6 @@
           </div>
         </div>
       </div>
-    {% endif %}
   {% endfor %}
 </div>
 <!-- /.row -->
