@@ -1,74 +1,63 @@
 {% import "_macros.html" as macros %}
 {% include 'head.html' %}
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
-    <!-- Script -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
-
-    <script type="text/javascript">
-            $(document).ready(function(){
-                $("#itemBrand").select2({
-                    dropdownParent: $('#myModal'),
-                    minimumInputLength: 2,
-                    ajax: {
-                        url: "{{url_for('API.get_brands')}}",
-                        dataType: 'json',
-                        type: "GET",
-                        quietMillis: 50,
-                        data: function (params) {
-                          return {
-                term: params.term // search term
-                                  };
-                              },
-                              results: function (data) {
-                                  return {
-                                      results: data.items
-                                  };
-                              }
-                          }
-                          });
-                $("#itemStyle").select2({
-                    dropdownParent: $('#myModal'),
-		    maximumSelectionLength: 10,
-                    minimumInputLength: 2,
-                    ajax: {
-                        url: "{{url_for('API.get_styles')}}",
-                        dataType: 'json',
-                        type: "GET",
-                        quietMillis: 50,
-                        data: function (params) {
-                          return {
-                term: params.term // search term
-                                  };
-                              },
-                              results: function (data) {
-                                  return {
-                                      results: data.items
-                                  };
-                              }
-                          }
-                          });
-
-
-                                  });
-        </script>
-
-
-
+<link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
+<!-- Script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#itemBrand").select2({
+dropdownParent: $('#myModal'),
+minimumInputLength: 2,
+ajax: {
+url: "{{url_for('API.get_brands')}}",
+dataType: 'json',
+type: "GET",
+quietMillis: 50,
+data: function (params) {
+return {
+term: params.term // search term
+};
+},
+results: function (data) {
+return {
+results: data.items
+};
+}
+}
+});
+$("#itemStyle").select2({
+dropdownParent: $('#myModal'),
+    maximumSelectionLength: 10,
+minimumInputLength: 2,
+ajax: {
+url: "{{url_for('API.get_styles')}}",
+dataType: 'json',
+type: "GET",
+quietMillis: 50,
+data: function (params) {
+return {
+term: params.term // search term
+};
+},
+results: function (data) {
+return {
+results: data.items
+};
+}
+}
+});
+});
+</script>
 <!-- Page Content -->
 <div class="container" id="feed-contianer">
-
-
-
   <!-- Header -->
   <h3>Explore</h3>
   <br>
-
   <!-- Large modal -->
   <button type="button" class="btn btn-dark btn-md" data-toggle="modal" data-target=".bd-example-modal-lg">Apply Filters</button>
-
   <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg", role="document">
       <div class="modal-content">
@@ -77,23 +66,23 @@
             <div class="form-group">
               <label for="Brand">Brand</label><br>
               <select class="form-control" id="itemBrand" style="width:766px" name="brandInput">
-               	{% if params['brand_id'] %}
-		<option value={{params['brand_id']}}>{{brand}}</option>
-		{% else %}
-		      <option disabled selected value>-- brand -- </option>
-		{% endif %}
+                {% if params['brand_id'] %}
+                  <option value={{params['brand_id']}}>{{brand}}</option>
+                {% else %}
+                  <option disabled selected value>-- brand -- </option>
+                {% endif %}
               </select>
               <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="google.com">here</a> and come back.</small>
             </div>
             <div class="form-group">
               <label for="Category">Category</label>
               <select class="form-control" id="itemCat" name="categoryInput">
-		{% if params['category_id'] %}
-		<option value={{params['category_id']}}>{{category}}</option>	
-		{% else %}
-		<option disabled selected value> -- category -- </option>
-		{% endif %}
-		<option value=1>Tops</option>
+                {% if params['category_id'] %}
+                  <option value={{params['category_id']}}>{{category}}</option>
+                {% else %}
+                  <option disabled selected value> -- category -- </option>
+                {% endif %}
+                <option value=1>Tops</option>
                 <option value=2>Bottoms</option>
                 <option value=7>Dresses</option>
                 <option value=3>Outerwear</option>
@@ -105,11 +94,11 @@
             <div class="form-group">
               <label for="Subcategory">Subcategory</label>
               <select class="form-control" id="itemSubCat" name="subcatInput">
-		{% if params['subcategory_id'] %}
-		<option value={{params['subcategory_id']}}>{{subcat}}</option>	
-		{% else %}
-		<option disabled selected value> -- subcategory -- </option>
-		{% endif %}
+                {% if params['subcategory_id'] %}
+                  <option value={{params['subcategory_id']}}>{{subcat}}</option>
+                {% else %}
+                  <option disabled selected value> -- subcategory -- </option>
+                {% endif %}
                 <optgroup label="Tops">
                   <option value=1>T-Shirt</option>
                   <option value=3>Polo</option>
@@ -179,39 +168,32 @@
               </select>
             </div>
             <div class="form-group">
-            <label for="Style">Styles</label><br>
-            <select class="form-control" id="itemStyle" style="width:766px" name="styleInput" multiple>
-               	{% if params['style_ids'] %}
-		{% for id in params['style_ids'] %}
-			<option value={{id}} selected>{{styles[id]}}</option>
-		{% endfor %}
-		{% else %}
-		{% endif %}
-            </select>
-            <small id="styleHelp" class="form-text text-muted"> If you can't find the style in the database, consider adding it <a href="google.com">here</a>.</small>
+              <label for="Style">Styles</label><br>
+              <select class="form-control" id="itemStyle" style="width:766px" name="styleInput" multiple>
+                {% if params['style_ids'] %}
+                  {% for id in params['style_ids'] %}
+                    <option value={{id}} selected>{{styles[id]}}</option>
+                  {% endfor %}
+                {% else %}
+                {% endif %}
+              </select>
+              <small id="styleHelp" class="form-text text-muted"> If you can't find the style in the database, consider adding it <a href="google.com">here</a>.</small>
             </div>
-                      <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Apply Filters</button>
-          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </div>
           </form>
-
         </div>
       </div>
     </div>
   </div>
-
   <br><br>
-
   {% include 'product_grid.html' %}
   {% if pagination %}
-  <div class="pagination">
-	  {{ macros.pagination_widget(pagination, '.feed', "&"+request.query_string.decode()) }}
-  </div>
+    <div class="pagination">
+      {{ macros.pagination_widget(pagination, '.feed', "&"+request.query_string.decode()) }}
+    </div>
   {% endif %}
-
-
 </div>
 <!-- /.container -->
-
-

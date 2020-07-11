@@ -1,38 +1,27 @@
 {% include 'head.html' %}
 {% import "_macros.html" as macros %}
 {% include 'messages.html' %}
-
-
 <div class="container">
-<div class="page-header">
-    <img class="img-rounded profile-thumbnail" src={{"https://groovespotimages.s3.us-east-2.amazonaws.com/" ~ brand.profile_pic_filename}} height="256" width="256">
-    <div class="profile-header">
-
-        <h1>{{ brand.name}}</h1>
-        
-        <p>
-            info
-        </p>
-        
-
-        
-        
-        
-
-        {% if brand.name %}<p>{{ brand.name }}</p>{% endif %}
-
-    </div>
-</div>
-
-
-
-<h3>Items by {{ brand.name }}</h3>
-{% include 'product_grid.html' %}
-
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
-</div>
-{% endif %}
-
+	<div class="page-header">
+		<img class="img-rounded profile-thumbnail" src={{"https://groovespotimages.s3.us-east-2.amazonaws.com/" ~ brand.profile_pic_filename}} height="256" width="256">
+		<div class="profile-header">
+			<h1>{{ brand.name}}</h1>
+			
+			<p>
+				info
+			</p>
+			
+			
+			
+			
+			{% if brand.name %}<p>{{ brand.name }}</p>{% endif %}
+		</div>
+	</div>
+	<h3>Items by {{ brand.name }}</h3>
+	{% include 'product_grid.html' %}
+	{% if pagination %}
+		<div class="pagination">
+			{{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
+		</div>
+	{% endif %}
 </div>

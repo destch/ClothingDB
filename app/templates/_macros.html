@@ -2,32 +2,29 @@
 <ul class="pagination">
     <!-- Prev Button -->
     <li {% if not pagination.has_prev %} class="disabled" {% else %} class="page-item" {% endif %}>
-        <a class="page-link" href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">Previous</a>
-    </li>
-
-    <!-- Pages Buttons -->
-    {% for p in pagination.iter_pages() %}
-        {% if p %}
-            {% if p == pagination.page %}
-                <li class="page-item active">
-                    <a class="page-link" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
-                </li>
-            {% else %}
-                <li class="page-item">
-                    <a class="page-link" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
-                </li>
-            {% endif %}
+    <a class="page-link" href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">Previous</a>
+</li>
+<!-- Pages Buttons -->
+{% for p in pagination.iter_pages() %}
+    {% if p %}
+        {% if p == pagination.page %}
+            <li class="page-item active">
+                <a class="page-link" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+            </li>
         {% else %}
-            <li class="disabled">
-                <a href="#">&hellip;</a>
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
             </li>
         {% endif %}
-    {% endfor %}
-
-    <!-- Next Button -->
-    <li {% if not pagination.has_next %} class="disabled" {% else %} class="page-item" {% endif %}>
-        <a class="page-link" href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">Next</a>
-
-    </li>
-  </ul>
+    {% else %}
+        <li class="disabled">
+            <a href="#">&hellip;</a>
+        </li>
+    {% endif %}
+{% endfor %}
+<!-- Next Button -->
+<li {% if not pagination.has_next %} class="disabled" {% else %} class="page-item" {% endif %}>
+<a class="page-link" href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">Next</a>
+</li>
+</ul>
 {% endmacro %}

@@ -1,104 +1,83 @@
 <!doctype html>
 <html lang="en">
-<head>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-172139990-1"></script>
-  <script>
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-172139990-1"></script>
+    <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'UA-172139990-1');
-  </script>
-
-  <script data-ad-client="ca-pub-7032189625521419" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-  <link rel="icon"
-  href="../static/favicon.png">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>ClothDB</title>
-
-
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
-  <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');</style>
-
-
-
-  <!-- Bootstrap core CSS and JS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-  <!-- Custom styles for this template -->
-  <link href="../static/css/heroic-features.css" rel="stylesheet">
-
-
-  <style>
-    .jumbotron {background-size: auto 100%;
+    </script>
+    <script data-ad-client="ca-pub-7032189625521419" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="icon"
+      href="../static/favicon.png">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <title>ClothDB</title>
+      <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+      <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');</style>
+      <!-- Bootstrap core CSS and JS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      <!-- Custom styles for this template -->
+      <link href="../static/css/heroic-features.css" rel="stylesheet">
+      <style>
+      .jumbotron {background-size: auto 100%;
       background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%),url("https://images.unsplash.com/photo-1529720317453-c8da503f2051?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") ;
-    }
-  </style>
-</head>
-
-
-
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000000;">
-  <div class="container">
-    <a class="navbar-brand" href="{{url_for('main.index')}}" style="font-size: 25px !important;">ClothDB</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-
-      <ul class="navbar-nav ml-auto">
-        <li>
-          <form class="form-inline my-2 my-lg-0" action={{url_for('main.item_search')}} method="post" class="form" enctype="multipart/form-data" role="form">
-            <input class="form-control mr-sm-3" type="search" placeholder="Search" name="search">
-          </form>
-
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="{{url_for('main.feed')}}">Explore
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="{{url_for('main.new_item')}}">Submit
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-
-        <li class="nav-item dropdown active">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Account
-          </a>
-          {% if current_user.is_authenticated %}
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href={{url_for('main.collection', id=current_user.id)}}>Collection</a>
-            <a class="dropdown-item" href="{{url_for('main.wantlist', id=current_user.id)}}">Wantlist</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Profile</a>
-            <a class="dropdown-item" href="{{url_for('auth.logout', id=current_user.id)}}">Log Out</a>
-          </div>
-          {% else %}
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href={{url_for('auth.login')}}>Login</a>
-            <a class="dropdown-item" href="{{url_for('auth.register')}}">Register</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Why Register?</a>
-          </div>
-          {% endif %}
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</nav>
+      }
+      </style>
+    </head>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000000;">
+      <div class="container">
+        <a class="navbar-brand" href="{{url_for('main.index')}}" style="font-size: 25px !important;">ClothDB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li>
+              <form class="form-inline my-2 my-lg-0" action={{url_for('main.item_search')}} method="post" class="form" enctype="multipart/form-data" role="form">
+                <input class="form-control mr-sm-3" type="search" placeholder="Search" name="search">
+              </form>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('main.feed')}}">Explore
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('main.new_item')}}">Submit
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Account
+              </a>
+              {% if current_user.is_authenticated %}
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href={{url_for('main.collection', id=current_user.id)}}>Collection</a>
+                  <a class="dropdown-item" href="{{url_for('main.wantlist', id=current_user.id)}}">Wantlist</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Profile</a>
+                  <a class="dropdown-item" href="{{url_for('auth.logout', id=current_user.id)}}">Log Out</a>
+                </div>
+              {% else %}
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href={{url_for('auth.login')}}>Login</a>
+                  <a class="dropdown-item" href="{{url_for('auth.register')}}">Register</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Why Register?</a>
+                </div>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>

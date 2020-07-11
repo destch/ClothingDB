@@ -1,24 +1,15 @@
 {% import "_macros.html" as macros %}
 {% include 'head.html' %}
-
-
-  <!-- Page Content -->
-  <div class="container">
-
-
-
-    <!-- Header -->
-    <h3>{{current_user.username}}'s Collection</h3>
-    <br>
-
-    {% include 'haves_grid.html' %}
-    {% if pagination %}
-      <div class="pagination">
-        {{ macros.pagination_widget(pagination, '.feed') }}
-      </div>
-    {% endif %}
-
-
-  </div>
-  <!-- /.container -->
-
+<!-- Page Content -->
+<div class="container">
+  <!-- Header -->
+  <h3>{{current_user.username}}'s Collection</h3>
+  <br>
+  {% include 'haves_grid.html' %}
+  {% if pagination %}
+    <div class="pagination">
+      {{ macros.pagination_widget(pagination, '.feed') }}
+    </div>
+  {% endif %}
+</div>
+<!-- /.container -->

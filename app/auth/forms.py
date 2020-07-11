@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
 
 # TODO implement the profile picture upload here
 class RegistrationForm(FlaskForm):
-    submit_style={'class': 'btn btn-primary mb-2'}
+    submit_style = {"class": "btn btn-primary mb-2"}
     email = StringField("Email", validators=[DataRequired(), Length(1, 64), Email()])
     username = StringField(
         "Username",

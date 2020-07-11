@@ -12,19 +12,19 @@ from .forms import (
     ChangeEmailForm,
 )
 from werkzeug.utils import secure_filename
-import boto3                
+import boto3
 
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user = User.query.filter_by(email=request.form.get('email').lower()).first()
-        if user is not None and user.verify_password(request.form.get('password')):
-            login_user(user, request.form.get('remember_me'))
+        user = User.query.filter_by(email=request.form.get("email").lower()).first()
+        if user is not None and user.verify_password(request.form.get("password")):
+            login_user(user, request.form.get("remember_me"))
             next = request.args.get("next")
             if next is None or not next.startswith("/"):
                 next = url_for("main.index")
-            flash('Logged in')
+            flash("Logged in")
             return redirect(next)
         flash("Invalid email or password.")
     return render_template("auth/login.html")
@@ -66,7 +66,7 @@ def register():
         return redirect(url_for("main.index"))
     else:
         for error in form.errors:
-            flash(str(error)+': ' + str(form.errors[error][0]))
+            flash(str(error) + ": " + str(form.errors[error][0]))
     return render_template("auth/register.html", form=form)
 
 
