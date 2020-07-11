@@ -1,0 +1,16 @@
+{% import "_macros.html" as macros %}
+{% include 'head.html' %}
+<!-- Page Content -->
+<div class="container">
+  <!-- Header -->
+  <h3>Search Results for: "{{term | safe}}"</h3>
+  <br>
+  {% include 'product_grid.html' %}
+  {% if pagination %}
+    <div class="pagination">
+      {{ macros.pagination_widget(pagination, '.results', term=term) }}
+    </div>
+  {% endif %}
+</div>
+<!-- /.container -->
+{% include 'foot.html' %}

@@ -3,28 +3,34 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
+from flask_login import LoginManager
+from config import config
 
 db = SQLAlchemy()
 bootstrap = Bootstrap()
-admin = Admin(name='app', template_mode='bootstrap3')
+login_manager = LoginManager()
+login_manager.login_view = "auth.login"
 
 
-def create_app():
+def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object('config.Config')
-    app.debug = True
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
     db.init_app(app)
-    admin.init_app(app)
     bootstrap.init_app(app)
     migrate = Migrate(app, db)
-
-    from .admin import bp as admin_bp
-    app.register_blueprint(admin_bp, url_prefix='/admin')
+    login_manager.init_app(app)
 
     from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint, url_prefix='/')
+
+    app.register_blueprint(main_blueprint, url_prefix="/")
 
     from .API import api as api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    app.register_blueprint(api_blueprint, url_prefix="/api")
+
+    from .auth import auth as auth_blueprint
+
+    app.register_blueprint(auth_blueprint, url_prefix="/auth")
 
     return app
