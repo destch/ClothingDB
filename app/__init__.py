@@ -5,7 +5,6 @@ from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import config
-from flask_images import Images
 
 db = SQLAlchemy()
 bootstrap = Bootstrap()
@@ -21,7 +20,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     migrate = Migrate(app, db)
     login_manager.init_app(app)
-    images = Images(app)
+
 
     from .main import main as main_blueprint
 
