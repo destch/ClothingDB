@@ -6,3 +6,40 @@ use jenkins to deploy
 
 use redis
 
+
+#AWS EC2
+Launched a medium instance ubuntu 18.04 LTS
+set security groups to allow HTTP and HTTPS connections both inbound and outbound traffic
+allow postgres TCP access inbound from my IP
+saved the .pem file ClothDB.pem in local folder and used chmod 400 ClothDB.pem before SSH'ing into the server
+
+#first step I installed postgres
+sudo apt-get update && sudo apt-get -y upgrade
+sudo apt-get install postgresql postgresql-contrib
+
+#then make sure to open up ports/configure access to the database
+#switch to postgres user
+sudo su - postgres
+#create user and give access (make superuser)
+create user --interactive --pwprompt
+
+createdb -O ClothDB danielchavez
+
+#allow remote access
+
+nano /etc/postgresql/10/main/postgresql.conf 
+
+change #listen_addresses = 'localhost' to listen_addresses = '*'
+
+now go to nano /etc/postgresql/10/main/pg_hba.conf
+
+change host all all 127.0.0.1/32 md5 to host all all 0.0.0.0/0 md5
+
+ctrl+d to exit postgres user 
+
+then sudo systemctl restart postgresql
+
+now you can connect from a remote machine (if its on the IP that the AWS security group allows)
+
+with the URL: postgres://danielchavez:password@ec2ipaddress/ClothDB
+
