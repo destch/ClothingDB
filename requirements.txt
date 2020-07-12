@@ -4,6 +4,7 @@ attrs==19.3.0
 Automat==20.2.0
 BaseHash==3.0.8
 beautifulsoup4==4.9.0
+blinker==1.4
 boto3==1.13.11
 botocore==1.16.11
 certifi==2020.4.5.1
@@ -11,6 +12,7 @@ cffi==1.14.0
 chardet==3.0.4
 click==7.1.2
 constantly==15.1.0
+coverage==5.2
 cryptography==2.9.2
 cssselect==1.1.0
 dnspython==1.16.0
@@ -20,6 +22,7 @@ email-validator==1.1.1
 Flask==1.1.2
 Flask-Admin==1.5.6
 Flask-Bootstrap==3.3.7.1
+Flask-Images==3.0.2
 Flask-Login==0.5.0
 Flask-Migrate==2.5.3
 Flask-SQLAlchemy==2.4.1
@@ -38,9 +41,13 @@ Mako==1.1.2
 MarkupSafe==1.1.1
 migrate==0.3.8
 parsel==1.6.0
+PIL==1.1.7
+Pillow==7.2.0
+pillowcase==2.0.0
 post==2019.4.13
 progressbar==2.5
 Protego==0.1.16
+psycopg2==2.8.5
 public==2019.4.13
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -57,6 +64,7 @@ requests==2.23.0
 s3transfer==0.3.3
 Scrapy==2.1.0
 selenium==3.141.0
+sentry-sdk==0.16.1
 service-identity==18.1.0
 six==1.14.0
 soupsieve==2.0
