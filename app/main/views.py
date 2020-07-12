@@ -16,25 +16,35 @@ def index():
     items = query.order_by(desc(Item.id)).limit(4).all()
     return render_template("index.html", items=items)
 
-
 @main.route("/new_item", methods=["GET", "POST"])
 def new_item():
     if request.method == "POST":
         files = request.form.getlist("filepond")
-        if files is not None:
-            thumbnail_list = []
+        thumbnail_list = []
+        if files != []:
             for filename in files:
                 thumbnail_list.append(Thumbnail(filename=filename))
         form_inputs = request.form
+
         item = Item(
-            thumbnails=thumbnail_list,
+            thumbnails= [] if files == [] else thumbnail_list,
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
             name=form_inputs["nameInput"],
             category_id=form_inputs["categoryInput"],
             subcategory_id=form_inputs["subcatInput"],
             description=form_inputs["description"],
-            styles=[Style.query.get(form_inputs["styleInput"])],
+            season=form_inputs["seasonInput"],
+            form_date = form_inputs["releaseInput"],
+            fit = form_inputs["fitInput"],
+            colors = [] if request.form.getlist('colorInput') == [] else \
+                [Color(name=color) for color in request.form.getlist('colorInput')],
+            materials = [] if request.form.getlist('materialsInput') == [] else\
+                [Material(name=material) for material in request.form.getlist('materialsInput')],
+            price = None if request.form.get('priceInput') == '' else\
+                request.form.get('priceInput'),
+            styles = [] if request.form.getlist('styleInput') == [] else\
+                [Style(name=style) for style in request.form.getlist('styleInput')],
         )
         db.session.add(item)
         db.session.commit()
@@ -290,9 +300,38 @@ def social():
 @main.route("/item/edit/<int:id>", methods=["GET", "POST"])
 def item_edit(id):
     item = Item.query.get(id)
+    if request.method == "POST":
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                thumbnail_list.append(Thumbnail(filename=filename))
+        form_inputs = request.form
+        item.thumbnails = item.thumbnails.all() + [] if files == [] else thumbnail_list
+        item.brand_id=form_inputs["brandInput"]
+        item.brand_name=Brand.query.get(form_inputs["brandInput"]).name
+        item.name=form_inputs["nameInput"]
+        item.category_id=form_inputs["categoryInput"]
+        item.subcategory_id=form_inputs["subcatInput"]
+        item.description=form_inputs["description"]
+        item.season=form_inputs["seasonInput"]
+        item.form_date = form_inputs["releaseInput"]
+        item.fit = form_inputs["fitInput"]
+        item.colors = [] if request.form.getlist('colorInput') == [] else \
+                [Color(name=color) for color in request.form.getlist('colorInput')]
+        item.materials = [] if request.form.getlist('materialsInput') == [] else\
+                [Material(name=material) for material in request.form.getlist('materialsInput')]
+        item.price = None if request.form.get('priceInput') == "" else request.form.get('priceInput')
+        item.styles = [] if request.form.getlist('styleInput') == [] else\
+                [Style(name=style) for style in request.form.getlist('styleInput')]
+        
+        db.session.add(item)
+        db.session.commit()
+        return redirect(url_for(".item", id=item.id))
     brand = Brand.query.get(item.brand_id)
-    name = item.name
-    return render_template("item_edit.html", item=item, brand=brand)
+    category = Category.query.get(item.category_id)
+    subcategory = Subcategory.query.get(item.subcategory_id)
+    return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
 
 
 @main.route("test/photo")

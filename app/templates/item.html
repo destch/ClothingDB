@@ -127,7 +127,7 @@ location.reload();
           {% endif %}
         {% endif %}
         {% if current_user.is_authenticated %}
-          <button class="btn btn-secondary" id="edit">Edit</button>
+          <a href="{{url_for('main.item_edit', id=item.id)}}" class="btn btn-secondary" id="edit">Edit</a>
         {% endif %}
       </div>
     </div>

@@ -73,11 +73,14 @@ class Item(db.Model):
     name = db.Column(db.String)
     description = db.Column(db.Text)
     date_released = db.Column(db.DateTime())
+    form_date = db.Column(db.String)
     price = db.Column(db.Float)
     brand_name = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey("brands.id"))
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategories.id"))
+    season = db.Column(db.String)
+    fit = db.Column(db.String)
     materials = db.relationship(
         "Material",
         secondary=material_registrations,
@@ -112,7 +115,7 @@ class ItemMetadata(db.Model):
     item_id = db.relationship("Item", backref="item_metadata", lazy="dynamic")
     date_submitted = db.Column(db.DateTime())
     submitter = db.Column(db.Integer, db.ForeignKey("users.id"))
-
+    field_edited = db.Column(db.String)
 
 class Category(db.Model):
     __tablename__ = "categories"

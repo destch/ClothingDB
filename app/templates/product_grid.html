@@ -4,7 +4,10 @@
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
           <a href="{{url_for('main.item', id=item.id)}}">
-            <img intrinsicsize="920 x 1380" class="card-img-top" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
+            <!--
+            <img intrinsicsize="920 x 1380" class="card-img-top" src="{{resized_img_src('https://d2x1mfjcaooqwx.cloudfront.net/' ~ item.thumbnails.first().filename, width=207, height=264,mode='pad', background='white')}}">
+            -->
+                        <img intrinsicsize="920 x 1380" class="card-img-top" src={{'https://d2x1mfjcaooqwx.cloudfront.net/' ~ item.thumbnails.first().filename}}>
           </a>
           <div class="card-body">
             <a href="{{url_for('main.brand', id=item.brand_id)}}">
