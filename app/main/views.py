@@ -321,7 +321,7 @@ def item_edit(id):
                 [Color(name=color) for color in request.form.getlist('colorInput')]
         item.materials = [] if request.form.getlist('materialsInput') == [] else\
                 [Material(name=material) for material in request.form.getlist('materialsInput')]
-        item.price = None if request.form.get('priceInput') == "" else request.form.get('priceInput')
+        item.price = None if request.form.get('priceInput') == "None" or "" else request.form.get('priceInput')
         item.styles = [] if request.form.getlist('styleInput') == [] else\
                 [Style(name=style) for style in request.form.getlist('styleInput')]
         
@@ -332,8 +332,3 @@ def item_edit(id):
     category = Category.query.get(item.category_id)
     subcategory = Subcategory.query.get(item.subcategory_id)
     return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
-
-
-@main.route("test/photo")
-def test_photo():
-    return render_template("test_photo_upload.html")
