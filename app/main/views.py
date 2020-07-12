@@ -56,7 +56,7 @@ def new_item():
     return render_template("new_item.html")
 
 
-@main.route("/filepond", methods=["GET", "POST", "DELETE"])
+@main.route("/filepond", methods=["POST", "DELETE"])
 def filepond():
     if request.method == "DELETE":
         filename = str(request.get_data())

@@ -43,3 +43,5 @@ now you can connect from a remote machine (if its on the IP that the AWS securit
 
 with the URL: postgres://danielchavez:password@ec2ipaddress/ClothDB
 
+#
+using sentry to detect app errors but that probably doesn't need setup
