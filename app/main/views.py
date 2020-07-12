@@ -9,6 +9,8 @@ from flask_login import login_user, logout_user, current_user
 import uuid
 
 
+
+
 @main.route("/", methods=["GET", "POST"])
 def index():
     query = Item.query
