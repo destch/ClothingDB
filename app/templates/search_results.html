@@ -3,7 +3,7 @@
 <!-- Page Content -->
 <div class="container">
   <!-- Header -->
-  <h3>Search Results for: "{{term | safe}}"</h3>
+  <h3>{{num_results}} Results Found for: "{{term | safe}}"</h3>
   <br>
   {% include 'product_grid.html' %}
   {% if pagination %}
@@ -13,4 +13,3 @@
   {% endif %}
 </div>
 <!-- /.container -->
-{% include 'foot.html' %}

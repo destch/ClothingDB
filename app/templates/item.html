@@ -102,14 +102,25 @@ location.reload();
         <h1>{{item.brand_name}}</h1>
         <h2>{{item.name}}</h2>
         <br>
-        <h5>Styles:</h5>
+        <h5>Styles:
         <div>
           {% for style in item.styles %}
-            <span class="badge badge-dark">{{style.name}}</span>
+            <span class="badge badge-warning">{{style.name}}</span>
           {% endfor %}
         </div>
+        </h5>
+        
+        <h5>Colors:
+        <div>
+          {% for color in item.colors %}
+            <span class="badge badge-dark">{{color.name}}</span>
+          {% endfor %}
+          </div>
+          </h5>
+        
         <br>
-        <h5>Year Released: {{item.date_released.year}}</h5>
+        <h5>Year Released: {{item.form_date}}</h5>
+        <h5>Season: {{item.season}}</h5>
         <br><br>
         <h5>Category: {{item.categories.name}}</h5>
         <h5>Subcategory: {{item.subcategories.name}}</h5>
@@ -144,7 +155,7 @@ location.reload();
         </div>
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body">
-            
+          {{item.description}}
           </div>
         </div>
       </div>
@@ -182,7 +193,7 @@ location.reload();
   </div>
   <h3>Comments:</h3>
   <br>
-  <!--
+  
   <div class="media mb-4">
     <img class="mr-3" src="https://groovespotimages.s3.us-east-2.amazonaws.com/profile-img.png" height="64px" width="64px" alt="Generic placeholder image">
     <div class="media-body">
@@ -197,7 +208,7 @@ location.reload();
       Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
     </div>
   </div>
-  -->
+  
   <br>
   <br>
 </div>

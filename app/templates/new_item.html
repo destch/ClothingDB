@@ -92,7 +92,7 @@ $("#materials").select2({
                 <label for="Brand">Search for a Brand/Designer (Required)</label><br>
                 <select class="form-control" id="itemBrand" style="width:1110px" name="brandInput" required>
                 </select>
-                <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="#">here</a> and come back.</small>
+                <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="{{url_for('main.new_brand')}}">here</a> and come back.</small>
             </div>
             <div class="form-group">
                 <label>Name of Item (Required)</label>

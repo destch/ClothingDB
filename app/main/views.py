@@ -281,10 +281,11 @@ def results(term):
     query = Item.query.filter(
         or_(Item.name.ilike(search_syntax), Item.brand_name.ilike(search_syntax))
     )
+    num_results = len(query.all())
     pagination = query.paginate(page, per_page=16, error_out=False)
     items = pagination.items
     return render_template(
-        "search_results.html", items=items, pagination=pagination, term=term
+        "search_results.html", items=items, pagination=pagination, term=term, num_results=num_results
     )
 
 
@@ -351,4 +352,22 @@ def brand_edit(id):
         db.session.commit()
         return redirect(url_for(".brand", id=brand.id))
     return render_template("brand_edit.html", brand=brand)
+
+@main.route("/new_brand", methods=["GET", "POST"])
+def new_brand():
+    if request.method == "POST":
+        brand = Brand(name= form_inputs["nameInput"],
+            about = form_inputs["aboutInput"])
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                brand.thumbnail_filename = filename
+        form_inputs = request.form
+        db.session.add(brand)
+        db.session.commit()
+        brand_id = (Brand.query.order_by(desc(Brand.id)).first().id,)
+        flash('Brand Submitted')
+        return render_template("new_brand.html")
+    return render_template("new_brand.html")
 
