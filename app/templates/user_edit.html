@@ -20,9 +20,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 $("#itemBrand").select2({
-minimumInputLength: 1,
-maximumSelectionLength: 10,
-tags: true,
+minimumInputLength: 2,
 ajax: {
 url: "{{url_for('API.get_brands')}}",
 dataType: 'json',
@@ -80,28 +78,26 @@ $("#materials").select2({
         <br>
         
         <!-- Header -->
-        <h3>Sbumit a Brand</h3>
+        <h3>Edit User</h3>
         <br>
         <form method='POST' enctype='multipart/form-data'>
             <div class="form-group">
-                <label for="exampleFormControlFile1">Upload a Brand Image or Logo</label>
+                <label for="exampleFormControlFile1">Upload a Profile Picture</label>
                 <input type="file" multiple>
                 <!--
                         <input type="file" name="fileInput" class="form-control-file" id="exampleFormControlFile1" accept=".jpg,.png,.gif,.webp">
                 -->
             </div>
             <div class="form-group">
-                <label for="Brand">Brand/Designer Name (Required)</label><br>
-                <select class="form-control" id="itemBrand" style="width:1110px" name="nameInput" required>
-                </select>
-                <small id="brandHelp" class="form-text text-muted">If the brand comes up in this search box please use that entry and dont submit a new one</small>
+                <label for="Description">Name</label>
+                <textarea class="form-control" rows="5" id="comment" name="nameInput" type="text" placeholder="{{user.name}}" value="{{user.name}}">{{user.name}}</textarea>
             </div>
             <div class="form-group">
-                <label for="Description">About the Brand</label>
-                <textarea class="form-control" rows="5" id="comment" name="aboutInput" type="text"></textarea>
+                <label for="Description">About Yourself</label>
+                <textarea class="form-control" rows="5" id="comment" name="aboutInput" type="text" placeholder="{{user.about_me}}" value="{{user.about_me}}">{{user.about_me}}</textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="{{url_for('main.new_item')}}" class="btn btn-danger">Go back</a>
+            <a href="{{url_for('main.user', id=user.id)}}" class="btn btn-danger">Cancel</a>
         </form>
     </div>
     <br>

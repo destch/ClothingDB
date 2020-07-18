@@ -337,6 +337,24 @@ def item_edit(id):
     return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
 
 
+@main.route("/user/edit/<int:id>", methods=["GET", "POST"])
+def user_edit(id):
+    user = User.query.get(id)
+    if request.method == "POST":
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                user.profile_pic_filename = filename
+        form_inputs = request.form
+        user.name = form_inputs["nameInput"]
+        user.about_me = form_inputs["aboutInput"]
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for(".user", id=user.id))
+    return render_template("user_edit.html", user=user)
+
+
 @main.route("/brand/edit/<int:id>", methods=["GET", "POST"])
 def brand_edit(id):
     brand = Brand.query.get(id)
@@ -353,9 +371,11 @@ def brand_edit(id):
         return redirect(url_for(".brand", id=brand.id))
     return render_template("brand_edit.html", brand=brand)
 
+
 @main.route("/new_brand", methods=["GET", "POST"])
 def new_brand():
     if request.method == "POST":
+        form_inputs = request.form
         brand = Brand(name= form_inputs["nameInput"],
             about = form_inputs["aboutInput"])
         files = request.form.getlist("filepond")
@@ -363,7 +383,7 @@ def new_brand():
         if files != []:
             for filename in files:
                 brand.thumbnail_filename = filename
-        form_inputs = request.form
+        
         db.session.add(brand)
         db.session.commit()
         brand_id = (Brand.query.order_by(desc(Brand.id)).first().id,)

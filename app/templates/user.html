@@ -3,7 +3,7 @@
 {% include 'messages.html' %}
 <div class="container">
     <div class="page-header">
-        <img class="img-rounded profile-thumbnail" src={{"https://groovespotimages.s3.us-east-2.amazonaws.com/" ~ user.profile_pic_filename}} height="256" width="256">
+        <img class="img-rounded profile-thumbnail" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ user.profile_pic_filename}} height="256" width="256">
         <div class="profile-header">
             <h1>{{ user.username }}</h1>
             {% if user.name or user.location %}
@@ -15,27 +15,21 @@
                 </p>
             {% endif %}
             
-            <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+            
             
             {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
             <p>
                 {% if user == current_user %}
-                    <a class="btn btn-primary" href="{{ url_for('.index') }}">Edit Profile</a>
+                    <a class="btn btn-primary" href="{{ url_for('.user_edit', id=user.id) }}">Edit Profile</a>
                 {% endif %}
             </p>
         </div>
     </div>
+    <br>
     <h3>{{ user.username }}'s Collection</h3>
     {% include 'haves_grid.html' %}
     <h3>{{ user.username }}'s Wantlist</h3>
     {% include 'wants_grid.html' %}
-    <h3>Posts by {{ user.username }}</h3>
-    {% include 'product_grid.html' %}
-    <h3>Comments by {{ user.username }}</h3>
-    {% include 'product_grid.html' %}
-    {% if pagination %}
-        <div class="pagination">
-            {{ macros.pagination_widget(pagination, '.user', username=user.username) }}
-        </div>
-    {% endif %}
-</div>
+    <!--
+    
+    -->
