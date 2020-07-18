@@ -3,7 +3,7 @@
 {% include 'messages.html' %}
 <div class="container">
 	<div class="page-header">
-		<img class="img-rounded profile-thumbnail" src={{"https://groovespotimages.s3.us-east-2.amazonaws.com/" ~ brand.profile_pic_filename}} height="256" width="256">
+		<img class="img-rounded profile-thumbnail" src={{brand.thumbnail_filename}} height="256" width="256">
 		<div class="profile-header">
 			<h1>{{ brand.name}}</h1>
 			
