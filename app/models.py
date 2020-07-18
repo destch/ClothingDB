@@ -143,6 +143,7 @@ class Brand(db.Model):
     name = db.Column(db.String)
     items = db.relationship("Item", backref="brands", lazy="dynamic")
     thumbnail_filename = db.Column(db.String)
+    about = db.Column(db.Text)
 
     def __repr__(self):
         return "<Brand %r>" % self.name

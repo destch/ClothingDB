@@ -3,20 +3,31 @@
 {% include 'messages.html' %}
 <div class="container">
 	<div class="page-header">
-		<img class="img-rounded profile-thumbnail" src={{brand.thumbnail_filename}} height="256" width="256">
+		{% if brand.thumbnail_filename %}
+		<img class="img-rounded profile-thumbnail" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ brand.thumbnail_filename}} height="256" width="256">
+		{% else %}
+		<img class="img-rounded profile-thumbnail" src="https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png" height="256" width="256">
+		{% endif %}
 		<div class="profile-header">
 			<h1>{{ brand.name}}</h1>
 			
 			<p>
-				info
+				{% if brand.about %}
+				{{brand.about}}
+				{% else %}
+				No info for this brand yet, feel free to contribute by editing this page
+				{% endif %}
 			</p>
+			{% if current_user.is_authenticated %}
+	          <a href="{{url_for('main.brand_edit', id=brand.id)}}" class="btn btn-secondary" id="edit">Edit</a>
+        	{% endif %}
 			
 			
 			
 			
-			{% if brand.name %}<p>{{ brand.name }}</p>{% endif %}
 		</div>
 	</div>
+	<br>
 	<h3>Items by {{ brand.name }}</h3>
 	{% include 'product_grid.html' %}
 	{% if pagination %}

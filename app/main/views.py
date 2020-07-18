@@ -334,3 +334,21 @@ def item_edit(id):
     category = Category.query.get(item.category_id)
     subcategory = Subcategory.query.get(item.subcategory_id)
     return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
+
+
+@main.route("/brand/edit/<int:id>", methods=["GET", "POST"])
+def brand_edit(id):
+    brand = Brand.query.get(id)
+    if request.method == "POST":
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                brand.thumbnail_filename = filename
+        form_inputs = request.form
+        brand.about = form_inputs["aboutInput"]
+        db.session.add(brand)
+        db.session.commit()
+        return redirect(url_for(".brand", id=brand.id))
+    return render_template("brand_edit.html", brand=brand)
+
