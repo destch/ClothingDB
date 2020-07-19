@@ -10,14 +10,13 @@
 		{% endif %}
 		<div class="profile-header">
 			<h1>{{ brand.name}}</h1>
-			
-			<p style="{white-space: pre-wrap;}">
-				{% if brand.about %}
-				{{brand.about}}
-				{% else %}
-				No info for this brand yet, feel free to contribute by editing this page
-				{% endif %}
-			</p>
+			<div style="white-space: pre-wrap;">
+			{% if brand.about %}
+{{brand.about}}
+			{% else %}
+			No info for this brand yet, feel free to contribute by editing this page
+			{% endif %}
+			</div>
 			{% if current_user.is_authenticated %}
 	          <a href="{{url_for('main.brand_edit', id=brand.id)}}" class="btn btn-secondary" id="edit">Edit</a>
         	{% endif %}
