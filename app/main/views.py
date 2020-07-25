@@ -7,6 +7,7 @@ import random
 from sqlalchemy import desc, or_
 from flask_login import login_user, logout_user, current_user
 import uuid
+from ..decorators import admin_required
 
 
 
@@ -33,8 +34,8 @@ def new_item():
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
             name=form_inputs["nameInput"],
-            category_id=form_inputs["categoryInput"],
-            subcategory_id=form_inputs["subcatInput"],
+            category_id= None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
+            subcategory_id= None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
             description=form_inputs["description"],
             season=form_inputs["seasonInput"],
             form_date = form_inputs["releaseInput"],
@@ -260,6 +261,16 @@ def remove_from_collection(id):
         pass
     return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
 
+@admin_required
+@main.route("delete/<int:id>", methods=["POST"])
+def delete(id):
+    item = Item.query.get(id)
+    item.deleted = 1
+    db.session.add(item)
+    db.session.commit()
+    flash("Item deleted")
+    return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
+
 
 # also consider moving this into an API route
 @main.route("/item_search", methods=["POST"])
@@ -314,8 +325,8 @@ def item_edit(id):
         item.brand_id=form_inputs["brandInput"]
         item.brand_name=Brand.query.get(form_inputs["brandInput"]).name
         item.name=form_inputs["nameInput"]
-        item.category_id=form_inputs["categoryInput"]
-        item.subcategory_id=form_inputs["subcatInput"]
+        item.category_id= None if form_inputs["categoryInput"] == "" else form_inputs["categoryInput"]
+        item.subcategory_id=None if form_inputs["subcatInput"] == "" else form_inputs["subcatInput"]
         item.description=form_inputs["description"]
         item.season=form_inputs["seasonInput"]
         item.form_date = form_inputs["releaseInput"]
@@ -335,7 +346,6 @@ def item_edit(id):
     category = Category.query.get(item.category_id)
     subcategory = Subcategory.query.get(item.subcategory_id)
     return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
-
 
 @main.route("/user/edit/<int:id>", methods=["GET", "POST"])
 def user_edit(id):

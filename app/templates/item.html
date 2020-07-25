@@ -65,12 +65,29 @@ location.reload();
 }
 });
 });
+$("#delete").click(function(){
+$.ajax({
+type: 'POST',
+contentType: 'application/json',
+data: "{{item.id}}",
+dataType: 'json',
+url: "{{url_for('main.delete', id=item.id)}}",
+success: function () {
+location.reload();
+}
+});
+});
 });
 </script>
 <div class="container">
   <div class="row mb-50">
     <div class="col">
       <div id="carouselExampleControls" class="carousel slide" style="width: 447; height: 468">
+        {% if item.thumbnails.all() == [] %}
+        <div class="carousel-item active">
+              <img class="product-img" src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081">
+          </div>
+        {% else %}
         <div class="carousel-inner">
           {% if item.thumbnails.all()|length > 1%}
             <div class="carousel-item active">
@@ -87,6 +104,7 @@ location.reload();
             </div>
           {% endif %}
         </div>
+        {% endif %}
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
@@ -139,6 +157,9 @@ location.reload();
         {% endif %}
         {% if current_user.is_authenticated %}
           <a href="{{url_for('main.item_edit', id=item.id)}}" class="btn btn-secondary" id="edit">Edit</a>
+        {% endif %}
+        {% if current_user.is_administrator %}
+          <button class="btn btn-danger" id="delete">Delete</button>
         {% endif %}
       </div>
     </div>
