@@ -27,6 +27,41 @@ No info for this brand yet, feel free to contribute by editing this page
 		</div>
 	</div>
 	<br>
+	<h3>Collections by {{ brand.name }}</h3>
+	<div class="container" id="collection-table-container">
+	<table class="table" id="collection-table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Release Date</th>
+      <th scope="col">Collection</th>
+      <th scope="col">Designer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+
+	</div>
+	<br>
 	<h3>Items by {{ brand.name }}</h3>
 	{% include 'product_grid.html' %}
 	{% if pagination %}

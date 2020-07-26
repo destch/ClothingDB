@@ -84,3 +84,6 @@ min-width: 100%;
     position: absolute;
 }
 
+#collection-table-container{
+  padding-left: 0px;
+}

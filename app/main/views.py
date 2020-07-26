@@ -188,7 +188,8 @@ def brand(id):
     # brand = Item.query.filter(Item.id == id).first().brand_name
     page = request.args.get("page", 1, type=int)
     # this needs to take into account the db relationship between the item table and the brand table
-    query = Item.query.filter(Item.brand_id == id)
+    query = Item.query.filter(Item.deleted != 1)
+    query = query.filter(Item.brand_id == id)
     # order by date of the item
     pagination = query.order_by(Item.name.desc()).paginate(
         page, per_page=16, error_out=False
@@ -289,7 +290,8 @@ def results(term):
     else:
         search_syntax = "%" + term + "%"
     page = request.args.get("page", 1, type=int)
-    query = Item.query.filter(
+    query = Item.query.filter(Item.deleted != 1)
+    query = query.filter(
         or_(Item.name.ilike(search_syntax), Item.brand_name.ilike(search_syntax))
     )
     num_results = len(query.all())
