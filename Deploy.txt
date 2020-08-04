@@ -23,7 +23,7 @@ sudo su - postgres
 #create user and give access (make superuser)
 create user --interactive --pwprompt
 
-createdb -O ClothDB danielchavez
+createdb ClothDB -O danielchavez
 
 #allow remote access
 

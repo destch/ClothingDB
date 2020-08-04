@@ -7,7 +7,7 @@ from flask_login import current_user
 @api.route("/Brand", methods=["GET", "POST"])
 def get_brands():
     term = request.args.get("term")
-    res = Brand.query.filter(Brand.name.like("%{}%".format(term))).limit(10)
+    res = Brand.query.filter(Brand.name.ilike("%{}%".format(term))).limit(10)
     brands = [r.as_dict() for r in res]
     formatted = {"results": brands}
     return jsonify(formatted)

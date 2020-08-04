@@ -1,0 +1,115 @@
+<!-- Page Features -->
+{% include 'head.html' %}
+{% include 'messages.html' %}
+<meta charset="UTF-8">
+<link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
+<!-- Script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+<!-- include jQuery library -->
+<!-- include FilePond library -->
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<!-- include FilePond plugins -->
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<!-- include FilePond jQuery adapter -->
+<script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#itemBrand").select2({
+minimumInputLength: 1,
+maximumSelectionLength: 10,
+tags: true,
+ajax: {
+url: "{{url_for('API.get_brands')}}",
+dataType: 'json',
+type: "GET",
+quietMillis: 50,
+data: function (params) {
+return {
+term: params.term // search term
+};
+},
+results: function (data) {
+return {
+results: data.items
+};
+}
+}
+});
+$("#itemStyle").select2({
+minimumInputLength: 2,
+maximumSelectionLength: 10,
+tags: true,
+tokenSeparators: [','],
+ajax: {
+url: "{{url_for('API.get_styles')}}",
+dataType: 'json',
+type: "GET",
+quietMillis: 50,
+data: function (params) {
+return {
+term: params.term // search term
+};
+},
+results: function (data) {
+return {
+results: data.items
+};
+}
+}
+});
+
+$("#colors").select2({
+    tags: true,
+    tokenSeparators: [',']
+});
+
+$("#materials").select2({
+    tags: true,
+    tokenSeparators: [',']
+});
+
+});
+</script>
+<body>
+    <div class="container">
+        <br>
+        
+        <!-- Header -->
+        <h3>Sbumit a Brand</h3>
+        <br>
+        <form method='POST' enctype='multipart/form-data'>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Upload a Brand Image or Logo</label>
+                <input type="file" multiple>
+                <!--
+                        <input type="file" name="fileInput" class="form-control-file" id="exampleFormControlFile1" accept=".jpg,.png,.gif,.webp">
+                -->
+            </div>
+            <div class="form-group">
+                <label for="Brand">Brand/Designer Name (Required)</label><br>
+                <select class="form-control" id="itemBrand" style="width:1110px" name="nameInput" required>
+                </select>
+                <small id="brandHelp" class="form-text text-muted">If the brand comes up in this search box please use that entry and dont submit a new one</small>
+            </div>
+            <div class="form-group">
+                <label for="Description">About the Brand</label>
+                <textarea class="form-control" rows="5" id="comment" name="aboutInput" type="text"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{url_for('main.new_item')}}" class="btn btn-danger">Go back</a>
+        </form>
+    </div>
+    <br>
+    <script>
+    const inputElement = document.querySelector('input[type="file"]');
+    const pond = FilePond.create( inputElement );
+    FilePond.setOptions({
+    server: "{{url_for('main.filepond')}}"
+    });
+    </script>
+</body>

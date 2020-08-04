@@ -7,6 +7,7 @@ import random
 from sqlalchemy import desc, or_
 from flask_login import login_user, logout_user, current_user
 import uuid
+from ..decorators import admin_required
 
 
 
@@ -33,8 +34,8 @@ def new_item():
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
             name=form_inputs["nameInput"],
-            category_id=form_inputs["categoryInput"],
-            subcategory_id=form_inputs["subcatInput"],
+            category_id= None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
+            subcategory_id= None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
             description=form_inputs["description"],
             season=form_inputs["seasonInput"],
             form_date = form_inputs["releaseInput"],
@@ -187,7 +188,8 @@ def brand(id):
     # brand = Item.query.filter(Item.id == id).first().brand_name
     page = request.args.get("page", 1, type=int)
     # this needs to take into account the db relationship between the item table and the brand table
-    query = Item.query.filter(Item.brand_id == id)
+    query = Item.query.filter(Item.deleted != 1)
+    query = query.filter(Item.brand_id == id)
     # order by date of the item
     pagination = query.order_by(Item.name.desc()).paginate(
         page, per_page=16, error_out=False
@@ -260,6 +262,16 @@ def remove_from_collection(id):
         pass
     return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
 
+@admin_required
+@main.route("delete/<int:id>", methods=["POST"])
+def delete(id):
+    item = Item.query.get(id)
+    item.deleted = 1
+    db.session.add(item)
+    db.session.commit()
+    flash("Item deleted")
+    return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
+
 
 # also consider moving this into an API route
 @main.route("/item_search", methods=["POST"])
@@ -278,13 +290,15 @@ def results(term):
     else:
         search_syntax = "%" + term + "%"
     page = request.args.get("page", 1, type=int)
-    query = Item.query.filter(
+    query = Item.query.filter(Item.deleted != 1)
+    query = query.filter(
         or_(Item.name.ilike(search_syntax), Item.brand_name.ilike(search_syntax))
     )
+    num_results = len(query.all())
     pagination = query.paginate(page, per_page=16, error_out=False)
     items = pagination.items
     return render_template(
-        "search_results.html", items=items, pagination=pagination, term=term
+        "search_results.html", items=items, pagination=pagination, term=term, num_results=num_results
     )
 
 
@@ -313,8 +327,8 @@ def item_edit(id):
         item.brand_id=form_inputs["brandInput"]
         item.brand_name=Brand.query.get(form_inputs["brandInput"]).name
         item.name=form_inputs["nameInput"]
-        item.category_id=form_inputs["categoryInput"]
-        item.subcategory_id=form_inputs["subcatInput"]
+        item.category_id= None if form_inputs["categoryInput"] == "" else form_inputs["categoryInput"]
+        item.subcategory_id=None if form_inputs["subcatInput"] == "" else form_inputs["subcatInput"]
         item.description=form_inputs["description"]
         item.season=form_inputs["seasonInput"]
         item.form_date = form_inputs["releaseInput"]
@@ -334,3 +348,58 @@ def item_edit(id):
     category = Category.query.get(item.category_id)
     subcategory = Subcategory.query.get(item.subcategory_id)
     return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
+
+@main.route("/user/edit/<int:id>", methods=["GET", "POST"])
+def user_edit(id):
+    user = User.query.get(id)
+    if request.method == "POST":
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                user.profile_pic_filename = filename
+        form_inputs = request.form
+        user.name = form_inputs["nameInput"]
+        user.about_me = form_inputs["aboutInput"]
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for(".user", id=user.id))
+    return render_template("user_edit.html", user=user)
+
+
+@main.route("/brand/edit/<int:id>", methods=["GET", "POST"])
+def brand_edit(id):
+    brand = Brand.query.get(id)
+    if request.method == "POST":
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                brand.thumbnail_filename = filename
+        form_inputs = request.form
+        brand.about = form_inputs["aboutInput"]
+        db.session.add(brand)
+        db.session.commit()
+        return redirect(url_for(".brand", id=brand.id))
+    return render_template("brand_edit.html", brand=brand)
+
+
+@main.route("/new_brand", methods=["GET", "POST"])
+def new_brand():
+    if request.method == "POST":
+        form_inputs = request.form
+        brand = Brand(name= form_inputs["nameInput"],
+            about = form_inputs["aboutInput"])
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                brand.thumbnail_filename = filename
+        
+        db.session.add(brand)
+        db.session.commit()
+        brand_id = (Brand.query.order_by(desc(Brand.id)).first().id,)
+        flash('Brand Submitted')
+        return render_template("new_brand.html")
+    return render_template("new_brand.html")
+

@@ -38,27 +38,10 @@ results: data.items
 }
 }
 });
+
 $("#itemStyle").select2({
-minimumInputLength: 2,
-maximumSelectionLength: 10,
-tags: true,
-tokenSeparators: [','],
-ajax: {
-url: "{{url_for('API.get_styles')}}",
-dataType: 'json',
-type: "GET",
-quietMillis: 50,
-data: function (params) {
-return {
-term: params.term // search term
-};
-},
-results: function (data) {
-return {
-results: data.items
-};
-}
-}
+    tags: true,
+    tokenSeparators: [',']
 });
 
 $("#colors").select2({
@@ -92,7 +75,7 @@ $("#materials").select2({
                 <label for="Brand">Search for a Brand/Designer (Required)</label><br>
                 <select class="form-control" id="itemBrand" style="width:1110px" name="brandInput" required>
                 </select>
-                <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="#">here</a> and come back.</small>
+                <small id="brandHelp" class="form-text text-muted"> If you can't find the brand in the database, submit it <a href="{{url_for('main.new_brand')}}">here</a> and come back.</small>
             </div>
             <div class="form-group">
                 <label>Name of Item (Required)</label>
@@ -101,7 +84,7 @@ $("#materials").select2({
             <div class="form-group">
                 <label for="Category">Category</label>
                 <select class="form-control" id="itemCat" name="categoryInput">
-                    <option disabled selected value> -- category -- </option>
+                    <option selected value=0> -- category -- </option>
                     <option value=1>Tops</option>
                     <option value=2>Bottoms</option>
                     <option value=7>Dresses</option>
@@ -115,7 +98,7 @@ $("#materials").select2({
                 <label for="Subcategory">Subcategory</label>
                 <select class="form-control" id="itemSubCat" name="subcatInput">
                     <optgroup label="Tops">
-                        <option disabled selected value> -- subcategory -- </option>
+                        <option selected value=0> -- subcategory -- </option>
                         <option value=1>T-Shirt</option>
                         <option value=3>Polo</option>
                         <option value=4>Button Up</option>

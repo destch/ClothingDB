@@ -78,7 +78,7 @@ $("#materials").select2({
         <br>
         
         <!-- Header -->
-        <h3>Submit a New Item</h3>
+        <h3>Edit Item</h3>
         <br>
         <form method='POST' enctype='multipart/form-data'>
             <div class="form-group">
@@ -208,7 +208,7 @@ $("#materials").select2({
                 <label for="Style">Materials</label><br>
                 <select class="form-control" id="materials" style="width:1110px" name="materialsInput" multiple>
                 {% for material in item.materials %}
-                    <option value="{{material.id}}"selected>{{material.name}}</option>
+                    <option value="{{material.name}}"selected>{{material.name}}</option>
                 {% endfor %}
                 </select>
             </div>
