@@ -13,6 +13,15 @@ def get_brands():
     return jsonify(formatted)
 
 
+@api.route("/ItemSearch", methods=["GET", "POST"])
+def get_items():
+    term = request.args.get("term")
+    res = Item.query.filter(Item.name.ilike("%{}%".format(term))).limit(10)
+    items = [r.as_dict() for r in res]
+    formatted = {"results": items}
+    return jsonify(formatted)
+
+
 @api.route("/Subcategory", methods=["GET", "POST"])
 def get_subcat():
     res = Subcategory.query.all()
