@@ -91,16 +91,16 @@ location.reload();
         <div class="carousel-inner">
           {% if item.thumbnails.all()|length > 1%}
             <div class="carousel-item active">
-              <img class="d-block w-100" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
+              <img class="product-img" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
             </div>
             {% for entry in item.thumbnails.all()[1:] %}
               <div class="carousel-item">
-                <img class="d-block w-100" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ entry.filename}}>
+                <img class="product-img" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ entry.filename}}>
               </div>
             {% endfor %}
           {% else %}
             <div class="carousel-item active">
-              <img class="d-block w-100" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
+              <img class="product-img" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}>
             </div>
           {% endif %}
         </div>
