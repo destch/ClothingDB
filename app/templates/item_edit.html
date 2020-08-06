@@ -39,26 +39,8 @@ results: data.items
 }
 });
 $("#itemStyle").select2({
-minimumInputLength: 2,
-maximumSelectionLength: 10,
 tags: true,
 tokenSeparators: [','],
-ajax: {
-url: "{{url_for('API.get_styles')}}",
-dataType: 'json',
-type: "GET",
-quietMillis: 50,
-data: function (params) {
-return {
-term: params.term // search term
-};
-},
-results: function (data) {
-return {
-results: data.items
-};
-}
-}
 });
 
 $("#colors").select2({

@@ -118,6 +118,9 @@ class Item(db.Model):
     def __repr__(self):
         return "<Item %r>" % self.name
 
+    def as_dict(self):
+        return {'id': self.id, "brand": self.brand_name, "name": self.name, "thumbnails": [res.filename for res in self.thumbnails.all()]}
+
 
 class ItemMetadata(db.Model):
     __tablename__ = "item_metadata"
@@ -253,6 +256,7 @@ class User(UserMixin, db.Model):
 
 
     def is_administrator(self):
+        print('ldsfjllkjl')
         return self.email == "daniel.chavez9797@gmail.com"
 
     @property
