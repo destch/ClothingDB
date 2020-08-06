@@ -26,9 +26,9 @@
         </div>
     </div>
     <br>
-    <h3>{{ user.username }}'s Collection</h3>
+    <h3>{{ user.username }}'s Collection <a class="btn btn-primary" href="{{ url_for('.collection', id=user.id) }}">View Collection</a></h3>
     {% include 'haves_grid.html' %}
-    <h3>{{ user.username }}'s Wantlist</h3>
+    <h3>{{ user.username }}'s Wantlist <a class="btn btn-primary" href="{{ url_for('.wantlist', id=user.id) }}">View Wantlist</a></h3>
     {% include 'wants_grid.html' %}
     <!--
     
