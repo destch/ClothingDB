@@ -168,7 +168,8 @@ def filtered_feed():
 @main.route("/item/<int:id>", methods=["GET", "POST"])
 def item(id):
     item = Item.query.get(id)
-    return render_template("item.html", item=item)
+    comments = item.comments.all()
+    return render_template("item.html", item=item, comments=comments)
 
 
 @main.route("user/<int:id>")
@@ -338,9 +339,8 @@ def item_edit(id):
         item.materials = [] if request.form.getlist('materialsInput') == [] else\
                 [Material(name=material) for material in request.form.getlist('materialsInput')]
         item.price = None if request.form.get('priceInput') == "None" or "" else request.form.get('priceInput')
+        #first try and get the style id by looking up the input, if doesnt exist then create a new style object
         item.styles = [] if request.form.getlist('styleInput') == [] else\
-                #first try and get the style id by looking up the input, if doesnt exist then create a new style object
-
                 [Style(name=style) for style in request.form.getlist('styleInput')]
         
         db.session.add(item)

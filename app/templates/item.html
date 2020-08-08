@@ -212,26 +212,20 @@ location.reload();
       </div>
     </div>
   </div>
-  <!--
+  
   <h3>Comments:</h3>
   <br>
-  
+  {% for comment in comments %}
   <div class="media mb-4">
-    <img class="mr-3" src="https://groovespotimages.s3.us-east-2.amazonaws.com/profile-img.png" height="64px" width="64px" alt="Generic placeholder image">
+    <img class="mr-3" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ comment.author.profile_pic_filename}} height="64px" width="64px" alt="Generic placeholder image">
     <div class="media-body">
-      <h5 class="mt-0">Media heading</h5>
-      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      <h5 class="mt-0">{{comment.author.username}}</h5>
+      {{comment.body}}
     </div>
   </div>
-  <div class="media mb-4">
-    <img class="mr-3" src="https://groovespotimages.s3.us-east-2.amazonaws.com/profile-img.png" height="64px" width="64px" alt="Generic placeholder image">
-    <div class="media-body">
-      <h5 class="mt-0">Media heading</h5>
-      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-    </div>
-  </div>
+  {% endfor %}
   
   <br>
   <br>
-  -->
+  
 </div>

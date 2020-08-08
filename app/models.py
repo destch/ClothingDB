@@ -91,6 +91,7 @@ class Item(db.Model):
     subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategories.id"))
     season = db.Column(db.String)
     fit = db.Column(db.String)
+    comments = db.relationship("Comment", backref="items", lazy="dynamic")
     materials = db.relationship(
         "Material",
         secondary=material_registrations,
@@ -226,6 +227,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     profile_pic_filename = db.Column(db.String)
+    comments = db.relationship("Comment", backref="author", lazy="dynamic")
     edits = db.relationship("ItemEdit", backref="user_edits", lazy="dynamic")
     wants = db.relationship(
         "Item",
@@ -335,3 +337,15 @@ class Role(db.Model):
 
     def __repr__(self):
         return '<Role %r>' % self.name
+
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean, default=False)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
