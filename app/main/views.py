@@ -339,6 +339,8 @@ def item_edit(id):
                 [Material(name=material) for material in request.form.getlist('materialsInput')]
         item.price = None if request.form.get('priceInput') == "None" or "" else request.form.get('priceInput')
         item.styles = [] if request.form.getlist('styleInput') == [] else\
+                #first try and get the style id by looking up the input, if doesnt exist then create a new style object
+
                 [Style(name=style) for style in request.form.getlist('styleInput')]
         
         db.session.add(item)
