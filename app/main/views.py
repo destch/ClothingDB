@@ -169,6 +169,14 @@ def filtered_feed():
 def item(id):
     item = Item.query.get(id)
     comments = item.comments.all()
+    if request.method == "POST":
+        comment_text = request.form["text"]
+        author = current_user.id
+        comment = Comment(body=comment_text, disabled=False, author_id=author, item_id=id)
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('main.item', id=id))
+    
     return render_template("item.html", item=item, comments=comments)
 
 

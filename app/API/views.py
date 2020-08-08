@@ -30,6 +30,7 @@ def get_subcat():
     return jsonify(formatted)
 
 
+
 @api.route("/Style", methods=["GET", "POST"])
 def get_styles():
     term = request.args.get("term")
@@ -42,7 +43,6 @@ def get_styles():
 # need to add authentication here
 @api.route("/delete", methods=["POST"])
 def delete_item():
-    print(request.form.get("itemId"))
     if current_user.is_administrator():
         id = request.form.get("itemId")
         print(id)

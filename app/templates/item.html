@@ -1,6 +1,7 @@
 {% import "_macros.html" as macros %}
 {% include 'head.html' %}
 {% include 'messages.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
@@ -212,10 +213,19 @@ location.reload();
       </div>
     </div>
   </div>
-  
+  <form action={{url_for('main.item', id=item.id)}} method="post" id=submitcomment>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Post a Comment</label>
+    <textarea class="form-control" name="text" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<br>
   <h3>Comments:</h3>
   <br>
   {% for comment in comments %}
+  {% if comment.disabled %}
+  {% else %}
   <div class="media mb-4">
     <img class="mr-3" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ comment.author.profile_pic_filename}} height="64px" width="64px" alt="Generic placeholder image">
     <div class="media-body">
@@ -223,6 +233,7 @@ location.reload();
       {{comment.body}}
     </div>
   </div>
+  {% endif %}
   {% endfor %}
   
   <br>

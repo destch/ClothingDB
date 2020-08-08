@@ -258,7 +258,6 @@ class User(UserMixin, db.Model):
 
 
     def is_administrator(self):
-        print('ldsfjllkjl')
         return self.email == "daniel.chavez9797@gmail.com"
 
     @property
