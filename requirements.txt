@@ -42,7 +42,6 @@ MarkupSafe==1.1.1
 migrate==0.3.8
 mixpanel==4.6.0
 parsel==1.6.0
-PIL==1.1.7
 Pillow==7.2.0
 pillowcase==2.0.0
 progressbar==2.5
