@@ -2,16 +2,17 @@ from flask import jsonify, request, render_template, redirect, Response
 from . import api
 from ..models import *
 from flask_login import current_user
+import requests
 
-@api.route("/LoadItems")
+@api.route("/LoadItems", methods=["GET", "POST"])
 def load_items():
-    query = Item.query.filter(deleted != 1)
-    page = requests.args.get("page", 1, type=int)
+    query = Item.query.filter(Item.deleted != 1)
+    page = request.args.get("page", 1, type=int)
     pagination = query.order_by(Item.id.desc()).paginate(
         page, per_page=16, error_out=False
     )
     items = pagination.items
-    formatted = {"results": [item.as_dict for item in items]}
+    formatted = {"results": [item.as_dict() for item in items]}
     return jsonify(formatted)
 
 @api.route("/Brand", methods=["GET", "POST"])
