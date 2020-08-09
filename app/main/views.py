@@ -64,8 +64,7 @@ def new_item():
         db.session.add(item)
         db.session.commit()
         item_id = (Item.query.order_by(desc(Item.id)).first().id,)
-        mp.track()
-        return redirect(url_for(".item", id=item.id))
+        return redirect(url_for(".item", id=item.id, item=Item.query.get(id)))
 
     return render_template("new_item.html")
 
