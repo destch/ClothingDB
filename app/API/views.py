@@ -3,6 +3,16 @@ from . import api
 from ..models import *
 from flask_login import current_user
 
+@api.route("/LoadItems")
+def load_items():
+    query = item.query.filter(deleted != 1)
+    page = requests.args.get("page", 1, type=int)
+    pagination = query.order_by(Item.id.desc()).paginate(
+        page, per_page=16, error_out=False
+    )
+    items = pagination.items
+    formatted = {"results": [item.as_dict for item in items]}
+    return jsonify(formatted)
 
 @api.route("/Brand", methods=["GET", "POST"])
 def get_brands():

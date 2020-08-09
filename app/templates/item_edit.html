@@ -228,9 +228,10 @@ $("#materials").select2({
     <br>
     <script>
     const inputElement = document.querySelector('input[type="file"]');
-    const pond = FilePond.create( inputElement );
-    FilePond.setOptions({
+    const pond = FilePond.create(inputElement);
+    FilePond.setOptions({instantUpload: false,
     server: "{{url_for('main.filepond')}}"
     });
+    FilePond.registerPlugin(FilePondPluginImagePreview);
     </script>
 </body>
