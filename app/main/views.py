@@ -8,15 +8,21 @@ from sqlalchemy import desc, or_
 from flask_login import login_user, logout_user, current_user
 import uuid
 from ..decorators import admin_required
-
+import random
 
 
 
 @main.route("/", methods=["GET", "POST"])
 def index():
-    query = Item.query
-    query = query.filter(Item.deleted != 1)
-    items = query.order_by(desc(Item.id)).limit(4).all()
+    max_id = Item.query.count()
+    item_id_list = [random.randint(0, max_id) for _ in range(4)]
+    q = Item.query.filter(Item.deleted != 1).filter(Item.id.in_(item_id_list))
+    res = q.count()
+    while res != 4:
+        item_id_list.append(random.randint(0,max_id))
+        res = q.count()
+
+    items = q.all()
     return render_template("index.html", items=items)
 
 @main.route("/new_item", methods=["GET", "POST"])
