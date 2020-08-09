@@ -5,7 +5,7 @@ from flask_login import current_user
 
 @api.route("/LoadItems")
 def load_items():
-    query = item.query.filter(deleted != 1)
+    query = Item.query.filter(deleted != 1)
     page = requests.args.get("page", 1, type=int)
     pagination = query.order_by(Item.id.desc()).paginate(
         page, per_page=16, error_out=False
