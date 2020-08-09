@@ -18,7 +18,8 @@
       <meta name="author" content="">
       {% if item %}
       <title>{{item.brand_name}} - {{item.name}}</title>
-      <meta name="keywords" content="{{item.brand_name}},{{item.name}}">
+      <meta name="keywords" content="{{item.brand_name}} {{item.name}}">
+      <meta name="image" content="{{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ item.thumbnails.first().filename}}"
       {% else %}
       <title>ClothDB</title>
       {% endif %}
