@@ -5,7 +5,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from . import login_manager
-
+from flask import request
 
 class Permission:
     FOLLOW = 1
@@ -73,6 +73,13 @@ have_registrations = db.Table(
     db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
     db.Column("item_id", db.Integer, db.ForeignKey("items.id")),
 )
+
+item_registrations = db.Table(
+    "item_registrations",
+    db.Column("look_id", db.Integer, db.ForeignKey("looks.id")),
+    db.Column("item_id", db.Integer, db.ForeignKey("items.id")),
+)
+
 
 
 # item
@@ -210,6 +217,7 @@ class Thumbnail(db.Model):
     __tablename__ = "thumbnails"
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    look_id = db.Column(db.Integer, db.ForeignKey("looks.id"))
     filename = db.Column(db.String)
 
     def __repr__(self):
@@ -276,6 +284,9 @@ class User(UserMixin, db.Model):
 
 
 class AnonymousUser(AnonymousUserMixin):
+    def __init__(self):
+        self.id = request.remote_addr
+    
     def is_administrator(self):
         return False
 
@@ -348,3 +359,30 @@ class Comment(db.Model):
     disabled = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    look_id = db.Column(db.Integer, db.ForeignKey("looks.id"))
+
+
+
+class Look(db.Model):
+    __tablename__ = "looks"
+    id = db.Column(db.Integer, primary_key=True)
+    deleted = db.Column(db.Integer, default=0)
+    name = db.Column(db.String)
+    description = db.Column(db.Text)
+    date = db.Column(db.DateTime())
+    form_date = db.Column(db.String)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
+    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategories.id"))
+    season = db.Column(db.String)
+    comments = db.relationship("Comment", backref="looks", lazy="dynamic")
+    thumbnails = db.relationship("Thumbnail", backref="looks", lazy="dynamic")
+    items = db.relationship(
+        "Item",
+        secondary=item_registrations,
+        backref=db.backref("look_items", lazy="dynamic"),
+        lazy="dynamic",
+    )
+
+    def __repr__(self):
+        return "<Look %r>" % self.name
+

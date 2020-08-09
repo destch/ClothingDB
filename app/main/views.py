@@ -9,8 +9,11 @@ from flask_login import login_user, logout_user, current_user
 import uuid
 from ..decorators import admin_required
 import random
-
-
+import requests
+import json
+import urllib.request
+from mixpanel import Mixpanel
+mp = Mixpanel('18e48de5bfb0ffaa3e4f35e6455abad7')
 
 @main.route("/", methods=["GET", "POST"])
 def index():
@@ -23,11 +26,13 @@ def index():
         res = q.count()
 
     items = q.all()
+    mp.track(current_user.id, 'accessed home page')
     return render_template("index.html", items=items)
 
 @main.route("/new_item", methods=["GET", "POST"])
 def new_item():
     if request.method == "POST":
+        mp.track(current_user.id, 'submitted new item')
         files = request.form.getlist("filepond")
         thumbnail_list = []
         if files != []:
@@ -36,6 +41,7 @@ def new_item():
         form_inputs = request.form
 
         item = Item(
+            gender = form_inputs["genderInput"],
             thumbnails= [] if files == [] else thumbnail_list,
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
@@ -58,6 +64,7 @@ def new_item():
         db.session.add(item)
         db.session.commit()
         item_id = (Item.query.order_by(desc(Item.id)).first().id,)
+        mp.track()
         return redirect(url_for(".item", id=item.id))
 
     return render_template("new_item.html")
@@ -81,6 +88,7 @@ def filepond():
 
 @main.route("/feed", methods=["GET", "POST"])
 def feed():
+    mp.track(current_user.id, 'viewed feed')
     brand_id = request.args.get("brandInput")
     category_id = request.args.get("categoryInput")
     subcat_id = request.args.get("subcatInput")
@@ -173,6 +181,7 @@ def filtered_feed():
 
 @main.route("/item/<int:id>", methods=["GET", "POST"])
 def item(id):
+    mp.track(current_user.id, 'viewed item id ' + str(id))
     item = Item.query.get(id)
     comments = item.comments.all()
     if request.method == "POST":
@@ -188,6 +197,7 @@ def item(id):
 
 @main.route("user/<int:id>")
 def user(id):
+    mp.track(current_user.id, 'viewed profile')
     user = User.query.get(id)
     items = Item.query.limit(4).all()
     wants = user.wants.limit(4).all()
@@ -199,6 +209,7 @@ def user(id):
 
 @main.route("brand/<int:id>")
 def brand(id):
+    mp.track(current_user.id, 'viewed brand')
     brand = Brand.query.get(id)
     # brand = Item.query.filter(Item.id == id).first().brand_name
     page = request.args.get("page", 1, type=int)
@@ -217,6 +228,7 @@ def brand(id):
 
 @main.route("wantlist/<int:id>")
 def wantlist(id):
+    mp.track(current_user.id, 'viewed wantlist for id')
     user = User.query.get(id)
     wants = user.wants.all()
     return render_template("wantlist.html", user=user, wants=wants)
@@ -224,6 +236,7 @@ def wantlist(id):
 
 @main.route("collection/<int:id>")
 def collection(id):
+    mp.track(current_user.id, 'viewed collection for id')
     user = User.query.get(id)
     haves = user.haves.all()
     return render_template("collection.html", user=user, haves=haves)
@@ -232,6 +245,7 @@ def collection(id):
 # maybe move this into the API
 @main.route("add_to_wantlist/<int:id>", methods=["POST"])
 def add_to_wantlist(id):
+    mp.track(current_user.id, 'added item to wantlist')
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.wants.append(item)
@@ -244,6 +258,7 @@ def add_to_wantlist(id):
 
 @main.route("add_to_collection/<int:id>", methods=["POST"])
 def add_to_collection(id):
+    mp.track(current_user.id, 'added item to collection')
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.haves.append(item)
@@ -256,6 +271,7 @@ def add_to_collection(id):
 
 @main.route("remove_from_wantlist/<int:id>", methods=["POST"])
 def remove_from_wantlist(id):
+    mp.track(current_user.id, 'removed item from wantlist')
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.wants.remove(item)
@@ -268,6 +284,7 @@ def remove_from_wantlist(id):
 
 @main.route("remove_from_collection/<int:id>", methods=["POST"])
 def remove_from_collection(id):
+    mp.track(current_user.id, 'removed item from collection')
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.haves.remove(item)
@@ -292,6 +309,7 @@ def delete(id):
 @main.route("/item_search", methods=["POST"])
 def item_search():
     term = request.form["search"]
+    mp.track(current_user.id, 'searched for term')
     return redirect(url_for(".results", term=term))
 
 
@@ -338,6 +356,7 @@ def item_edit(id):
             for filename in files:
                 thumbnail_list.append(Thumbnail(filename=filename))
         form_inputs = request.form
+        item.gender = form_inputs["genderInput"]
         item.thumbnails = item.thumbnails.all() + [] if files == [] else thumbnail_list
         item.brand_id=form_inputs["brandInput"]
         item.brand_name=Brand.query.get(form_inputs["brandInput"]).name
@@ -418,4 +437,37 @@ def new_brand():
         flash('Brand Submitted')
         return render_template("new_brand.html")
     return render_template("new_brand.html")
+
+
+
+def upload_image_from_src(url):
+        filename = str(uuid.uuid4()) + ".jpg"
+        s3_client = boto3.resource("s3")
+        bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
+        with urllib.request.urlopen(url) as f:
+                bucket.upload_fileobj(f, filename)
+        return filename
+
+@main.route("/shopify", methods=["GET", "POST"])
+def shopify():
+    if request.method == "POST":
+        url = request.form["url"] + 'products.json'
+        r = requests.get(url)
+        d = json.loads(r.content)
+        products = d["products"]
+        objs = []
+        for i in range(len(products)-20):
+            print(str(i) + ' out of ' + str(len(products)))
+            product = products[i]
+            objs.append(Item(name = product["title"],
+                brand_name=product["vendor"],
+                description=product["body_html"],
+                thumbnails=[Thumbnail(filename=upload_image_from_src(img["src"])) for img in product["images"]]))
+
+        db.session.add_all(objs)
+        db.session.commit()
+
+    return render_template("shopify.html")
+
+
 

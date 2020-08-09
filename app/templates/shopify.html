@@ -1,0 +1,18 @@
+<!-- Page Features -->
+{% include 'head.html' %}
+{% include 'messages.html' %}
+<meta charset="UTF-8">
+<body>
+    <div class="container">
+        <br>
+        
+        <!-- Header -->
+        <h3>Upload Shopify Store</h3>
+        <br>
+        <form action={{url_for("main.shopify")}} method="POST">
+            <div class="form-group">
+            <input type="text" class="form-control" id="url" name="url">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+</body>
