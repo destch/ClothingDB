@@ -16,7 +16,12 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
       <meta name="description" content="">
       <meta name="author" content="">
+      {% if item %}
+      <title>{{item.brand_name}} - {{item.name}}</title>
+      <meta name="keywords" content="{{item.brand_name}},{{item.name}}">
+      {% else %}
       <title>ClothDB</title>
+      {% endif %}
       <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
       <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');</style>
       <!-- Bootstrap core CSS and JS -->
