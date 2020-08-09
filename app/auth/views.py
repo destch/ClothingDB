@@ -70,7 +70,7 @@ def register():
         flash("Thanks for registering!")
         old_id = current_user.id
         login_user(user)
-        mp.merge('e4dcb100b38961063280f0ddf0879091',str(old_id), str(current_user.id)
+        mp.merge('e4dcb100b38961063280f0ddf0879091',str(old_id), str(current_user.id))
         mp.people_set(current_user.id, {'email': user.email, 'username': user.username})
         mp.track(current_user.id, 'Registered')
         return redirect(url_for("main.index"))
