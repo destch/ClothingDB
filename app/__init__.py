@@ -11,7 +11,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 login_manager = LoginManager()
-ext = Sitemap()
+
 login_manager.login_view = "auth.login"
 
 def create_app(config_name):
