@@ -63,8 +63,8 @@ def new_item():
         )
         db.session.add(item)
         db.session.commit()
-        item_id = (Item.query.order_by(desc(Item.id)).first().id,)
-        return redirect(url_for(".item", id=item.id, item=Item.query.get(id)))
+        item_id = Item.query.order_by(desc(Item.id)).first().id
+        return redirect(url_for(".item", id=item.id))
 
     return render_template("new_item.html")
 
@@ -370,7 +370,7 @@ def item_edit(id):
                 [Color(name=color) for color in request.form.getlist('colorInput')]
         item.materials = [] if request.form.getlist('materialsInput') == [] else\
                 [Material(name=material) for material in request.form.getlist('materialsInput')]
-        item.price = None if request.form.get('priceInput') == "None" or "" else request.form.get('priceInput')
+        item.price = None if request.form.get('priceInput') == "None" or "" else int(request.form.get('priceInput'))
         #first try and get the style id by looking up the input, if doesnt exist then create a new style object
         item.styles = [] if request.form.getlist('styleInput') == [] else\
                 [Style(name=style) for style in request.form.getlist('styleInput')]
