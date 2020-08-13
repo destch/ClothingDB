@@ -41,7 +41,7 @@ def new_item():
         form_inputs = request.form
 
         item = Item(
-            gender = form_inputs["genderInput"],
+            #gender = form_inputs["genderInput"],
             thumbnails= [] if files == [] else thumbnail_list,
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
