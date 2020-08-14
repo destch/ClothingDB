@@ -7,9 +7,9 @@ class Config:
     WTF_CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "ClothingDB.sqlite")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     FLASKY_ADMIN = "daniel.chavez9797@gmail.com"
-    
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
 
     @staticmethod
     def init_app(app):

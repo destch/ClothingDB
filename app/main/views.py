@@ -4,7 +4,7 @@ from ..models import *
 from werkzeug.utils import secure_filename
 import boto3
 import random
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, or_, tuple_
 from flask_login import login_user, logout_user, current_user
 import uuid
 from ..decorators import admin_required
@@ -324,8 +324,7 @@ def results(term):
     page = request.args.get("page", 1, type=int)
     query = Item.query.filter(Item.deleted != 1)
     query = query.filter(
-        or_(Item.name.ilike(search_syntax), Item.brand_name.ilike(search_syntax))
-    )
+        tuple_(Item.name, Item.brand_name).in_(search_syntax.split()))
     num_results = len(query.all())
     pagination = query.paginate(page, per_page=16, error_out=False)
     items = pagination.items

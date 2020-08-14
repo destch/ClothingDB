@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from config import config
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from elasticsearch import Elasticsearch
 
 db = SQLAlchemy()
 bootstrap = Bootstrap()
@@ -22,6 +23,10 @@ def create_app(config_name):
     bootstrap.init_app(app)
     migrate = Migrate(app, db)
     login_manager.init_app(app)
+
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+        if app.config['ELASTICSEARCH_URL'] else None
+
     if config_name == "production":
         sentry_sdk.init(dsn="https://d8b30011e1ee4cc4bf8be7540065b334@o419385.ingest.sentry.io/5331956", integrations=[FlaskIntegration()])
 
