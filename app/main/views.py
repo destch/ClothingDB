@@ -324,14 +324,14 @@ def results(term):
     page = request.args.get("page", 1, type=int)
     query = Item.query.filter(Item.deleted != 1)
     query = query.filter(
-        tuple_(Item.name, Item.brand_name).in_(search_syntax.split()))
+        or_(Item.name.ilike(search_syntax), Item.brand_name.ilike(search_syntax))
+    )
     num_results = len(query.all())
     pagination = query.paginate(page, per_page=16, error_out=False)
     items = pagination.items
     return render_template(
         "search_results.html", items=items, pagination=pagination, term=term, num_results=num_results
     )
-
 
 @main.route("/social", methods=["GET", "POST"])
 def social():
@@ -369,7 +369,7 @@ def item_edit(id):
                 [Color(name=color) for color in request.form.getlist('colorInput')]
         item.materials = [] if request.form.getlist('materialsInput') == [] else\
                 [Material(name=material) for material in request.form.getlist('materialsInput')]
-        item.price = None if request.form.get('priceInput') == "None" or "" else int(request.form.get('priceInput'))
+        item.price = None if request.form.get('priceInput') == "None" or "" else float(request.form.get('priceInput'))
         #first try and get the style id by looking up the input, if doesnt exist then create a new style object
         item.styles = [] if request.form.getlist('styleInput') == [] else\
                 [Style(name=style) for style in request.form.getlist('styleInput')]
@@ -466,6 +466,5 @@ def shopify():
         db.session.commit()
 
     return render_template("shopify.html")
-
 
 
