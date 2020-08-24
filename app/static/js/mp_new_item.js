@@ -1,0 +1,1 @@
+mixpanel.track("Submitted Item");

@@ -12,8 +12,6 @@ import random
 import requests
 import json
 import urllib.request
-from mixpanel import Mixpanel
-mp = Mixpanel('18e48de5bfb0ffaa3e4f35e6455abad7')
 
 @main.route("/", methods=["GET", "POST"])
 def index():
@@ -26,13 +24,12 @@ def index():
         res = q.count()
 
     items = q.all()
-    mp.track(current_user.id, 'accessed home page')
     return render_template("index.html", items=items)
 
 @main.route("/new_item", methods=["GET", "POST"])
 def new_item():
     if request.method == "POST":
-        mp.track(current_user.id, 'submitted new item')
+        
         files = request.form.getlist("filepond")
         thumbnail_list = []
         if files != []:
@@ -87,7 +84,7 @@ def filepond():
 
 @main.route("/feed", methods=["GET", "POST"])
 def feed():
-    mp.track(current_user.id, 'viewed feed')
+    
     brand_id = request.args.get("brandInput")
     category_id = request.args.get("categoryInput")
     subcat_id = request.args.get("subcatInput")
@@ -180,7 +177,7 @@ def filtered_feed():
 
 @main.route("/item/<int:id>", methods=["GET", "POST"])
 def item(id):
-    mp.track(current_user.id, 'viewed item id ' + str(id))
+    
     item = Item.query.get(id)
     comments = item.comments.all()
     if request.method == "POST":
@@ -196,7 +193,7 @@ def item(id):
 
 @main.route("user/<int:id>")
 def user(id):
-    mp.track(current_user.id, 'viewed profile')
+    
     user = User.query.get(id)
     items = Item.query.limit(4).all()
     wants = user.wants.limit(4).all()
@@ -208,7 +205,7 @@ def user(id):
 
 @main.route("brand/<int:id>")
 def brand(id):
-    mp.track(current_user.id, 'viewed brand')
+    
     brand = Brand.query.get(id)
     # brand = Item.query.filter(Item.id == id).first().brand_name
     page = request.args.get("page", 1, type=int)
@@ -227,7 +224,7 @@ def brand(id):
 
 @main.route("wantlist/<int:id>")
 def wantlist(id):
-    mp.track(current_user.id, 'viewed wantlist for id')
+    
     user = User.query.get(id)
     wants = user.wants.all()
     return render_template("wantlist.html", user=user, wants=wants)
@@ -235,7 +232,7 @@ def wantlist(id):
 
 @main.route("collection/<int:id>")
 def collection(id):
-    mp.track(current_user.id, 'viewed collection for id')
+   
     user = User.query.get(id)
     haves = user.haves.all()
     return render_template("collection.html", user=user, haves=haves)
@@ -244,7 +241,7 @@ def collection(id):
 # maybe move this into the API
 @main.route("add_to_wantlist/<int:id>", methods=["POST"])
 def add_to_wantlist(id):
-    mp.track(current_user.id, 'added item to wantlist')
+    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.wants.append(item)
@@ -257,7 +254,7 @@ def add_to_wantlist(id):
 
 @main.route("add_to_collection/<int:id>", methods=["POST"])
 def add_to_collection(id):
-    mp.track(current_user.id, 'added item to collection')
+    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.haves.append(item)
@@ -270,7 +267,7 @@ def add_to_collection(id):
 
 @main.route("remove_from_wantlist/<int:id>", methods=["POST"])
 def remove_from_wantlist(id):
-    mp.track(current_user.id, 'removed item from wantlist')
+    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.wants.remove(item)
@@ -283,7 +280,7 @@ def remove_from_wantlist(id):
 
 @main.route("remove_from_collection/<int:id>", methods=["POST"])
 def remove_from_collection(id):
-    mp.track(current_user.id, 'removed item from collection')
+    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.haves.remove(item)
@@ -308,7 +305,7 @@ def delete(id):
 @main.route("/item_search", methods=["POST"])
 def item_search():
     term = request.form["search"]
-    mp.track(current_user.id, 'searched for term')
+   
     return redirect(url_for(".results", term=term))
 
 
