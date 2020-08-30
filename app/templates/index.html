@@ -1,17 +1,14 @@
 {% include 'head.html' %}
 {% include 'messages.html' %}
 <script type="text/javascript" src="../static/js/mp_index.js"></script>
+<script type="text/javascript" src="../static/js/select2_index.js"></script>
 <!-- Page Content -->
 <div class="container">
   <!-- Jumbotron Header -->
   <header class="jumbotron my-4">
     <h1 class="display-3">Welcome to ClothDB.</h1>
     <p class="lead">ClothDB helps you keep track of and discover the clothes that you love.</p>
-    {% if current_user.is_authenticated %}
-      <a href="{{url_for('main.feed')}}" class="btn btn-primary btn-lg">Get Started</a>
-    {% else %}
-      <a href="{{url_for('auth.register')}}" class="btn btn-primary btn-lg">Get Started</a>
-    {% endif %}
+    <select class="js-example-data-ajax" style="width: 100%"></select>
   </header>
   <!-- Header -->
   <h3>Recently Added Items</h3>

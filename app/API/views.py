@@ -3,6 +3,8 @@ from . import api
 from ..models import *
 from flask_login import current_user
 import requests
+from elasticsearch import Elasticsearch
+es = Elasticsearch(["http://34.198.0.244:9200"])
 
 @api.route("/LoadItems", methods=["GET", "POST"])
 def load_items():
@@ -19,8 +21,20 @@ def load_items():
 def get_brands():
     term = request.args.get("term")
     res = Brand.query.filter(Brand.name.ilike("%{}%".format(term))).limit(10)
+    print(res)
     brands = [r.as_dict() for r in res]
+    print(brands)
     formatted = {"results": brands}
+    return jsonify(formatted)
+
+@api.route("/Elasticsearch", methods=["GET", "POST"])
+def elasticsearch():
+    term = request.args.get("term")
+    res = es.search(index="clothdb", body={"query": {"multi_match": {"query": term, "type": "cross_fields", "fields": ["name", "brand_name"]}}})
+    res = res['hits']['hits']
+    item_ids = [r['_source']["id"] for r in res]
+    items = [x.as_dict() for x in Item.query.filter(Item.id.in_(item_ids)).all()]
+    formatted = {"items": items}
     return jsonify(formatted)
 
 
