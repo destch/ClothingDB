@@ -173,7 +173,7 @@ location.reload();
       <div class="card">
         <div class="card-header" id="headingOne">
           <h5 class="mb-0">
-          <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
+          <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" >
           Description
           </button>
           </h5>
@@ -211,6 +211,22 @@ location.reload();
             {% for mat in item.materials.all() %}
               <li>{{mat.name}}</li>
             {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+          <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+          Sellers
+          </button>
+          </h5>
+        </div>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+          <div class="card-body">
+            <a class="btn btn-primary" href="{{url_for('main.new_seller', id=item.id)}}" role="button">Submit a Listing</a>
+            <br><br>
+            {% include 'sellers.html' %}
           </div>
         </div>
       </div>

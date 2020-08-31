@@ -1,0 +1,31 @@
+{% include 'head.html' %}
+{% include 'messages.html' %}
+<body>
+    <div class="container">
+        <br>
+        
+        <!-- Header -->
+        <h3>Submit a Listing</h3>
+        <br>
+        <form method='POST' enctype='multipart/form-data'>           
+            <div class="form-group">
+                <label for="Description">What site is the item for sale on?</label>
+                <input type="text" class="form-control" name="siteInput"></input>
+            </div>
+            <div class="form-group">
+                <label for="Description">Size</label>
+                <input type="text" class="form-control" name="sizeInput"></input>
+            </div>
+            <div class="form-group">
+                <label for="Description">Price</label>
+                <input type="text" class="form-control" name="priceInput"></input>
+            </div>
+                        <div class="form-group">
+                <label for="Description">URL to listing</label>
+                <input type="text" class="form-control" name="urlInput"></input>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <br>
+</body>

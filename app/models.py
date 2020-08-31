@@ -137,7 +137,7 @@ class Item(SearchableMixin, db.Model):
     description = db.Column(db.Text)
     date_released = db.Column(db.DateTime())
     form_date = db.Column(db.String)
-    price = db.Column(db.Float)
+    price = db.Column(db.String)
     brand_name = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey("brands.id"))
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
@@ -145,6 +145,7 @@ class Item(SearchableMixin, db.Model):
     season = db.Column(db.String)
     fit = db.Column(db.String)
     comments = db.relationship("Comment", backref="items", lazy="dynamic")
+    sellers = db.relationship("Seller", backref="items", lazy="dynamic")
     materials = db.relationship(
         "Material",
         secondary=material_registrations,
@@ -407,14 +408,28 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     look_id = db.Column(db.Integer, db.ForeignKey("looks.id"))
+    collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
 
-
+class Collection(db.Model):
+    __tablename__ = "collections"
+    id = db.Column(db.Integer, primary_key=True)
+    brand_name = db.Column(db.String)
+    brand_id = db.Column(db.Integer, db.ForeignKey("brands.id"))
+    name = db.Column(db.String)
+    year = db.Column(db.String)
+    season = db.Column(db.String)
+    season_collection = db.Column(db.String)
+    gender = db.Column(db.String)
+    about = db.Column(db.Text)
+    comments = db.relationship("Comment", backref="collections", lazy="dynamic")
+    #video_links = 
 
 class Look(db.Model):
     __tablename__ = "looks"
     id = db.Column(db.Integer, primary_key=True)
     deleted = db.Column(db.Integer, default=0)
     name = db.Column(db.String)
+    collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
     description = db.Column(db.Text)
     date = db.Column(db.DateTime())
     form_date = db.Column(db.String)
@@ -433,3 +448,11 @@ class Look(db.Model):
     def __repr__(self):
         return "<Look %r>" % self.name
 
+class Seller(db.Model):
+    __tablename__ = "sellers"
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    site = db.Column(db.String)
+    size = db.Column(db.String)
+    price = db.Column(db.String)
+    link = db.Column(db.String)

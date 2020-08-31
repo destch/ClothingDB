@@ -66,6 +66,21 @@ def new_item():
     return render_template("new_item.html")
 
 
+
+@main.route("/new_seller", methods=["GET", "POST"])
+def new_seller():
+    if request.method == "POST":
+        form_inputs = request.form
+        item_id = request.args.get('id')
+        listing = Seller(item_id = item_id, site =form_inputs['siteInput'], 
+            size = form_inputs['sizeInput'], price = form_inputs['priceInput'],link = form_inputs['urlInput'])
+        db.session.add(listing)
+        db.session.commit()
+        return redirect(url_for(".item", id=item_id))
+
+    return render_template("new_seller.html")
+
+
 @main.route("/filepond", methods=["POST", "DELETE"])
 def filepond():
     if request.method == "DELETE":
@@ -180,6 +195,7 @@ def item(id):
     
     item = Item.query.get(id)
     comments = item.comments.all()
+    listings = item.sellers.all()
     if request.method == "POST":
         comment_text = request.form["text"]
         author = current_user.id
@@ -188,7 +204,7 @@ def item(id):
         db.session.commit()
         return redirect(url_for('main.item', id=id))
     
-    return render_template("item.html", item=item, comments=comments)
+    return render_template("item.html", item=item, comments=comments, listings = listings)
 
 
 @main.route("user/<int:id>")

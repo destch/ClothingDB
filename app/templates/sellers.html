@@ -1,0 +1,20 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Site</th>
+      <th scope="col">Size</th>
+      <th scope="col">Price</th>
+      <th scope="col">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for listing in listings %}
+    <tr>
+      <th scope="row">{{listing.site}}</th>
+      <td>{{listing.site}}</td>
+      <td>${{listing.price}}</td>
+      <td><a href="{{listing.link}}" target="_blank">Link</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
