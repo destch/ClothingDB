@@ -58,4 +58,7 @@ function formatRepoSelection (repo) {
   console.log(repo.thumbnails);
   return repo.name || repo.text;
 }
+
+
 });
+
