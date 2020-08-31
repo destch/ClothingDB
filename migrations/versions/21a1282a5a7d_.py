@@ -31,8 +31,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['brand_id'], ['brands.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.drop_table('elasticsearch')
-    op.drop_table('temp_style_registrations')
+    #op.drop_table('elasticsearch')
+    #op.drop_table('temp_style_registrations')
     op.add_column('comments', sa.Column('collection_id', sa.Integer(), nullable=True))
     op.create_foreign_key(None, 'comments', 'collections', ['collection_id'], ['id'])
     op.add_column('looks', sa.Column('collection_id', sa.Integer(), nullable=True))
