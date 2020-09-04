@@ -232,7 +232,7 @@ location.reload();
       </div>
     </div>
   </div>
-  {% if user.is_authenticated %}
+  {% if current_user.is_authenticated %}
   <form action={{url_for('main.item', id=item.id)}} method="post" id=submitcomment>
   <div class="form-group">
     <label for="exampleFormControlTextarea1">Post a Comment</label>
