@@ -15,15 +15,13 @@ import urllib.request
 
 @main.route("/", methods=["GET", "POST"])
 def index():
-    max_id = Item.query.count()
-    item_id_list = [random.randint(0, max_id) for _ in range(4)]
-    q = Item.query.filter(Item.deleted != 1).filter(Item.id.in_(item_id_list))
-    res = q.count()
-    while res != 4:
-        item_id_list.append(random.randint(0,max_id))
-        res = q.count()
-
-    items = q.all()
+    q = Item.query.filter(Item.deleted != 1)
+    query = Item.query.filter(Item.deleted != 1)
+    page = request.args.get("page", 1, type=int)
+    pagination = query.order_by(Item.id.desc()).paginate(
+        page, per_page=16, error_out=False
+    )
+    items = pagination.items
     return render_template("index.html", items=items)
 
 @main.route("/new_item", methods=["GET", "POST"])

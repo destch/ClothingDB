@@ -2,6 +2,7 @@
 {% include 'messages.html' %}
 <script type="text/javascript" src="../static/js/mp_index.js"></script>
 <script type="text/javascript" src="../static/js/select2_index.js"></script>
+<script src="../static/js/itemloader.js"></script>
 <!-- Page Content -->
 <div class="container">
   <!-- Jumbotron Header -->
@@ -12,8 +13,7 @@
   </header>
   <!-- Header -->
 
-  <h3><span>Recently Added Items</span>
-    <a href="{{url_for('main.feed')}}" class='btn btn-primary float-right'>View More</a></h3>
+  <h3><span>Item Feed</span></h3>
 
   <br>
   {% include 'product_grid.html' %}
