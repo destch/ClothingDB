@@ -26,10 +26,16 @@ $('document').ready(function(){
 						var brand = clone.querySelector(".card-title");
 						var itemName = clone.querySelector(".card-text")
 						var thumbnail = clone.querySelector('.card-img-top')
+						var image_url = clone.querySelector('#image-url')
+						var brand_url = clone.querySelector('#brand-url')
+						var name_url = clone.querySelector('#name-url')
 
 						thumbnail.src = 'https://d2x1mfjcaooqwx.cloudfront.net/'+results[index].thumbnails[0]
-						itemName.textContent = results[index].name
+						itemName.textContent = results[index].name;
 						brand.textContent = results[index].brand;
+						image_url.href = "/item/"+results[index].id;
+						brand_url.href = "/brand/"+results[index].brand_id;
+						name_url.href = "/item/"+results[index].id;
 						items.push(clone)
 		        	}
 	        		for (index = 0; index < items.length; index ++){
