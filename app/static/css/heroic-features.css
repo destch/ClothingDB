@@ -88,7 +88,7 @@ min-width: 100%;
   padding-left: 0px;
 }
 
-.select2-result-repository {
+.select2-result-repository{
 font-size: 1.05rem;
 line-height: 1.7;
 color: #555;
@@ -194,7 +194,15 @@ box-sizing: border-box;}
 .select2-container--default .select2-results .select2-results__options{
   max-height: 400px;
 }
-
+.ui-autocomplete {
+            max-height: 400px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+            padding-top:10px;
+}  
 
 
 #loadingDiv{ 
@@ -228,3 +236,12 @@ box-sizing: border-box;}
 .is-hide{
   display:none;
 }
+
+.ui-autocomplete { z-index:2000 !important; 
+  display: inline;}
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #D3D3D3 !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+} 

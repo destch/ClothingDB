@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -43,6 +44,15 @@
       </style>
 
 
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+      <script src="../static/js/search.js"></script>
+      
+
       <!-- MIXPANEL IMPLEMENTATION -->
       <script>(function(c,a){if(!a.__SV){var b=window;try{var d,m,j,k=b.location,f=k.hash;d=function(a,b){return(m=a.match(RegExp(b+"=([^&]*)")))?m[1]:null};f&&d(f,"state")&&(j=JSON.parse(decodeURIComponent(d(f,"state"))),"mpeditor"===j.action&&(b.sessionStorage.setItem("_mpcehash",f),history.replaceState(j.desiredHash||"",c.title,k.pathname+k.search)))}catch(n){}var l,h;window.mixpanel=a;a._i=[];a.init=function(b,d,g){function c(b,i){var a=i.split(".");2==a.length&&(b=b[a[0]],i=a[1]);b[i]=function(){b.push([i].concat(Array.prototype.slice.call(arguments,
       0)))}}var e=a;"undefined"!==typeof g?e=a[g]=[]:g="mixpanel";e.people=e.people||[];e.toString=function(b){var a="mixpanel";"mixpanel"!==g&&(a+="."+g);b||(a+=" (stub)");return a};e.people.toString=function(){return e.toString(1)+".people (stub)"};l="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
@@ -64,17 +74,19 @@
 
       
     </head>
+    
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000000;">
+   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #000000;">
       <div class="container">
-
+        <a class="navbar-brand" href="{{url_for('main.index')}}" style="font-size: 25px !important;">ClothDB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="mx-2 my-auto d-inline w-100" style="width:500px;" action={{url_for('main.item_search')}} method="post" enctype="multipart/form-data" role="form">
+                <input class="form-control" type="search" placeholder="Search" name="search" id="search">
+        </form>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <a class="navbar-brand" href="{{url_for('main.index')}}" style="font-size: 25px !important;">ClothDB</a>
-          
-          <input class="form-control form-control-md" type="text" placeholder="Search">
-          
           <ul class="navbar-nav ml-auto">
-
             <li class="nav-item active">
               <a class="nav-link" href="{{url_for('main.feed')}}">Explore
                 <span class="sr-only">(current)</span>
@@ -110,3 +122,4 @@
         </div>
       </div>
     </nav>
+    
