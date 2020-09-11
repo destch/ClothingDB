@@ -421,6 +421,7 @@ class Collection(db.Model):
     season_collection = db.Column(db.String)
     gender = db.Column(db.String)
     about = db.Column(db.Text)
+    looks = db.relationship("Look", backref="collection", lazy="dynamic")
     comments = db.relationship("Comment", backref="collections", lazy="dynamic")
     #video_links = 
 

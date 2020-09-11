@@ -246,10 +246,9 @@ def wantlist(id):
 
 @main.route("collection/<int:id>")
 def collection(id):
-   
-    user = User.query.get(id)
-    haves = user.haves.all()
-    return render_template("collection.html", user=user, haves=haves)
+    collection_obj = Collection.query.get(id)
+    looks = Collection.looks.all()
+    return render_template("collection.html", collection_obj = collection_obj)
 
 
 # maybe move this into the API
