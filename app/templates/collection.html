@@ -15,12 +15,9 @@
       {% if collection_obj.about %}
 {{collection_obj.about}}
       {% else %}
-No info for this brand yet, feel free to contribute by editing this page
+No info for this collection yet, feel free to contribute by editing this page
       {% endif %}
       </div>
-      {% if current_user.is_authenticated %}
-            <a href="{{url_for('main.brand_edit', id=id)}}" class="btn btn-secondary" id="edit">Edit</a>
-          {% endif %}
       
       
       
