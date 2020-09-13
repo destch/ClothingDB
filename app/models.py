@@ -107,6 +107,8 @@ style_registrations = db.Table(
     "style_registrations",
     db.Column("style_id", db.Integer, db.ForeignKey("styles.id")),
     db.Column("item_id", db.Integer, db.ForeignKey("items.id")),
+    db.Column("collection_id", db.Integer, db.ForeignKey("collections.id")),
+    db.Column("look_id", db.Integer, db.ForeignKey("looks.id"))
 )
 want_registrations = db.Table(
     "want_registrations",
@@ -213,6 +215,7 @@ class Brand(db.Model):
     items = db.relationship("Item", backref="brands", lazy="dynamic")
     thumbnail_filename = db.Column(db.String)
     about = db.Column(db.Text)
+    collections = db.relationship("Collection", backref="brand", lazy="dynamic")
 
     def __repr__(self):
         return "<Brand %r>" % self.name
@@ -266,6 +269,7 @@ class Thumbnail(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     look_id = db.Column(db.Integer, db.ForeignKey("looks.id"))
+    collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
     filename = db.Column(db.String)
 
     def __repr__(self):
@@ -421,8 +425,16 @@ class Collection(db.Model):
     season_collection = db.Column(db.String)
     gender = db.Column(db.String)
     about = db.Column(db.Text)
+    designer = db.Column(db.String)
     looks = db.relationship("Look", backref="collection", lazy="dynamic")
     comments = db.relationship("Comment", backref="collections", lazy="dynamic")
+    thumbnails = db.relationship("Thumbnail", backref="collections", lazy="dynamic") 
+    styles = db.relationship(
+        "Style",
+        secondary=style_registrations,
+        backref=db.backref("collections", lazy="dynamic"),
+        lazy="dynamic",
+    )
     #video_links = 
 
 class Look(db.Model):
@@ -433,16 +445,18 @@ class Look(db.Model):
     collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
     description = db.Column(db.Text)
     date = db.Column(db.DateTime())
-    form_date = db.Column(db.String)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategories.id"))
-    season = db.Column(db.String)
     comments = db.relationship("Comment", backref="looks", lazy="dynamic")
-    thumbnails = db.relationship("Thumbnail", backref="looks", lazy="dynamic")
+    thumbnails = db.relationship("Thumbnail", backref="looks", lazy="dynamic") 
     items = db.relationship(
         "Item",
         secondary=item_registrations,
         backref=db.backref("look_items", lazy="dynamic"),
+        lazy="dynamic",
+    )
+    styles = db.relationship(
+        "Style",
+        secondary=style_registrations,
+        backref=db.backref("looks", lazy="dynamic"),
         lazy="dynamic",
     )
 

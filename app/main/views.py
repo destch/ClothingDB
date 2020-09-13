@@ -244,11 +244,72 @@ def wantlist(id):
     return render_template("wantlist.html", user=user, wants=wants)
 
 
-@main.route("collection/<int:id>")
+@main.route("brand/<int:id>/newcollection", methods=["GET", "POST"])
+def newCollection(id):
+    if request.method == "POST":
+        #get brand objcect
+        brand = Brand.query.get(id)
+        #images
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                thumbnail_list.append(Thumbnail(filename=filename))
+        formInputs = request.form
+        collection = Collection(
+            brand_name = brand.name,
+            name = formInputs['nameInput'],
+            brand_id = id,
+            about = formInputs['descriptionInput'],
+            designer = formInputs['designerInput'],
+            year = formInputs['yearInput'],
+            season = formInputs['seasonInput'],
+            styles = [] if request.form.getlist('styleInput') == [] else\
+                [Style(name=style) for style in request.form.getlist('styleInput')],
+            thumbnails = thumbnail_list
+            )
+        db.session.add(collection)
+        db.session.commit()
+        return redirect(url_for(".brand", id=id))
+    return render_template("new_collection.html")
+
+@main.route("collection/<int:id>", methods=["GET", "POST"])
 def collection(id):
     collection_obj = Collection.query.get(id)
-    looks = Collection.looks.all()
-    return render_template("collection.html", collection_obj = collection_obj)
+    looks = collection_obj.looks.all()
+    return render_template("collection.html", collection_obj = collection_obj, looks=looks)
+
+
+@main.route("look/<int:id>", methods=["GET", "POST"])
+def look(id):
+    look_obj = Look.query.get(id)
+    return render_template("look.html", look=look_obj)
+
+
+@main.route("collection/<int:id>/newlook", methods=["GET", "POST"])
+def newCollectionLook(id):
+    if request.method == "POST":
+        #get collection object that the look corresponds to
+        collection = Collection.query.get(id)
+        #images
+        files = request.form.getlist("filepond")
+        thumbnail_list = []
+        if files != []:
+            for filename in files:
+                thumbnail_list.append(Thumbnail(filename=filename))
+        formInputs = request.form
+        look = Look(
+            name = formInputs['nameInput'],
+            description = formInputs['descriptionInput'],
+            collection_id = id,
+            styles = [] if request.form.getlist('styleInput') == [] else\
+                [Style(name=style) for style in request.form.getlist('styleInput')],
+            thumbnails = thumbnail_list
+            )
+        db.session.add(look)
+        db.session.commit()
+        return redirect(url_for(".collection", id=id))
+    return render_template("new_collection_look.html")
 
 
 # maybe move this into the API

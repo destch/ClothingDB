@@ -1,15 +1,42 @@
-{% import "_macros.html" as macros %}
 {% include 'head.html' %}
-<!-- Page Content -->
+{% import "_macros.html" as macros %}
+{% include 'messages.html' %}
 <div class="container">
-  <!-- Header -->
-  <h3>{{current_user.username}}'s Collection</h3>
+  <div class="page-header">
+    {% if collection_obj.thumbnails %}
+    <img class="img-rounded profile-thumbnail" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ collection_obj.thumbnails.first().filename}} height="256" max-width="256">
+    {% else %}
+    <img class="img-rounded profile-thumbnail" src="https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png" height="256" width="256">
+    {% endif %}
+    <div class="profile-header">
+      <h3>{{ collection_obj.brand_name}} - {{ collection_obj.season}} {{ collection_obj.year}}</h3>
+      <h4>{{ collection_obj.name}}</h4>
+      <div style="white-space: pre-wrap;">
+      {% if collection_obj.about %}
+{{collection_obj.about}}
+      {% else %}
+No info for this brand yet, feel free to contribute by editing this page
+      {% endif %}
+      </div>
+      {% if current_user.is_authenticated %}
+            <a href="{{url_for('main.brand_edit', id=id)}}" class="btn btn-secondary" id="edit">Edit</a>
+          {% endif %}
+      
+      
+      
+      
+    </div>
+  </div>
   <br>
-  {% include 'haves_grid.html' %}
+  
+  <h3>Looks from {{ collection_obj.name }}</h3>
+   <a class="btn btn-primary" href="{{ url_for('.newCollectionLook', id=collection_obj.id) }}">Add a Look</a>
+   <br>
+   <br>
+  {% include 'looks_grid.html' %}
   {% if pagination %}
     <div class="pagination">
-      {{ macros.pagination_widget(pagination, '.feed') }}
+      {{ macros.pagination_widget(pagination, '.brand', id=id) }}
     </div>
   {% endif %}
 </div>
-<!-- /.container -->

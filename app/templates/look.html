@@ -1,0 +1,118 @@
+{% include 'head.html' %}
+{% import "_macros.html" as macros %}
+{% include 'messages.html' %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
+
+
+<script type="text/javascript" src="../static/js/mp_item.js"></script>
+
+<div class="container">
+  <div class="row mb-50">
+    <div class="col">
+      <div id="carouselExampleControls" class="carousel slide" style="width: 447; height: 468">
+        {% if look.thumbnails.all() == [] %}
+        <div class="carousel-item active">
+              <img class="product-img" src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081">
+          </div>
+        {% else %}
+        <div class="carousel-inner">
+          {% if look.thumbnails.all()|length > 1%}
+            <div class="carousel-item active">
+              <img class="product-img" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ look.thumbnails.first().filename}}>
+            </div>
+            {% for entry in look.thumbnails.all()[1:] %}
+              <div class="carousel-item">
+                <img class="product-img" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ entry.filename}}>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="carousel-item active">
+              <img class="product-img" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ look.thumbnails.first().filename}}>
+            </div>
+          {% endif %}
+        </div>
+        {% endif %}
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+    <div class="col" style="border: 1.5px solid black; padding: 30px;">
+      <div class="my-auto">
+        
+        <h2>{{look.name}}</h2>
+        <br>
+        <h5>Styles:
+        <div>
+          {% for style in look.styles %}
+            <span class="badge badge-warning">{{style.name}}</span>
+          {% endfor %}
+        </div>
+        </h5>
+        
+    
+        <br>
+        {% if look.collection_id %}
+        <h5>Collection: {{look.collection.brand_name}} - {{ look.collection.season}} {{ look.collection.year}}</h5>
+        {% endif %}
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-50">
+    <div class="accordion" id="accordionExample">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+          <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" >
+          Description
+          </button>
+          </h5>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body" style="white-space: pre-wrap;">
+{{look.description}}
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+  {% if current_user.is_authenticated %}
+  <form action={{url_for('main.item', id=look.id)}} method="post" id=submitcomment>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Post a Comment</label>
+    <textarea class="form-control" name="text" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endif %}
+<br>
+  <h3>Comments:</h3>
+  <br>
+  {% for comment in comments %}
+  {% if comment.disabled %}
+  {% else %}
+  <div class="media mb-4">
+    <img class="mr-3" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ comment.author.profile_pic_filename}} height="64px" width="64px" alt="Generic placeholder image">
+    <div class="media-body">
+      <h5 class="mt-0">{{comment.author.username}}</h5>
+      {{comment.body}}
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  
+  <br>
+  <br>
+  
+</div>
