@@ -4,7 +4,7 @@ from ..models import *
 from flask_login import current_user
 import requests
 from elasticsearch import Elasticsearch
-es = Elasticsearch(["http://34.198.0.244:9200"])
+es = Elasticsearch(["http://elastic:daniel97@34.198.0.244:9200"])
 
 @api.route("/LoadItems", methods=["GET", "POST"])
 def load_items():
