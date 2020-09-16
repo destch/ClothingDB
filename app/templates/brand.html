@@ -1,6 +1,13 @@
 {% include 'head.html' %}
 {% import "_macros.html" as macros %}
 {% include 'messages.html' %}
+<script src="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+<script type="text/javascript" src="../static/js/collectionsTable.js"></script>
+
+
 <div class="container">
 	<div class="page-header">
 		{% if brand.thumbnail_filename %}
@@ -11,15 +18,15 @@
 		<div class="profile-header">
 			<h1>{{ brand.name}}</h1>
 			<div style="white-space: pre-wrap;">
-			{% if brand.about %}
-{{brand.about}}
-			{% else %}
-No info for this brand yet, feel free to contribute by editing this page
-			{% endif %}
+				{% if brand.about %}
+				{{brand.about}}
+				{% else %}
+				No info for this brand yet, feel free to contribute by editing this page
+				{% endif %}
 			</div>
 			{% if current_user.is_authenticated %}
-	          <a href="{{url_for('main.brand_edit', id=brand.id)}}" class="btn btn-secondary" id="edit">Edit</a>
-        	{% endif %}
+			<a href="{{url_for('main.brand_edit', id=brand.id)}}" class="btn btn-secondary" id="edit">Edit</a>
+			{% endif %}
 			
 			
 			
@@ -33,24 +40,24 @@ No info for this brand yet, feel free to contribute by editing this page
 	<br>
 	<br>
 	<div class="container" id="collection-table-container">
-	<table class="table" id="collection-table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Release Date</th>
-      <th scope="col">Collection</th>
-      <th scope="col">Season</th>
-    </tr>
-  </thead>
-  <tbody>
-  	{% for collection in brand.collections %}
-    <tr>
-      <td>{{ collection.year }}</td>
-      <td><a href="{{url_for('main.collection', id=collection.id)}}">{{collection.name}}</a></td>
-      <td>{{collection.season}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+		<table class="table" id="collection-table">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Release Date</th>
+					<th scope="col">Collection</th>
+					<th scope="col">Season</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for collection in brand.collections %}
+				<tr>
+					<td>{{ collection.year }}</td>
+					<td><a href="{{url_for('main.collection', id=collection.id)}}">{{collection.name}}</a></td>
+					<td>{{collection.season}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
 	</div>
 	<br>
@@ -58,8 +65,8 @@ No info for this brand yet, feel free to contribute by editing this page
 	<h3>Items by {{ brand.name }}</h3>
 	{% include 'product_grid.html' %}
 	{% if pagination %}
-		<div class="pagination">
-			{{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
-		</div>
+	<div class="pagination">
+		{{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
+	</div>
 	{% endif %}
 </div>

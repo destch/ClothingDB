@@ -1,0 +1,20 @@
+<!-- Page Features -->
+<div class="row">
+  {% for brand in brands %}
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <a href="{{url_for('main.brand', id=brand.id)}}">
+          <img intrinsicsize="920 x 1380" class="card-img-top" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ brand.thumbnails.first().filename}}>
+        </a>
+        <div class="card-body">
+          <a href="{{url_for('main.brand', id=brand.id)}}">
+            <p class="card-text" style="{font-style: oblique;}">{{ brand.name }}</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  {% endfor %}
+</div>
+<!-- /.row -->

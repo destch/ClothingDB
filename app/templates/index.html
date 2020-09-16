@@ -1,5 +1,6 @@
 {% include 'head.html' %}
 {% include 'messages.html' %}
+<!-- Adding in Scripts for Mixpanel , select2 (which we might not need anymore), and the search bar -->
 <script type="text/javascript" src="../static/js/mp_index.js"></script>
 <script type="text/javascript" src="../static/js/select2_index.js"></script>
 <script src="../static/js/itemloader.js"></script>
@@ -8,17 +9,17 @@
 
 <!-- Page Content -->
 <div class="container">
-  <!-- Jumbotron Header -->
-  <header class="jumbotron my-4">
-    <h1 class="display-3">Welcome to ClothDB.</h1>
-    <p class="lead">ClothDB helps you find information about the clothes you love.</p>
-  </header>
-  <!-- Header -->
+	<!-- Jumbotron Header -->
+	<header class="jumbotron my-4">
+		<h1 class="display-3">Welcome to ClothDB.</h1>
+		<p class="lead">ClothDB helps you find information about the clothes you love.</p>
+	</header>
+	<!-- Header -->
 
-  <h3><span>Item Feed</span></h3>
+	<h3><span>Item Feed</span></h3>
 
-  <br>
-  {% include 'product_grid.html' %}
+	<br>
+	{% include 'product_grid.html' %}
 </div>
 <!-- /.container -->
 

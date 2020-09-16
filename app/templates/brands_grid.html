@@ -1,0 +1,25 @@
+<!-- Page Features -->
+<div class="row">
+  {% for brand in brands %}
+
+  <div class="col-lg-3 col-md-6 mb-4">
+    <div class="card h-100">
+      <a href="{{url_for('main.brand', id=brand.id)}}">
+        {% if brand.thumbnail_filename %}
+        <img intrinsicsize="920 x 1380" class="card-img-top" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ brand.thumbnail_filename}}>
+        {% else %}
+        <img intrinsicsize="920 x 1380" class="card-img-top" src="https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png">
+        {% endif %}
+
+      </a>
+      <div class="card-body">
+        <a href="{{url_for('main.brand', id=brand.id)}}">
+          <p class="card-text" style="{font-style: oblique;}">{{ brand.name }}</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+<!-- /.row -->

@@ -97,54 +97,13 @@ def filepond():
 
 @main.route("/feed", methods=["GET", "POST"])
 def feed():
-    
-    brand_id = request.args.get("brandInput")
-    category_id = request.args.get("categoryInput")
-    subcat_id = request.args.get("subcatInput")
-    style_ids = request.args.getlist("styleInput")
-    params = {
-        "brand_id": brand_id,
-        "category_id": category_id,
-        "subcategory_id": subcat_id,
-        "style_ids": style_ids,
-    }
-    brand = None
-    category = None
-    subcat = None
-    styles = None
-
     query = Item.query.filter(Item.deleted != 1)
-    if brand_id:
-        query = query.filter(Item.brand_id == brand_id)
-        brand = Brand.query.get(brand_id).name
-    if category_id:
-        query = query.filter_by(category_id=category_id)
-        category = Category.query.get(category_id).name
-    if subcat_id:
-        query = query.filter(Item.subcategory_id == subcat_id)
-        subcat = Subcategory.query.get(subcat_id).name
-    if style_ids:
-        styles = {}
-        for style_id in style_ids:
-            style = Style.query.get(style_id)
-            query = query.filter(Item.styles.contains(style))
-            styles[style_id] = style.name
-
-    page = request.args.get("page", 1, type=int)
-    pagination = query.order_by(Item.id.desc()).paginate(
-        page, per_page=16, error_out=False
-    )
-    items = pagination.items
+    items = query.order_by(Item.id.desc()).limit(16).all()
+    looks = Look.query.filter(Look.deleted != 1).order_by(Look.id.desc()).limit(16).all()
+    brands = Brand.query.order_by(Brand.id.desc()).limit(16).all()
     return render_template(
         "feed.html",
-        items=items,
-        pagination=pagination,
-        params=params,
-        brand=brand,
-        category=category,
-        subcat=subcat,
-        styles=styles,
-    )
+        items=items, looks=looks, brands=brands)
 
 
 @main.route("/feed/filter/", methods=["GET", "POST"])
