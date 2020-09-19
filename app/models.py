@@ -422,7 +422,7 @@ class List(db.Model):
     name = db.Column(db.String)
     about = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    looks = db.relationship("Look", backref="list", lazy="dynamic")
+    looks = db.relationship("Look", backref="lists", lazy="dynamic")
     comments = db.relationship("Comment", backref="lists", lazy="dynamic")
 
 class Collection(db.Model):
