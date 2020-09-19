@@ -301,7 +301,7 @@ class User(UserMixin, db.Model):
         backref=db.backref("user_haves", lazy="dynamic"),
         lazy="dynamic",
     )
-
+    lists = db.relationship("List", backref="author", lazy="dynamic")
 
     def __init__(self, **kwargs):
             super(User, self).__init__(**kwargs)
@@ -415,6 +415,16 @@ class Comment(db.Model):
     collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
     list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
 
+
+class List(db.Model):
+    __tablename__ = "lists"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    about = db.Column(db.Text)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    looks = db.relationship("Look", backref="list", lazy="dynamic")
+    comments = db.relationship("comment", backref="lists", lazy="dynamic")
+
 class Collection(db.Model):
     __tablename__ = "collections"
     id = db.Column(db.Integer, primary_key=True)
@@ -444,6 +454,7 @@ class Look(db.Model):
     deleted = db.Column(db.Integer, default=0)
     name = db.Column(db.String)
     collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
+    list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
     description = db.Column(db.Text)
     date = db.Column(db.DateTime())
     comments = db.relationship("Comment", backref="looks", lazy="dynamic")
