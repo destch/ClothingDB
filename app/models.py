@@ -413,6 +413,7 @@ class Comment(db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     look_id = db.Column(db.Integer, db.ForeignKey("looks.id"))
     collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
+    list_id = db.Column(db.Integer, db.ForeignKey("lists.id"))
 
 class Collection(db.Model):
     __tablename__ = "collections"
