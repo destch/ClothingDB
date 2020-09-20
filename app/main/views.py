@@ -13,6 +13,7 @@ import requests
 import json
 import urllib.request
 
+
 @main.route("/", methods=["GET", "POST"])
 def index():
     q = Item.query.filter(Item.deleted != 1)
@@ -24,10 +25,11 @@ def index():
     items = pagination.items
     return render_template("index.html", items=items)
 
+
 @main.route("/new_item", methods=["GET", "POST"])
 def new_item():
     if request.method == "POST":
-        
+
         files = request.form.getlist("filepond")
         thumbnail_list = []
         if files != []:
@@ -36,24 +38,24 @@ def new_item():
         form_inputs = request.form
 
         item = Item(
-            #gender = form_inputs["genderInput"],
-            thumbnails= [] if files == [] else thumbnail_list,
+            # gender = form_inputs["genderInput"],
+            thumbnails=[] if files == [] else thumbnail_list,
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
             name=form_inputs["nameInput"],
-            category_id= None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
-            subcategory_id= None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
+            category_id=None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
+            subcategory_id=None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
             description=form_inputs["description"],
             season=form_inputs["seasonInput"],
-            form_date = form_inputs["releaseInput"],
-            fit = form_inputs["fitInput"],
-            colors = [] if request.form.getlist('colorInput') == [] else \
+            form_date=form_inputs["releaseInput"],
+            fit=form_inputs["fitInput"],
+            colors=[] if request.form.getlist('colorInput') == [] else \
                 [Color(name=color) for color in request.form.getlist('colorInput')],
-            materials = [] if request.form.getlist('materialsInput') == [] else\
+            materials=[] if request.form.getlist('materialsInput') == [] else \
                 [Material(name=material) for material in request.form.getlist('materialsInput')],
-            price = None if request.form.get('priceInput') == '' else\
+            price=None if request.form.get('priceInput') == '' else \
                 request.form.get('priceInput'),
-            styles = [] if request.form.getlist('styleInput') == [] else\
+            styles=[] if request.form.getlist('styleInput') == [] else \
                 [Style(name=style) for style in request.form.getlist('styleInput')],
         )
         db.session.add(item)
@@ -64,14 +66,13 @@ def new_item():
     return render_template("new_item.html")
 
 
-
 @main.route("/new_seller", methods=["GET", "POST"])
 def new_seller():
     if request.method == "POST":
         form_inputs = request.form
         item_id = request.args.get('id')
-        listing = Seller(item_id = item_id, site =form_inputs['siteInput'], 
-            size = form_inputs['sizeInput'], price = form_inputs['priceInput'],link = form_inputs['urlInput'])
+        listing = Seller(item_id=item_id, site=form_inputs['siteInput'],
+                         size=form_inputs['sizeInput'], price=form_inputs['priceInput'], link=form_inputs['urlInput'])
         db.session.add(listing)
         db.session.commit()
         return redirect(url_for(".item", id=item_id))
@@ -88,7 +89,8 @@ def filepond():
         bucket.Object(filename).delete()
     elif request.method == "POST":
         f = request.files.get("filepond")
-        filename = str(uuid.uuid4()) + ".jpg"
+        ext = f.mimetype.split('/')[1].lower()
+        filename = str(uuid.uuid4()) + ext
         s3_client = boto3.resource("s3")
         bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
         bucket.Object(filename).put(Body=f)
@@ -149,7 +151,6 @@ def filtered_feed():
 
 @main.route("/item/<int:id>", methods=["GET", "POST"])
 def item(id):
-    
     item = Item.query.get(id)
     comments = item.comments.all()
     listings = item.sellers.all()
@@ -160,13 +161,12 @@ def item(id):
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.item', id=id))
-    
-    return render_template("item.html", item=item, comments=comments, listings = listings)
+
+    return render_template("item.html", item=item, comments=comments, listings=listings)
 
 
 @main.route("user/<int:id>")
 def user(id):
-    
     user = User.query.get(id)
     items = Item.query.limit(4).all()
     wants = user.wants.limit(4).all()
@@ -178,7 +178,6 @@ def user(id):
 
 @main.route("brand/<int:id>")
 def brand(id):
-    
     brand = Brand.query.get(id)
     # brand = Item.query.filter(Item.id == id).first().brand_name
     page = request.args.get("page", 1, type=int)
@@ -197,7 +196,6 @@ def brand(id):
 
 @main.route("wantlist/<int:id>")
 def wantlist(id):
-    
     user = User.query.get(id)
     wants = user.wants.all()
     return render_template("wantlist.html", user=user, wants=wants)
@@ -206,9 +204,9 @@ def wantlist(id):
 @main.route("brand/<int:id>/newcollection", methods=["GET", "POST"])
 def newCollection(id):
     if request.method == "POST":
-        #get brand objcect
+        # get brand objcect
         brand = Brand.query.get(id)
-        #images
+        # images
         files = request.form.getlist("filepond")
         thumbnail_list = []
         if files != []:
@@ -216,27 +214,28 @@ def newCollection(id):
                 thumbnail_list.append(Thumbnail(filename=filename))
         formInputs = request.form
         collection = Collection(
-            brand_name = brand.name,
-            name = formInputs['nameInput'],
-            brand_id = id,
-            about = formInputs['descriptionInput'],
-            designer = formInputs['designerInput'],
-            year = formInputs['yearInput'],
-            season = formInputs['seasonInput'],
-            styles = [] if request.form.getlist('styleInput') == [] else\
+            brand_name=brand.name,
+            name=formInputs['nameInput'],
+            brand_id=id,
+            about=formInputs['descriptionInput'],
+            designer=formInputs['designerInput'],
+            year=formInputs['yearInput'],
+            season=formInputs['seasonInput'],
+            styles=[] if request.form.getlist('styleInput') == [] else \
                 [Style(name=style) for style in request.form.getlist('styleInput')],
-            thumbnails = thumbnail_list
-            )
+            thumbnails=thumbnail_list
+        )
         db.session.add(collection)
         db.session.commit()
         return redirect(url_for(".brand", id=id))
     return render_template("new_collection.html")
 
+
 @main.route("collection/<int:id>", methods=["GET", "POST"])
 def collection(id):
     collection_obj = Collection.query.get(id)
     looks = collection_obj.looks.all()
-    return render_template("collection.html", collection_obj = collection_obj, looks=looks)
+    return render_template("collection.html", collection_obj=collection_obj, looks=looks)
 
 
 @main.route("look/<int:id>", methods=["GET", "POST"])
@@ -248,9 +247,9 @@ def look(id):
 @main.route("collection/<int:id>/newlook", methods=["GET", "POST"])
 def newCollectionLook(id):
     if request.method == "POST":
-        #get collection object that the look corresponds to
+        # get collection object that the look corresponds to
         collection = Collection.query.get(id)
-        #images
+        # images
         files = request.form.getlist("filepond")
         thumbnail_list = []
         if files != []:
@@ -258,13 +257,13 @@ def newCollectionLook(id):
                 thumbnail_list.append(Thumbnail(filename=filename))
         formInputs = request.form
         look = Look(
-            name = formInputs['nameInput'],
-            description = formInputs['descriptionInput'],
-            collection_id = id,
-            styles = [] if request.form.getlist('styleInput') == [] else\
+            name=formInputs['nameInput'],
+            description=formInputs['descriptionInput'],
+            collection_id=id,
+            styles=[] if request.form.getlist('styleInput') == [] else \
                 [Style(name=style) for style in request.form.getlist('styleInput')],
-            thumbnails = thumbnail_list
-            )
+            thumbnails=thumbnail_list
+        )
         db.session.add(look)
         db.session.commit()
         return redirect(url_for(".collection", id=id))
@@ -274,7 +273,6 @@ def newCollectionLook(id):
 # maybe move this into the API
 @main.route("add_to_wantlist/<int:id>", methods=["POST"])
 def add_to_wantlist(id):
-    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.wants.append(item)
@@ -287,7 +285,6 @@ def add_to_wantlist(id):
 
 @main.route("add_to_collection/<int:id>", methods=["POST"])
 def add_to_collection(id):
-    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.haves.append(item)
@@ -300,7 +297,6 @@ def add_to_collection(id):
 
 @main.route("remove_from_wantlist/<int:id>", methods=["POST"])
 def remove_from_wantlist(id):
-    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.wants.remove(item)
@@ -313,7 +309,6 @@ def remove_from_wantlist(id):
 
 @main.route("remove_from_collection/<int:id>", methods=["POST"])
 def remove_from_collection(id):
-    
     if current_user.is_authenticated:
         item = Item.query.get(id)
         current_user.haves.remove(item)
@@ -322,6 +317,7 @@ def remove_from_collection(id):
     else:
         pass
     return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
+
 
 @admin_required
 @main.route("delete/<int:id>", methods=["POST"])
@@ -338,7 +334,7 @@ def delete(id):
 @main.route("/item_search", methods=["POST"])
 def item_search():
     term = request.form["search"]
-   
+
     return redirect(url_for(".results", term=term))
 
 
@@ -363,6 +359,7 @@ def results(term):
         "search_results.html", items=items, pagination=pagination, term=term, num_results=num_results
     )
 
+
 @main.route("/social", methods=["GET", "POST"])
 def social():
     page = request.args.get("page", 1, type=int)
@@ -386,24 +383,24 @@ def item_edit(id):
         form_inputs = request.form
         item.gender = form_inputs["genderInput"]
         item.thumbnails = item.thumbnails.all() + [] if files == [] else thumbnail_list
-        item.brand_id=form_inputs["brandInput"]
-        item.brand_name=Brand.query.get(form_inputs["brandInput"]).name
-        item.name=form_inputs["nameInput"]
-        item.category_id= None if form_inputs["categoryInput"] == "" else form_inputs["categoryInput"]
-        item.subcategory_id=None if form_inputs["subcatInput"] == "" else form_inputs["subcatInput"]
-        item.description=form_inputs["description"]
-        item.season=form_inputs["seasonInput"]
+        item.brand_id = form_inputs["brandInput"]
+        item.brand_name = Brand.query.get(form_inputs["brandInput"]).name
+        item.name = form_inputs["nameInput"]
+        item.category_id = None if form_inputs["categoryInput"] == "" else form_inputs["categoryInput"]
+        item.subcategory_id = None if form_inputs["subcatInput"] == "" else form_inputs["subcatInput"]
+        item.description = form_inputs["description"]
+        item.season = form_inputs["seasonInput"]
         item.form_date = form_inputs["releaseInput"]
         item.fit = form_inputs["fitInput"]
         item.colors = [] if request.form.getlist('colorInput') == [] else \
-                [Color(name=color) for color in request.form.getlist('colorInput')]
-        item.materials = [] if request.form.getlist('materialsInput') == [] else\
-                [Material(name=material) for material in request.form.getlist('materialsInput')]
+            [Color(name=color) for color in request.form.getlist('colorInput')]
+        item.materials = [] if request.form.getlist('materialsInput') == [] else \
+            [Material(name=material) for material in request.form.getlist('materialsInput')]
         item.price = None if request.form.get('priceInput') == "None" or "" else float(request.form.get('priceInput'))
-        #first try and get the style id by looking up the input, if doesnt exist then create a new style object
-        item.styles = [] if request.form.getlist('styleInput') == [] else\
-                [Style(name=style) for style in request.form.getlist('styleInput')]
-        
+        # first try and get the style id by looking up the input, if doesnt exist then create a new style object
+        item.styles = [] if request.form.getlist('styleInput') == [] else \
+            [Style(name=style) for style in request.form.getlist('styleInput')]
+
         db.session.add(item)
         db.session.commit()
         return redirect(url_for(".item", id=item.id))
@@ -411,6 +408,7 @@ def item_edit(id):
     category = Category.query.get(item.category_id)
     subcategory = Subcategory.query.get(item.subcategory_id)
     return render_template("item_edit.html", item=item, brand=brand, category=category, subcategory=subcategory)
+
 
 @main.route("/user/edit/<int:id>", methods=["GET", "POST"])
 def user_edit(id):
@@ -451,14 +449,14 @@ def brand_edit(id):
 def new_brand():
     if request.method == "POST":
         form_inputs = request.form
-        brand = Brand(name= form_inputs["nameInput"],
-            about = form_inputs["aboutInput"])
+        brand = Brand(name=form_inputs["nameInput"],
+                      about=form_inputs["aboutInput"])
         files = request.form.getlist("filepond")
         thumbnail_list = []
         if files != []:
             for filename in files:
                 brand.thumbnail_filename = filename
-        
+
         db.session.add(brand)
         db.session.commit()
         brand_id = (Brand.query.order_by(desc(Brand.id)).first().id,)
@@ -467,14 +465,14 @@ def new_brand():
     return render_template("new_brand.html")
 
 
-
 def upload_image_from_src(url):
-        filename = str(uuid.uuid4()) + ".jpg"
-        s3_client = boto3.resource("s3")
-        bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
-        with urllib.request.urlopen(url) as f:
-                bucket.upload_fileobj(f, filename)
-        return filename
+    filename = str(uuid.uuid4()) + ".jpg"
+    s3_client = boto3.resource("s3")
+    bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
+    with urllib.request.urlopen(url) as f:
+        bucket.upload_fileobj(f, filename)
+    return filename
+
 
 @main.route("/shopify", methods=["GET", "POST"])
 def shopify():
@@ -484,17 +482,16 @@ def shopify():
         d = json.loads(r.content)
         products = d["products"]
         objs = []
-        for i in range(len(products)-20):
+        for i in range(len(products) - 20):
             print(str(i) + ' out of ' + str(len(products)))
             product = products[i]
-            objs.append(Item(name = product["title"],
-                brand_name=product["vendor"],
-                description=product["body_html"],
-                thumbnails=[Thumbnail(filename=upload_image_from_src(img["src"])) for img in product["images"]]))
+            objs.append(Item(name=product["title"],
+                             brand_name=product["vendor"],
+                             description=product["body_html"],
+                             thumbnails=[Thumbnail(filename=upload_image_from_src(img["src"])) for img in
+                                         product["images"]]))
 
         db.session.add_all(objs)
         db.session.commit()
 
     return render_template("shopify.html")
-
-

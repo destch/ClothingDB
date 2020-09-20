@@ -48,7 +48,7 @@ def register():
             user_id = User.query.order_by(User.id.desc()).first().id + 1
             filename = str(user_id) + secure_filename(f.filename)
             s3_client = boto3.resource("s3")
-            bucket = s3_client.Bucket("groovespotimages")
+            bucket = s3_client.Bucket("cf-simple-s3-origin-db-556603787203")
             bucket.Object(filename).put(Body=f)
         else:
             filename = "profile-img.png"
