@@ -4,7 +4,9 @@ from ..models import *
 from flask_login import current_user
 import requests
 from elasticsearch import Elasticsearch
+
 es = Elasticsearch(["http://elastic:daniel97@34.198.0.244:9200"])
+
 
 @api.route("/LoadItems", methods=["GET", "POST"])
 def load_items():
@@ -17,6 +19,7 @@ def load_items():
     formatted = {"results": [item.as_dict() for item in items]}
     return jsonify(formatted)
 
+
 @api.route("/Brand", methods=["GET", "POST"])
 def get_brands():
     term = request.args.get("term")
@@ -27,10 +30,12 @@ def get_brands():
     formatted = {"results": brands}
     return jsonify(formatted)
 
+
 @api.route("/Elasticsearch", methods=["GET", "POST"])
 def elasticsearch():
     term = request.args.get("term")
-    res = es.search(index="clothdb", body={"query": {"multi_match": {"query": term, "type": "cross_fields", "fields": ["name", "brand_name"]}}})
+    res = es.search(index="clothdb", body={
+        "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": ["name", "brand_name"]}}})
     res = res['hits']['hits']
     item_ids = [r['_source']["id"] for r in res]
     items = [x.as_dict() for x in Item.query.filter(Item.id.in_(item_ids)).all()]
@@ -55,7 +60,6 @@ def get_subcat():
     return jsonify(formatted)
 
 
-
 @api.route("/Style", methods=["GET", "POST"])
 def get_styles():
     term = request.args.get("term")
@@ -78,4 +82,3 @@ def delete_item():
         return Response(status=200)
     else:
         return Response(status=404)
-

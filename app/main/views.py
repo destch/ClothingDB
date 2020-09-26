@@ -1,4 +1,4 @@
-from flask import flash, render_template, request, make_response, redirect, url_for
+from flask import flash, render_template, request, make_response, redirect, url_for, abort
 from . import main
 from ..models import *
 from werkzeug.utils import secure_filename
@@ -12,6 +12,24 @@ import random
 import requests
 import json
 import urllib.request
+import functools
+from elasticsearch import Elasticsearch
+from sqlalchemy.sql.expression import case
+
+es = Elasticsearch(["http://elastic:daniel97@34.198.0.244:9200"])
+
+def validate_json(*expected_args):
+    def decorate_validate_json(func):
+        @functools.wraps(func)
+        def wrapper_validate_json(*args, **kwargs):
+            json_object = request.get_json()
+            for expected_arg in expected_args:
+                if expected_arg not in json_object:
+                    abort(400)
+                return func(*args, **kwargs)
+            return wrapper_validate_json
+
+        return decorate_validate_json
 
 
 @main.route("/", methods=["GET", "POST"])
@@ -231,11 +249,32 @@ def newCollection(id):
     return render_template("new_collection.html")
 
 
+@main.route("list/<int:id>", methods=["GET"])
+def list(id):
+    list = List.query.get(id)
+    looks = list.looks.all()
+    return render_template("list.html", list=list, looks=looks)
+
+
 @main.route("collection/<int:id>", methods=["GET", "POST"])
 def collection(id):
     collection_obj = Collection.query.get(id)
     looks = collection_obj.looks.all()
     return render_template("collection.html", collection_obj=collection_obj, looks=looks)
+
+
+@main.route("user-collection/<int:id>")
+def userCollection(id):
+    user = User.query.get(id)
+    haves = user.haves.all()
+    return render_template("userCollection.html", user=user, haves=haves)
+
+
+@main.route("edit-collection", methods=["GET", "POST"])
+def edit_collection():
+    if request.method == "POST":
+        pass
+    return render_template("edit_collection.html")
 
 
 @main.route("look/<int:id>", methods=["GET", "POST"])
@@ -334,25 +373,27 @@ def delete(id):
 @main.route("/item_search", methods=["POST"])
 def item_search():
     term = request.form["search"]
-
     return redirect(url_for(".results", term=term))
 
 
 @main.route("/results/<term>", methods=["GET", "POST"])
 def results(term):
+    page = request.args.get("page", 1, type=int)
     if request.method == "POST":
         term = request.form["search"]
-    multi_term = term.split()
-    if len(multi_term) > 1:
-        search_syntax = "%" + "".join([t + "%" for t in multi_term])
-    else:
-        search_syntax = "%" + term + "%"
-    page = request.args.get("page", 1, type=int)
-    query = Item.query.filter(Item.deleted != 1)
-    query = query.filter(
-        or_(Item.name.ilike(search_syntax), Item.brand_name.ilike(search_syntax))
+
+    res = es.search(index="clothdb", body={
+        "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": ["name", "brand_name"]}}}, size=100)
+    res = res['hits']['hits']
+    item_ids = [r['_source']["id"] for r in res]
+    ordering = case(
+        {id: index for index, id in enumerate(item_ids)},
+        value=Item.id
     )
+    query = Item.query.filter(Item.id.in_(item_ids)).order_by(ordering)
     num_results = len(query.all())
+    if num_results == 100:
+        num_results = "100+"
     pagination = query.paginate(page, per_page=16, error_out=False)
     items = pagination.items
     return render_template(

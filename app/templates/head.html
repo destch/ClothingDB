@@ -16,7 +16,7 @@
     gtag('config', 'UA-172139990-1');
     </script>
     <script data-ad-client="ca-pub-7032189625521419" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <link rel="icon" href="../static/icon.ico">
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
       <meta name="description" content="">
@@ -36,7 +36,7 @@
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
       <!-- Custom styles for this template -->
-      <link href="../static/css/heroic-features.css" rel="stylesheet">
+      <link href="{{ url_for('static', filename='css/heroic-features.css') }}" rel="stylesheet">
       <style>
       .jumbotron {background-size: auto 100%;
       background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%),url("https://images.unsplash.com/photo-1529720317453-c8da503f2051?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") ;
@@ -50,7 +50,7 @@
         src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
         crossorigin="anonymous"></script>
-      <script src="../static/js/search.js"></script>
+      <script src="{{ url_for('static', filename='js/search.js') }}"></script>
       
 
       <!-- MIXPANEL IMPLEMENTATION -->
@@ -63,13 +63,13 @@
 
 
 
-      <!-- add to document <head> -->
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+            <!-- add to document <head> -->
+      <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 
-<!-- add to document <head> -->
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-<link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet">
+      <!-- add to document <head> -->
+      <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+      <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+      <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet">
 
 
       
@@ -103,7 +103,7 @@
               </a>
               {% if current_user.is_authenticated %}
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href={{url_for('main.collection', id=current_user.id)}}>Collection</a>
+                  <a class="dropdown-item" href={{url_for('main.userCollection', id=current_user.id)}}>Collection</a>
                   <a class="dropdown-item" href="{{url_for('main.wantlist', id=current_user.id)}}">Wantlist</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{{url_for('main.user', id=current_user.id)}}">Profile</a>

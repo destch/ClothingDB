@@ -1,0 +1,58 @@
+{% include 'head.html' %}
+<!-- Include stylesheet -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<!-- Create the editor container -->
+<div class="container">
+    <form method='POST' enctype='multipart/form-data'>
+        <div class="form-group">
+            <label>Upload a Thumbnail</label>
+            <input type="file" name="fileInput" class="form-control-file" id="exampleFormControlFile1"
+                   accept=".jpg,.png,.gif,.webp">
+        </div>
+        <div class="form-group">
+            <label>Name of Collection</label>
+            <input name="nameInput" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="Description">About the Collection</label>
+            <div id="editor">
+                <p>Hello World!</p>
+                <p>Some initial <strong>bold</strong> text</p>
+                <p><br></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Description">Designer (not necessarily the brand)</label>
+            <textarea class="form-control" rows="1" id="designer" name="designerInput"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Description">Year</label>
+            <textarea class="form-control" rows="1" id="year" name="yearInput"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Description">Season</label>
+            <textarea class="form-control" rows="1" id="season" name="seasonInput"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Style">Styles that describe the Collection:</label><br>
+            <select class="form-control" id="selectStyle" style="width:1110px" name="styleInput" multiple>
+                <option value="">e.g. Normcore, Prep, Streetwear</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+<!-- Include the Quill library -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+
+
+</script>
