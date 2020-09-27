@@ -1,6 +1,5 @@
 # This file must be used with "source bin/activate" *from bash*
 # you cannot run it directly
-export DEV_DATABSE_URL="postgresql://danielchavez:daniel97@ec2-34-198-0-244.compute-1.amazonaws.com/ClothDB_DEV?statusColor=686B6F&enviroment=development&name=ClothDB_DEV"
 
 deactivate () {
     # reset old environment variables
