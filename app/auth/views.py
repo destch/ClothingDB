@@ -14,6 +14,7 @@ from .forms import (
 from werkzeug.utils import secure_filename
 import boto3
 from mixpanel import Mixpanel
+mp = Mixpanel("18e48de5bfb0ffaa3e4f35e6455abad7")
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
@@ -62,8 +63,12 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash("Thanks for registering!")
-        old_id = current_user.id
         login_user(user)
+        mp.alias(str(current_user.id))
+        mp.people_set(str(current_user.id), {
+            '$username': form.username.data,
+            '$email': form.email.data.lower()
+        }, meta={'$ignore_time': 'true', '$ip': 0})
         return redirect(url_for("main.index"))
     else:
         for error in form.errors:

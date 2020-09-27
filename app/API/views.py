@@ -4,8 +4,21 @@ from ..models import *
 from flask_login import current_user
 import requests
 from elasticsearch import Elasticsearch
-
+from mixpanel import Mixpanel
+mp = Mixpanel("18e48de5bfb0ffaa3e4f35e6455abad7")
 es = Elasticsearch(["http://elastic:daniel97@34.198.0.244:9200"])
+
+@api.route('/Identify', methods=["GET"])
+def identify():
+    if current_user.is_authenticated:
+        id = str(current_user.id)
+        mp.people_set(id, {
+            '$username': current_user.username,
+            '$email': current_user.email
+        })
+        return jsonify(id)
+    else:
+        return jsonify(None)
 
 
 @api.route("/LoadItems", methods=["GET", "POST"])

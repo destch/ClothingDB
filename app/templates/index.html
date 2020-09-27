@@ -6,24 +6,46 @@
 <script src="../static/js/itemloader.js"></script>
 
 
-
 <!-- Page Content -->
 <div class="container">
-	<!-- Jumbotron Header -->
-	<header class="jumbotron my-4">
-		<h1 class="display-3">Welcome to ClothDB.</h1>
-		<p class="lead">ClothDB helps you find information about the clothes you love.</p>
-		{% if current_user.is_authenticated %}
-		{% else %}
-		<button type="button" class="btn btn-success">Create an Account to Get Started</button>
-		{% endif %}
-	</header>
-	<!-- Header -->
+    <!-- Jumbotron Header -->
+    <header class="jumbotron my-4">
+        <h1 class="display-3">Welcome to ClothDB.</h1>
+        <p class="lead">ClothDB helps you find information about the clothes you love.</p>
+        {% if current_user.is_authenticated %}
+        {% else %}
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+            Create an Account to Get Started
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	<h3><span>Item Feed</span></h3>
+        {% endif %}
+    </header>
+    <!-- Header -->
 
-	<br>
-	{% include 'product_grid.html' %}
+    <h3><span>Item Feed</span></h3>
+
+    <br>
+    {% include 'product_grid.html' %}
 </div>
 <!-- /.container -->
 
