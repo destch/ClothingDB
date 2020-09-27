@@ -485,6 +485,9 @@ def brand_edit(id):
         return redirect(url_for(".brand", id=brand.id))
     return render_template("brand_edit.html", brand=brand)
 
+@main.route("/about", methods=["GET"])
+def about():
+    return render_template("about.html")
 
 @main.route("/new_brand", methods=["GET", "POST"])
 def new_brand():
