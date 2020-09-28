@@ -64,8 +64,8 @@ def register():
         db.session.commit()
         flash("Thanks for registering!")
         login_user(user)
-        mp.alias(str(current_user.id))
-        mp.people_set(str(current_user.id), {
+        mp.alias(str(user.id))
+        mp.people_set(str(user.id), {
             '$username': form.username.data,
             '$email': form.email.data.lower()
         }, meta={'$ignore_time': 'true', '$ip': 0})
