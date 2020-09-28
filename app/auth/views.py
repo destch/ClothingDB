@@ -64,11 +64,11 @@ def register():
         db.session.commit()
         flash("Thanks for registering!")
         login_user(user)
-        mp.identify(str(user.id))
-        mp.people_set(str(user.id), {
-            '$username': form.username.data,
-            '$email': form.email.data.lower()
-        }, meta={'$ignore_time': 'true', '$ip': 0})
+        #mp.identify(str(user.id))
+        #mp.people_set(str(user.id), {
+        #    '$username': form.username.data,
+        #    '$email': form.email.data.lower()
+        #}, meta={'$ignore_time': 'true', '$ip': 0})
         return redirect(url_for("main.index"))
     else:
         for error in form.errors:
