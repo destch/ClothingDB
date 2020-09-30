@@ -5,7 +5,7 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import json
-db_url = 'postgresql://danielchavez:daniel97@ec2-34-198-0-244.compute-1.amazonaws.com/ClothDB_DEV'
+db_url = #
 engine = create_engine(db_url)
 Session = sessionmaker(bind=engine)  
 session = Session()

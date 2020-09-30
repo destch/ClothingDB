@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 #database setup
-db_url = 'postgresql://danielchavez:daniel97@ec2-34-198-0-244.compute-1.amazonaws.com/ClothDB_PROD'
+db_url = #
 engine = create_engine(db_url)
 Session = sessionmaker(bind=engine)  
 sess = Session()
