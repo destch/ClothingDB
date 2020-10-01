@@ -171,7 +171,8 @@ class Item(SearchableMixin, db.Model):
     metadata_id = db.Column(db.Integer, db.ForeignKey("item_metadata.id"))
     edits = db.relationship("ItemEdit", backref="items", lazy="dynamic")
     gender = db.Column(db.String)
-
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def __repr__(self):
         return "<Item %r>" % self.name
