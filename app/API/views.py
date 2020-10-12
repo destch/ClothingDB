@@ -1,4 +1,4 @@
-from flask import jsonify, request, render_template, redirect, Response
+from flask import jsonify, request, render_template, redirect, Response, current_app
 from . import api
 from ..models import *
 from flask_login import current_user
@@ -6,7 +6,6 @@ import requests
 from elasticsearch import Elasticsearch
 from mixpanel import Mixpanel
 mp = Mixpanel("18e48de5bfb0ffaa3e4f35e6455abad7")
-es = Elasticsearch(["http://elastic:daniel97@34.198.0.244:9200"])
 
 @api.route('/Identify', methods=["GET"])
 def identify():
@@ -47,11 +46,12 @@ def get_brands():
 @api.route("/Elasticsearch", methods=["GET", "POST"])
 def elasticsearch():
     term = request.args.get("term")
-    res = es.search(index="clothdb", body={
-        "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": ["name", "brand_name"]}}})
+    res = current_app.elasticsearch.search(index="items", body={
+        "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": Item.__searchable__}}})
     res = res['hits']['hits']
-    item_ids = [r['_source']["id"] for r in res]
+    item_ids = [r["_id"] for r in res]
     items = [x.as_dict() for x in Item.query.filter(Item.id.in_(item_ids)).all()]
+    items.reverse()
     formatted = {"items": items}
     return jsonify(formatted)
 

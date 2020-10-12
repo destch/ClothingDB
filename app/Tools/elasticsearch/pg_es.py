@@ -1,7 +1,7 @@
 import json
 
 #create metadata lambda function
-metadata = lambda id: '{"index":{"_index":"ClothDB","_type":"item","_id":"%s"}'%id
+metadata = lambda id: '{"index":{"_index":"items","_id":"%s"}'%id
 
 filename = 'es_pre.json'
 

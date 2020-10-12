@@ -9,7 +9,7 @@ import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from elasticsearch import Elasticsearch
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={"autoflush": False})
 bootstrap = Bootstrap()
 login_manager = LoginManager()
 

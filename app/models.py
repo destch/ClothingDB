@@ -5,7 +5,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from . import login_manager
-from flask import request
+from flask import request, jsonify
 from app.search import add_to_index, remove_from_index, query_index
 
 
@@ -30,7 +30,7 @@ class SearchableMixin(object):
         }
 
     @classmethod
-    def after_commit(cls, session):
+    def after_flush(cls, session, flush_context):
         for obj in session._changes['add']:
             if isinstance(obj, SearchableMixin):
                 add_to_index(obj.__tablename__, obj)
@@ -47,9 +47,9 @@ class SearchableMixin(object):
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
 
-db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
-db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
+db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
+db.event.listen(db.session, 'after_flush_postexec', SearchableMixin.after_flush)
 
 
 class Permission:
@@ -58,8 +58,6 @@ class Permission:
     WRITE = 4
     MODERATE = 8
     ADMIN = 16
-
-
 
 
 @login_manager.user_loader
@@ -128,11 +126,13 @@ item_registrations = db.Table(
 )
 
 
-
 # item
 class Item(SearchableMixin, db.Model):
     __tablename__ = "items"
-    __searchable__ = ['name', 'brand_name', 'description']
+    __searchable__ = ['name', 'brands', 'description', 'form_date', 'gender', 'categories', 'subcategories', 'season',
+                      'fit']
+    __searchableList__ = ['colors', 'materials', 'styles']
+    __filterable__ = ['']
     id = db.Column(db.Integer, primary_key=True)
     deleted = db.Column(db.Integer, default=0)
     name = db.Column(db.String)
@@ -178,7 +178,8 @@ class Item(SearchableMixin, db.Model):
         return "<Item %r>" % self.name
 
     def as_dict(self):
-        return {'id': self.id, "brand": self.brand_name, "name": self.name,"brand_id":self.brand_id, "thumbnails": [res.filename for res in self.thumbnails.all()]}
+        return {'id': self.id, "brand": self.brand_name, "name": self.name,"brand_id":self.brand_id,
+                "thumbnails": [res.filename for res in self.thumbnails.all()]}
 
 
 class ItemMetadata(db.Model):
@@ -189,6 +190,7 @@ class ItemMetadata(db.Model):
     submitter = db.Column(db.Integer, db.ForeignKey("users.id"))
     field_edited = db.Column(db.String)
 
+
 class Category(db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
@@ -196,7 +198,7 @@ class Category(db.Model):
     items = db.relationship("Item", backref="categories", lazy="dynamic")
 
     def __repr__(self):
-        return "<Category %r>" % self.name
+        return self.name
 
 
 class Subcategory(db.Model):
@@ -206,7 +208,7 @@ class Subcategory(db.Model):
     items = db.relationship("Item", backref="subcategories", lazy="dynamic")
 
     def __repr__(self):
-        return "<Subcategory %r>" % self.name
+        return self.name
 
 
 class Brand(db.Model):
@@ -219,7 +221,7 @@ class Brand(db.Model):
     collections = db.relationship("Collection", backref="brand", lazy="dynamic")
 
     def __repr__(self):
-        return "<Brand %r>" % self.name
+        return self.name
 
     def as_dict(self):
         return {"id": self.id, "text": self.name}
@@ -231,7 +233,7 @@ class Material(db.Model):
     name = db.Column(db.String)
 
     def __repr__(self):
-        return "<Material %r>" % self.name
+        return self.name
 
 
 class Color(db.Model):
@@ -240,7 +242,7 @@ class Color(db.Model):
     name = db.Column(db.String)
 
     def __repr__(self):
-        return "<Color %r>" % self.name
+        return self.name
 
 
 class ItemEdit(db.Model):
@@ -259,7 +261,7 @@ class Style(db.Model):
     name = db.Column(db.String)
 
     def __repr__(self):
-        return "<Style %r>" % self.name
+        return self.name
 
     def as_dict(self):
         return {"id": self.id, "text": self.name}
@@ -275,6 +277,8 @@ class Thumbnail(db.Model):
 
     def __repr__(self):
         return "<Filename %r>" % self.filename
+
+
 
 
 class User(UserMixin, db.Model):
@@ -305,18 +309,15 @@ class User(UserMixin, db.Model):
     lists = db.relationship("List", backref="author", lazy="dynamic")
 
     def __init__(self, **kwargs):
-            super(User, self).__init__(**kwargs)
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == 'daniel.chavez9797@gmail.com':
+                self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
-                if self.email == 'daniel.chavez9797@gmail.com':
-                    self.role = Role.query.filter_by(name='Administrator').first()
-                if self.role is None:
-                    self.role = Role.query.filter_by(default=True).first()
-
-
+                self.role = Role.query.filter_by(default=True).first()
 
     def can(self, perm):
-            return self.role is not None and self.role.has_permission(perm)
-
+        return self.role is not None and self.role.has_permission(perm)
 
     def is_administrator(self):
         return self.email == "daniel.chavez9797@gmail.com"
@@ -339,14 +340,12 @@ class User(UserMixin, db.Model):
 class AnonymousUser(AnonymousUserMixin):
     def __init__(self):
         self.id = request.remote_addr
-    
+
     def is_administrator(self):
         return False
 
 
 login_manager.anonymous_user = AnonymousUser
-
-
 
 
 class Role(db.Model):
@@ -402,7 +401,6 @@ class Role(db.Model):
         return '<Role %r>' % self.name
 
 
-
 class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
@@ -426,6 +424,7 @@ class List(db.Model):
     looks = db.relationship("Look", backref="lists", lazy="dynamic")
     comments = db.relationship("Comment", backref="lists", lazy="dynamic")
 
+
 class Collection(db.Model):
     __tablename__ = "collections"
     id = db.Column(db.Integer, primary_key=True)
@@ -440,14 +439,15 @@ class Collection(db.Model):
     designer = db.Column(db.String)
     looks = db.relationship("Look", backref="collection", lazy="dynamic")
     comments = db.relationship("Comment", backref="collections", lazy="dynamic")
-    thumbnails = db.relationship("Thumbnail", backref="collections", lazy="dynamic") 
+    thumbnails = db.relationship("Thumbnail", backref="collections", lazy="dynamic")
     styles = db.relationship(
         "Style",
         secondary=style_registrations,
         backref=db.backref("collections", lazy="dynamic"),
         lazy="dynamic",
     )
-    #video_links = 
+    # video_links =
+
 
 class Look(db.Model):
     __tablename__ = "looks"
@@ -459,7 +459,7 @@ class Look(db.Model):
     description = db.Column(db.Text)
     date = db.Column(db.DateTime())
     comments = db.relationship("Comment", backref="looks", lazy="dynamic")
-    thumbnails = db.relationship("Thumbnail", backref="looks", lazy="dynamic") 
+    thumbnails = db.relationship("Thumbnail", backref="looks", lazy="dynamic")
     items = db.relationship(
         "Item",
         secondary=item_registrations,
@@ -475,6 +475,7 @@ class Look(db.Model):
 
     def __repr__(self):
         return "<Look %r>" % self.name
+
 
 class Seller(db.Model):
     __tablename__ = "sellers"

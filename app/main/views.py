@@ -1,4 +1,4 @@
-from flask import flash, render_template, request, make_response, redirect, url_for, abort
+from flask import flash, render_template, request, make_response, redirect, url_for, abort, current_app
 from . import main
 from ..models import *
 from werkzeug.utils import secure_filename
@@ -15,8 +15,6 @@ import urllib.request
 import functools
 from elasticsearch import Elasticsearch
 from sqlalchemy.sql.expression import case
-
-es = Elasticsearch(["http://elastic:daniel97@34.198.0.244:9200"])
 
 def validate_json(*expected_args):
     def decorate_validate_json(func):
@@ -54,14 +52,13 @@ def new_item():
             for filename in files:
                 thumbnail_list.append(Thumbnail(filename=filename))
         form_inputs = request.form
-
         item = Item(
             # gender = form_inputs["genderInput"],
             thumbnails=[] if files == [] else thumbnail_list,
             brand_id=form_inputs["brandInput"],
             brand_name=Brand.query.get(form_inputs["brandInput"]).name,
-            name=form_inputs["nameInput"],
             category_id=None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
+            name=form_inputs["nameInput"],
             subcategory_id=None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
             description=form_inputs["description"],
             season=form_inputs["seasonInput"],
@@ -78,7 +75,6 @@ def new_item():
         )
         db.session.add(item)
         db.session.commit()
-        item_id = Item.query.order_by(desc(Item.id)).first().id
         return redirect(url_for(".item", id=item.id))
 
     return render_template("new_item.html")
@@ -382,10 +378,10 @@ def results(term):
     if request.method == "POST":
         term = request.form["search"]
 
-    res = es.search(index="clothdb", body={
-        "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": ["name", "brand_name"]}}}, size=100)
+    res = current_app.elasticsearch.search(index="items", body={
+        "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": Item.__searchable__}}}, size=100)
     res = res['hits']['hits']
-    item_ids = [r['_source']["id"] for r in res]
+    item_ids = [r["_id"] for r in res]
     ordering = case(
         {id: index for index, id in enumerate(item_ids)},
         value=Item.id
@@ -485,9 +481,11 @@ def brand_edit(id):
         return redirect(url_for(".brand", id=brand.id))
     return render_template("brand_edit.html", brand=brand)
 
+
 @main.route("/about", methods=["GET"])
 def about():
     return render_template("about.html")
+
 
 @main.route("/new_brand", methods=["GET", "POST"])
 def new_brand():
