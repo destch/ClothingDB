@@ -248,7 +248,7 @@ def newCollection(id):
 @main.route("list/<int:id>", methods=["GET"])
 def list(id):
     list = List.query.get(id)
-    looks = list.looks.all()
+    looks = None#list.looks.all()
     return render_template("list.html", list=list, looks=looks)
 
 
@@ -516,24 +516,3 @@ def upload_image_from_src(url):
     return filename
 
 
-@main.route("/shopify", methods=["GET", "POST"])
-def shopify():
-    if request.method == "POST":
-        url = request.form["url"] + 'products.json'
-        r = requests.get(url)
-        d = json.loads(r.content)
-        products = d["products"]
-        objs = []
-        for i in range(len(products) - 20):
-            print(str(i) + ' out of ' + str(len(products)))
-            product = products[i]
-            objs.append(Item(name=product["title"],
-                             brand_name=product["vendor"],
-                             description=product["body_html"],
-                             thumbnails=[Thumbnail(filename=upload_image_from_src(img["src"])) for img in
-                                         product["images"]]))
-
-        db.session.add_all(objs)
-        db.session.commit()
-
-    return render_template("shopify.html")

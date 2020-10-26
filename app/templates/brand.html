@@ -9,64 +9,88 @@
 
 
 <div class="container">
-	<div class="page-header">
-		{% if brand.thumbnail_filename %}
-		<img class="img-rounded profile-thumbnail" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~ brand.thumbnail_filename}} height="256" width="256">
-		{% else %}
-		<img class="img-rounded profile-thumbnail" src="https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png" height="256" width="256">
-		{% endif %}
-		<div class="profile-header">
-			<h1>{{ brand.name}}</h1>
-			<div style="white-space: pre-wrap;">
-				{% if brand.about %}
-				{{brand.about}}
-				{% else %}
-				No info for this brand yet, feel free to contribute by editing this page
-				{% endif %}
-			</div>
-			{% if current_user.is_authenticated %}
-			<a href="{{url_for('main.brand_edit', id=brand.id)}}" class="btn btn-secondary" id="edit">Edit</a>
-			{% endif %}
-			
-			
-			
-			
-		</div>
-	</div>
-	<br>
-	
-	<h3>Collections by {{ brand.name }}</h3>
-	<a class="btn btn-primary" href="{{ url_for('.newCollection', id=brand.id) }}">Add a Collection</a>
-	<br>
-	<br>
-	<div class="container" id="collection-table-container">
-		<table class="table" id="collection-table">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">Release Date</th>
-					<th scope="col">Collection</th>
-					<th scope="col">Season</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for collection in brand.collections %}
-				<tr>
-					<td>{{ collection.year }}</td>
-					<td><a href="{{url_for('main.collection', id=collection.id)}}">{{collection.name}}</a></td>
-					<td>{{collection.season}}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+    <div class="row mb-4">
+        <div class="col-sm-3">
+            {% if brand.thumbnail_filename %}
+            <img class="img-thumbnail" src={{"https://d2x1mfjcaooqwx.cloudfront.net/" ~
+                 brand.thumbnail_filename}} height="256" width="256">
+            {% else %}
+            <img class="img-thumbnail"
+                 src="https://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder-350x350.png"
+                 height="256"
+                 width="256">
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <h1>{{brand.name}}</h1>
+        </div>
 
-	</div>
-	<br>
+    </div>
 
-	<h3>Items by {{ brand.name }}</h3>
-	{% include 'product_grid.html' %}
-	{% if pagination %}
-	<div class="pagination">
-		{{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
-	</div>
-	{% endif %}
+    <div id="module" class="container">
+        <div class="row mb-4">
+            <div class="col-sm-10 col-12">
+                <h3>
+                    About {{brand.name}}
+                </h3>
+            </div>
+            <div class="col-sm-2 col-12">
+                <a href="{{url_for('main.brand_edit', id=brand.id)}}"
+                   class="btn btn-primary btn-md">Edit</a>
+            </div>
+        </div>
+        {% if brand.about %}
+        <p class="collapse" id="collapseExample" aria-expanded="false" style="white-space: pre-wrap">{{brand.about}}</p>
+        <a role="button" id="showMore" class="collapsed" data-toggle="collapse" href="#collapseExample"
+           aria-expanded="false"
+           aria-controls="collapseExample"></a>
+        {% else %}
+        <p>No info for this brand yet, feel free to contribute by editing this page</p>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+        {% endif %}
+    </div>
+
+    <br>
+    <div class="container" style="padding:0">
+        <div class="row mb-3">
+            <div class="col-sm-10 col-12">
+    <h3>Collections by {{ brand.name }}</h3>
+                </div>
+            <div class="col-sm-2 col-12">
+    <a class="btn btn-primary btn-md" href="{{ url_for('.newCollection', id=brand.id) }}">Add Collection</a>
+                </div>
+            </div>
+
+    <div class="container" id="collection-table-container">
+        <table class="table" id="collection-table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Release Date</th>
+                <th scope="col">Collection</th>
+                <th scope="col">Season</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for collection in brand.collections %}
+            <tr>
+                <td>{{ collection.year }}</td>
+                <td><a href="{{url_for('main.collection', id=collection.id)}}">{{collection.name}}</a></td>
+                <td>{{collection.season}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+        </div>
+    <br>
+
+    <h3>Items by {{ brand.name }}</h3>
+    {% include 'product_grid.html' %}
+    {% if pagination %}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
+    </div>
+    {% endif %}
 </div>
