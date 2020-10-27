@@ -26,7 +26,7 @@
         </div>
 
     </div>
-
+    <hr/>
     <div id="module" class="container">
         <div class="row mb-4">
             <div class="col-sm-10 col-12">
@@ -50,47 +50,60 @@
         {% if current_user.is_authenticated %}
         {% endif %}
     </div>
-
-    <br>
+    <hr/>
     <div class="container" style="padding:0">
         <div class="row mb-3">
             <div class="col-sm-10 col-12">
-    <h3>Collections by {{ brand.name }}</h3>
-                </div>
+                <h3>Collections by {{ brand.name }}</h3>
+            </div>
             <div class="col-sm-2 col-12">
-    <a class="btn btn-primary btn-md" href="{{ url_for('.newCollection', id=brand.id) }}">Add Collection</a>
-                </div>
+                <a class="btn btn-primary btn-md" href="{{ url_for('.newCollection', id=brand.id) }}">Add Collection</a>
             </div>
 
-    <div class="container" id="collection-table-container">
-        <table class="table" id="collection-table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Release Date</th>
-                <th scope="col">Collection</th>
-                <th scope="col">Season</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for collection in brand.collections %}
-            <tr>
-                <td>{{ collection.year }}</td>
-                <td><a href="{{url_for('main.collection', id=collection.id)}}">{{collection.name}}</a></td>
-                <td>{{collection.season}}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
 
-    </div>
         </div>
-    <br>
 
-    <h3>Items by {{ brand.name }}</h3>
-    {% include 'product_grid.html' %}
-    {% if pagination %}
-    <div class="pagination">
-        {{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
+        <div class="collapse" id="collapseExample2">
+            <div class="container" id="collection-table-container">
+                <table class="table" id="collection-table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Release Year</th>
+                        <th scope="col">Collection</th>
+                        <th scope="col">Season</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for collection in brand.collections %}
+                    <tr>
+                        <td>{{ collection.year }}</td>
+                        <td><a href="{{url_for('main.collection', id=collection.id)}}">{{collection.name}}</a></td>
+                        <td>{{collection.season}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <a role="button" id="showMore2" class="collapsed" data-toggle="collapse" href="#collapseExample2"
+           aria-expanded="false"
+           aria-controls="collapseExample2"></a>
+        <hr/>
+
+
+
+
+        <div class="container" style="padding:0">
+            <h3>Items by {{ brand.name }}</h3>
+            {% include 'product_grid.html' %}
+            {% if pagination %}
+            <div class="pagination">
+                {{ macros.pagination_widget(pagination, '.brand', id=brand.id) }}
+            </div>
+            {% endif %}
+        </div>
+
+
     </div>
-    {% endif %}
 </div>

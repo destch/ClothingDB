@@ -21,7 +21,7 @@ $(document).ready(function () {
             },
             select: function (event, ui) {
 
-              window.location.replace("item/" + ui.item.id);
+              window.location.replace("/item/" + ui.item.id);
 
                 return false;
             }

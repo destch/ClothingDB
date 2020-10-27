@@ -243,10 +243,41 @@ box-sizing: border-box;}
   content: '+ Show More';
 }
 
-#module #edit {
-  content: 'Edit';
+#showMore:not(.collapsed)::after {
+  content: '- Show Less';
+}
+#collapseExample2.collapse:not(.show) {
+  display: block;
+  height: 0rem;
+  overflow: hidden;
 }
 
-#module #showMore:not(.collapsed)::after {
-  content: '- Show Less';
+#collapseExample2.collapsing {
+  height: 3rem;
+}
+
+#showMore2.collapsed::after {
+  content: '+ Show Collections';
+}
+
+#showMore2:not(.collapsed)::after {
+  content: '- Hide Collections';
+}
+
+#collapseExample3.collapse:not(.show) {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+}
+
+#collapseExample3.collapsing {
+  height: 3rem;
+}
+
+#showMore3.collapsed::after {
+  content: '+ Show Items';
+}
+
+#showMore3:not(.collapsed)::after {
+  content: '- Hide Items';
 }

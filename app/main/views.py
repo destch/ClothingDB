@@ -16,19 +16,6 @@ import functools
 from elasticsearch import Elasticsearch
 from sqlalchemy.sql.expression import case
 
-def validate_json(*expected_args):
-    def decorate_validate_json(func):
-        @functools.wraps(func)
-        def wrapper_validate_json(*args, **kwargs):
-            json_object = request.get_json()
-            for expected_arg in expected_args:
-                if expected_arg not in json_object:
-                    abort(400)
-                return func(*args, **kwargs)
-            return wrapper_validate_json
-
-        return decorate_validate_json
-
 
 @main.route("/", methods=["GET", "POST"])
 def index():
@@ -52,27 +39,25 @@ def new_item():
             for filename in files:
                 thumbnail_list.append(Thumbnail(filename=filename))
         form_inputs = request.form
-        item = Item(
-            # gender = form_inputs["genderInput"],
-            thumbnails=[] if files == [] else thumbnail_list,
-            brand_id=form_inputs["brandInput"],
-            brand_name=Brand.query.get(form_inputs["brandInput"]).name,
-            category_id=None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
-            name=form_inputs["nameInput"],
-            subcategory_id=None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
-            description=form_inputs["description"],
-            season=form_inputs["seasonInput"],
-            form_date=form_inputs["releaseInput"],
-            fit=form_inputs["fitInput"],
-            colors=[] if request.form.getlist('colorInput') == [] else \
-                [Color(name=color) for color in request.form.getlist('colorInput')],
-            materials=[] if request.form.getlist('materialsInput') == [] else \
-                [Material(name=material) for material in request.form.getlist('materialsInput')],
-            price=None if request.form.get('priceInput') == '' else \
-                request.form.get('priceInput'),
-            styles=[] if request.form.getlist('styleInput') == [] else \
-                [Style(name=style) for style in request.form.getlist('styleInput')],
-        )
+        item = Item(thumbnails=[] if files == [] else thumbnail_list,
+                    brand_id=form_inputs["brandInput"],
+                    brand_name=Brand.query.get(form_inputs["brandInput"]).name,
+                    category_id=None if form_inputs["categoryInput"] == "0" else form_inputs["categoryInput"],
+                    name=form_inputs["nameInput"],
+                    subcategory_id=None if form_inputs["subcatInput"] == "0" else form_inputs["subcatInput"],
+                    description=form_inputs["description"],
+                    season=form_inputs["seasonInput"],
+                    form_date=form_inputs["releaseInput"],
+                    fit=form_inputs["fitInput"],
+                    colors=[] if request.form.getlist('colorInput') == [] else \
+                        [Color(name=color) for color in request.form.getlist('colorInput')],
+                    materials=[] if request.form.getlist('materialsInput') == [] else \
+                        [Material(name=material) for material in request.form.getlist('materialsInput')],
+                    price=None if request.form.get('priceInput') == '' else \
+                        request.form.get('priceInput'),
+                    styles=[] if request.form.getlist('styleInput') == [] else \
+                        [Style(name=style) for style in request.form.getlist('styleInput')],
+                    )
         db.session.add(item)
         db.session.commit()
         return redirect(url_for(".item", id=item.id))
@@ -248,7 +233,7 @@ def newCollection(id):
 @main.route("list/<int:id>", methods=["GET"])
 def list(id):
     list = List.query.get(id)
-    looks = None#list.looks.all()
+    looks = None  # list.looks.all()
     return render_template("list.html", list=list, looks=looks)
 
 
@@ -514,5 +499,3 @@ def upload_image_from_src(url):
     with urllib.request.urlopen(url) as f:
         bucket.upload_fileobj(f, filename)
     return filename
-
-

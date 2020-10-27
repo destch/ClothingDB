@@ -10,13 +10,13 @@ $('document').ready(function(){
 	var grid = document.querySelector("#productGrid")
 	var template = document.querySelector("#product")
 	var page = 2
-	$(window).scroll(function() {
-   		if($(window).scrollTop() + $(window).height() == $(document).height()) {
-       		$.ajax({
+    var params = ""
+    function updateData(params) {
+        return $.ajax({
 		        url: "/api/LoadItems",
 		        type: 'GET',
 		        dataType: 'json',
-		        data: {"page": page}, // added data type
+		        data: {"page": page, "params": params}, // added data type
 		        success: function(res) {
 		        	var items = ''
 		        	var results = res.results
@@ -44,6 +44,19 @@ $('document').ready(function(){
 		        	page++
 		        }
 		    });
+    }
+
+
+	$("#btnFilter").click(function(){
+        $("#productGrid").empty();
+        page = 1;
+        params = "RICK OWENS"
+        updateData(params);
+    });
+
+	$(window).scroll(function() {
+   		if($(window).scrollTop() + $(window).height() == $(document).height()) {
+       		updateData(params);
    		}
 	});
 

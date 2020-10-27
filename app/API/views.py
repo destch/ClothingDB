@@ -22,8 +22,12 @@ def identify():
 
 @api.route("/LoadItems", methods=["GET", "POST"])
 def load_items():
-    query = Item.query.filter(Item.deleted != 1)
     page = request.args.get("page", 1, type=int)
+    params = request.args.get("params", None)
+    if params:
+        query = Item.query.filter(Item.deleted != 1).filter(Item.brand_name == params)
+    else:
+        query = Item.query.filter(Item.deleted != 1)
     pagination = query.order_by(Item.id.desc()).paginate(
         page, per_page=16, error_out=False
     )
@@ -50,7 +54,7 @@ def elasticsearch():
         "query": {"multi_match": {"query": term, "type": "cross_fields", "fields": Item.__searchable__}}})
     res = res['hits']['hits']
     item_ids = [r["_id"] for r in res]
-    items = [x.as_dict() for x in Item.query.filter(Item.id.in_(item_ids)).all()]
+    items = [x.as_dict() for x in Item.query.filter(Item.id.in_(item_ids)).filter(Item.deleted != 1).all()]
     items.reverse()
     formatted = {"items": items}
     return jsonify(formatted)
