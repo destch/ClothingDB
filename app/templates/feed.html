@@ -4,49 +4,39 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/mp_feed.js') }}"></script>
 
 <div id="loadingDiv">
-  <div class="cv-spinner">
-    <span class="spinner"></span>
-  </div>
+    <div class="cv-spinner">
+        <span class="spinner"></span>
+    </div>
 </div>
 
 
 <!-- Page Content -->
 <div class="container" id="feed-container">
-  <!-- Header -->
-  <div class="row mb-4">
-    <div class="col-sm-10">
-      <h3>Explore</h3>
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <h2>Explore Items</h2>
+        </div>
+
+
     </div>
-    <div class="col-sm-2">
-      <a href="#" class="btn btn-primary btn-md" id="btnFilter">rick</a>
+    <div class="row mb-4">
+        <div class="col-sm-9">
+            {% include 'item_filter.html' %}
+        </div>
+        <label for="exampleFormControlSelect1" class="float-right col-sm-1 col-form-label">Sort By:</label>
+        <div clas="col-sm-2">
+            <select class="form-control" id="exampleFormControlSelect1">
+                <option>Most Wanted</option>
+                <option>Most Collected</option>
+                <option>Most Recent</option>
+                <option>Recently Edited</option>
+                <option>Hot</option>
+            </select>
+        </div>
     </div>
-  </div>
-  <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Items</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Looks</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Brands</a>
-    </li>
-  </ul>
-  <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-      
-      <br>
-      {% include 'product_grid.html' %}
-    </div>
-    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-      
-      <br>
-      {% include 'looks_grid.html' %}
-    </div>
-    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-      <br>
-    {% include 'brands_grid.html' %}</div>
-  </div>
-  
+
+
+    {% include 'product_grid.html' %}
 </div>
 <!-- /.container -->
