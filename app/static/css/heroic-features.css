@@ -281,3 +281,4 @@ box-sizing: border-box;}
 #showMore3:not(.collapsed)::after {
   content: '- Hide Items';
 }
+
