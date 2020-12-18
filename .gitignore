@@ -1,5 +1,7 @@
 <<<<<<< HEAD
 .pyc
+setDevEnv.sh
+setProdEnv.sh
 =======
 *.py[cod]
 
