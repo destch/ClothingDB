@@ -40,7 +40,7 @@ Jinja2==2.11.2
 jmespath==0.10.0
 logger==1.4
 lxml==4.5.1
-Mako==1.1.2
+Mako==1.2.2
 MarkupSafe==1.1.1
 migrate==0.3.8
 mixpanel==4.6.0
